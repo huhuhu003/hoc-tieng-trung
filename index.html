@@ -7751,26 +7751,31 @@ const READINGS = [
     audioToken++; if (window.speechSynthesis) window.speechSynthesis.cancel();
     if (audio) { audio.pause(); audio = null; }
   }
+  // gg-tts-primary: Google TTS la giong chinh (dai ca thay Edge doc nhanh).
   function speak(text, status) {
     stopAudio(); const token = audioToken;
     const update = message => { if (token === audioToken) status.textContent = message; };
     const synth = window.speechSynthesis;
-    const voices = synth ? synth.getVoices().filter(v => /^zh/i.test(v.lang)) : [];
-    const voice = voices.find(v => /microsoft|online|natural/i.test(v.name)) || voices.find(v => v.localService) || voices[0];
-    update('Đang phát âm…');
-    if (voice) {
-      try {
-        const u = new SpeechSynthesisUtterance(text); u.voice = voice; u.lang = 'zh-CN'; u.rate = 0.8;
-        u.onend = () => update('Đã phát xong. Bấm Nghe lại để nghe thêm.'); u.onerror = () => update(audioError);
-        synth.speak(u);
-      } catch (_) { update(audioError); }
-    } else {
-      try {
-        audio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&tl=zh-CN&client=tw-ob&q=' + encodeURIComponent(text));
-        audio.onended = () => update('Đã phát xong. Bấm Nghe lại để nghe thêm.'); audio.onerror = () => update(audioError);
-        const result = audio.play(); if (result && result.catch) result.catch(() => update(audioError));
-      } catch (_) { update(audioError); }
+    function fallbackVoice() {
+      const voices = synth ? synth.getVoices().filter(v => /^zh/i.test(v.lang)) : [];
+      const voice = voices.find(v => v.localService) || voices[0];
+      if (voice && synth) {
+        try {
+          const u = new SpeechSynthesisUtterance(text); u.voice = voice; u.lang = 'zh-CN'; u.rate = 0.7;
+          u.onend = () => update('Đã phát xong. Bấm Nghe lại để nghe thêm.'); u.onerror = () => update(audioError);
+          synth.speak(u); return;
+        } catch (_) {}
+      }
+      update(audioError);
     }
+    update('Đang phát âm…');
+    try {
+      audio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&tl=zh-CN&client=tw-ob&q=' + encodeURIComponent(text));
+      audio.onended = () => update('Đã phát xong. Bấm Nghe lại để nghe thêm.');
+      audio.onerror = () => fallbackVoice();
+      const result = audio.play();
+      if (result && result.catch) result.catch(() => fallbackVoice());
+    } catch (_) { fallbackVoice(); }
   }
   // Hash the local date and shuffle copies; ties are deterministic.
   function dailyShuffle(items, seedString) {
