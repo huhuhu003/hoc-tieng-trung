@@ -7872,8 +7872,13 @@ const READINGS = [
     updateXPBar();
     save();
   }
+  function ensureQuestDay() {
+    if (!quests || quests.date !== dateKey()) {
+      quests = {date: dateKey(), progress: {}, done: {}, tabs: {}};
+    }
+  }
   function bumpQuest(id, n = 1) {
-    if (!quests) return;
+    ensureQuestDay();
     const def = QUEST_DEFS.find(d => d.id === id);
     if (!def || quests.done[id]) return;
     quests.progress[id] = Math.min(def.target, (Number(quests.progress[id]) || 0) + n);
@@ -7884,7 +7889,8 @@ const READINGS = [
     persistQuests();
   }
   function trackTabQuest(t) {
-    if (!quests || !['choice', 'listen', 'sentence', 'reading'].includes(t)) return;
+    if (!['choice', 'listen', 'sentence', 'reading'].includes(t)) return;
+    ensureQuestDay();
     quests.tabs = quests.tabs || {};
     if (!quests.tabs[t]) {
       quests.tabs[t] = 1;
@@ -7902,7 +7908,7 @@ const READINGS = [
   const audioError = 'Không phát được âm thanh. Hãy kiểm tra mạng hoặc mở trang bằng trình duyệt Edge để có giọng đọc chuẩn.';
   function stopAudio() {
     audioToken++; if (window.speechSynthesis) window.speechSynthesis.cancel();
-    if (audio) { audio.pause(); audio = null; }
+    if (audio) { audio.onerror = null; audio.onended = null; audio.pause(); audio = null; }
   }
   const storedVoicePref = read('zh-voice-pref');
   let voicePref = {
@@ -7975,7 +7981,9 @@ const READINGS = [
     } catch (_) {}
   }
   function speak(text, status, onDone) {
-    stopAudio(); const token = audioToken, pref = {...voicePref};
+    stopAudio();
+    const token = audioToken;
+    const pref = {...voicePref};
     const update = message => { if (token === audioToken) status.textContent = message; };
     const done = ok => { if (typeof onDone === 'function') { try { onDone(ok); } catch (_) {} } };
     const attempted = new Set();
@@ -7985,12 +7993,18 @@ const READINGS = [
       attempted.add(kind);
       let failed = false;
       const fail = () => {
-        if (failed || token !== audioToken) return;
+        if (failed || completed || token !== audioToken) return;
         failed = true;
-        if (audio) { audio.pause(); audio = null; }
+        if (audio) { audio.onerror = null; audio.onended = null; audio.pause(); audio = null; }
         play(kind === 'gtts' ? 'speech' : 'gtts');
       };
-      const ended = () => { if (!failed) update('Đã phát xong. Bấm Nghe lại để nghe thêm.'); done(true); };
+      let completed = false;
+      const ended = () => {
+        if (failed || completed || token !== audioToken) return;
+        completed = true;
+        update('Đã phát xong. Bấm Nghe lại để nghe thêm.');
+        done(true);
+      };
       try {
         if (kind === 'speech') {
           const synth = window.speechSynthesis, voices = chineseVoices();
@@ -8128,25 +8142,23 @@ const READINGS = [
     });
   }
   // ================= SENTENCE BUILDER (xếp câu) =================
-  // Fallback splitter for the 120-sentence bank: align pinyin tokens to hanzi right-to-left.
+  // Longest vocabulary match at each position; unknown text stays as single characters.
+  const builderVocabulary = [...new Set(VOCAB.map(w => w.hanzi).filter(Boolean))]
+    .sort((a, b) => [...b].length - [...a].length);
   function builderUnitsFrom120(s) {
-    const PUNCT = new Set([...'，。！？；：、.,?!;: ']);
-    const chars = [...s.zh].filter(c => !PUNCT.has(c));
-    const toks = String(s.pinyin || '').trim().split(/\s+/).filter(Boolean)
-      .map(t => t.replace(/[.,?!;:]+$/, ''));
-    if (!chars.length || !toks.length) return chars;
     const units = [];
-    let ci = chars.length;
-    for (let ti = toks.length - 1; ti >= 0; ti--) {
-      if (ci <= 0) break;
-      let take = 1 + Math.max(0, ci - (ti + 1));
-      take = Math.min(take, 2, ci - ti);
-      if (take < 1) take = 1;
-      units.unshift(chars.slice(ci - take, ci).join(''));
-      ci -= take;
+    // Match within punctuation boundaries so removing punctuation cannot invent a word.
+    const chunks = String(s.zh || '').split(/[，。！？；：、.,?!;:\s]+/).filter(Boolean);
+    for (const chunk of chunks) {
+      let offset = 0;
+      while (offset < chunk.length) {
+        const match = builderVocabulary.find(w => chunk.startsWith(w, offset));
+        const unit = match || String.fromCodePoint(chunk.codePointAt(offset));
+        units.push(unit);
+        offset += unit.length;
+      }
     }
-    if (ci > 0) units.unshift(chars.slice(0, ci).join(''));
-    return units.filter(Boolean);
+    return units;
   }
   function wordsInUnits(unitTexts) {
     const found = [], seen = new Set();
@@ -8164,7 +8176,7 @@ const READINGS = [
       pick = dailyShuffle(pool, dayStr + ':builder')[index % pool.length];
     }
     if (!pick) {
-      // Fallback: 120-sentence bank with pinyin alignment.
+      // Fallback: 120-sentence bank with vocabulary segmentation.
       const s = dailyShuffle(SENTENCES, dayStr + ':builder120')[index % SENTENCES.length];
       const units = builderUnitsFrom120(s);
       pick = {patternId: 'bank', name_vi: 'Luyện xếp câu', pattern_zh: '', zh: s.zh, vi: s.vi, units};
@@ -8246,9 +8258,9 @@ const READINGS = [
     const hearBtn = button('🔊 Nghe câu','secondary',()=>{ speak(quiz.units.map(u=>u.text).join(''), hearStatus); });
     const answerArea = el('div','builder-answer');
     const pool = el('div','builder-pool');
-    const picked = [];
+    const picked = SE.builderPicked || (SE.builderPicked = []);
     const feedback = el('p','feedback'); feedback.setAttribute('role','status');
-    const next = button('Câu tiếp theo →','primary',()=>{ SE.index++; SE.quiz=null; SE.answered=false; save(); render(); });
+    const next = button('Câu tiếp theo →','primary',()=>{ SE.index++; SE.quiz=null; SE.answered=false; delete SE.builderPicked; save(); render(); });
     next.hidden = true;
     const checkBtn = button('Kiểm tra','primary',()=>{
       if (SE.answered || picked.length !== quiz.units.length) return;
@@ -8276,13 +8288,14 @@ const READINGS = [
       answerArea.replaceChildren();
       picked.forEach(pi => {
         answerArea.append(unitButton(quiz.shuffled[pi], 'builder-unit picked', () => {
+          if (SE.answered) return;
           picked.splice(picked.indexOf(pi), 1); refresh();
         }));
       });
       pool.replaceChildren();
       quiz.shuffled.forEach((u, i) => {
         if (picked.includes(i)) return;
-        pool.append(unitButton(u, 'builder-unit', () => { picked.push(i); refresh(); }));
+        pool.append(unitButton(u, 'builder-unit', () => { if (SE.answered) return; picked.push(i); refresh(); }));
       });
       checkBtn.disabled = picked.length !== quiz.units.length;
     }
@@ -8295,11 +8308,11 @@ const READINGS = [
       next.hidden = false;
     }
     card.append(answerArea, pool, checkBtn, hearBtn, hearStatus, feedback, next);
-    refresh();
+    refresh(); paintBuilder();
   }
   // ================= LEECH RESCUE (ôn từ yếu) =================
   const rescue = {
-    active: false, words: [],
+    active: false, words: [], questions: [],
     types: ['hanzi->meaning', 'meaning->hanzi', 'pinyin->hanzi', 'builder', 'cloze'],
     session: null
   };
@@ -8317,6 +8330,15 @@ const READINGS = [
     const ws = dailyShuffle(leeches(), day + ':rescue');
     rescue.active = true;
     rescue.words = ws;
+    rescue.questions = [];
+    // Each pass rotates the form for every word, visiting every pair once.
+    for (let round = 0; round < rescue.types.length; round++) {
+      for (let i = 0; i < ws.length && rescue.questions.length < 10; i++) {
+        rescue.questions.push({word: ws[i], type: rescue.types[(i + round) % rescue.types.length]});
+      }
+      if (rescue.questions.length >= 10) break;
+    }
+    if (!rescue.questions.length) { rescue.active = false; return; }
     rescue.session = freshRescueSession();
     render();
   }
@@ -8328,6 +8350,7 @@ const READINGS = [
     checkBadges();
     save();
     tab = 'choice';
+    rescueDoneMsg = true;
     render();
   }
 
@@ -8421,7 +8444,8 @@ const READINGS = [
   async function playShadowPlan(plan, playOne, pauseMs, isCancelled) {
     for (let k = 0; k < plan.length; k++) {
       if (isCancelled()) return false;
-      await playOne(plan[k].index, k);
+      const ok = await playOne(plan[k].index, k);
+      if (ok === false) return false;
       if (isCancelled()) return false;
       if (k < plan.length - 1) {
         if (pauseMs > 0) await new Promise(r => setTimeout(r, pauseMs));
@@ -8455,12 +8479,15 @@ const READINGS = [
       shadow.current = idx;
       highlightShadow(idx);
       shadowStatus(`Câu ${idx + 1}/${shadow.sentences.length} · ${plan.length} lượt phát`);
-      speak(shadow.sentences[idx].zh, shadow.statusEl, () => { awardXP(5, 'shadow'); resolve(); });
+      speak(shadow.sentences[idx].zh, shadow.statusEl, ok => {
+        if (ok === true && myRun === shadow.run) awardXP(5, 'shadow');
+        resolve(ok === true);
+      });
     });
     playShadowPlan(plan, playOne, pauseMs, () => myRun !== shadow.run).then(done => {
       if (myRun !== shadow.run) return;
       shadow.playing = false;
-      shadowStatus(done ? 'Đã phát xong toàn bộ.' : 'Đã dừng.');
+      shadowStatus(done ? 'Đã phát xong toàn bộ.' : 'Đã dừng hoặc không phát được âm thanh.');
       updateShadowTransport();
       if (done) {
         stats.shadowRuns = (Number(stats.shadowRuns) || 0) + 1;
@@ -8818,8 +8845,8 @@ const READINGS = [
       const inRescue = tab === 'choice' && rescue.active;
       const s = sessions[tab];
       const SE = inRescue ? rescue.session : s;
-      const count = tab === 'sentence' ? sentences.length : tab === 'reading' ? passageQuestions.length : inRescue ? 10 : daily.length;
-      if (inRescue && SE.index >= 10) { finishRescue(); return; }
+      const count = tab === 'sentence' ? sentences.length : tab === 'reading' ? passageQuestions.length : inRescue ? rescue.questions.length : daily.length;
+      if (inRescue && SE.index >= count) { finishRescue(); return; }
       if (SE.index >= count) { main.append(el('section','card empty','Bạn đã hoàn thành lượt học hôm nay!'),button('Xem thống kê','primary',()=>selectTab('stats'))); return; }
       const head=el('div','lesson-head'); head.append(el('h2','',inRescue?'🆘 Ôn từ yếu':titles[tab]),el('span','counter',`${SE.index+1} / ${count} câu hôm nay`));
       const progress=el('progress'); progress.max=count;progress.value=SE.index;progress.setAttribute('aria-label','Tiến độ lượt học'); main.append(head,progress);
@@ -8858,8 +8885,7 @@ const READINGS = [
       } else {
         let type;
         if (inRescue) {
-          word = rescue.words[SE.index % rescue.words.length];
-          type = rescue.types[SE.index % rescue.types.length];
+          ({word, type} = rescue.questions[SE.index]);
         } else {
           word = daily[s.index];
           type = modes[s.index % modes.length];
