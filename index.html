@@ -1,0 +1,7934 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#176b52">
+  <title>Mỗi ngày một chút · Ôn tiếng Trung</title>
+  <style>
+:root {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #203c35;
+  background: #f6f2e9;
+  font-synthesis: none;
+  --green: #176b52;
+  --muted: #62716a;
+  --border: #dedfd2;
+  --shadow: 0 3px 6px #30483b04, 0 14px 36px #30483b09;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-width: 280px;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at top left, #e3eee4 0, transparent 55%), radial-gradient(ellipse at bottom right, #f0e5cd 0, transparent 55%);
+}
+button {
+  font: inherit;
+  cursor: pointer;
+  min-height: 52px;
+  touch-action: manipulation;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+button:focus-visible { outline: 3px solid #b67b21; outline-offset: 4px; }
+button:disabled { cursor: default; }
+button:not(:disabled):active { transform: translateY(1px) scale(.985); }
+.app { max-width: 800px; margin: auto; padding: 20px 16px 30px; }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 24px;
+  padding: 28px 22px;
+  border: 1px solid #ffffff40;
+  border-radius: 28px;
+  color: #fffdf4;
+  background: radial-gradient(circle at top right, #ffffff16, transparent 65%), linear-gradient(125deg, #246d68, #185844 80%);
+  box-shadow: 0 4px 10px #164b3910, 0 16px 32px #164b3918;
+}
+.header > div { min-width: 0; }
+.eyebrow { font-size: 11px; font-weight: 650; letter-spacing: 3px; color: #e7d4a5; margin: 0 0 12px; }
+h1 { font-size: clamp(24px, 5vw, 36px); line-height: 1.2; letter-spacing: -1px; margin: 0; font-weight: 750; }
+.subtitle { color: #e2ede4; font-size: 14px; line-height: 1.65; margin: 12px 0 0; }
+.brand {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 64px;
+  border: 1px solid #f3e3ba55;
+  border-radius: 19px;
+  background: #ffffff10;
+  color: #f3e3ba;
+  font-family: "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+  font-size: 36px;
+  flex-shrink: 0;
+  box-shadow: inset 0 1px 0 #ffffff15;
+}
+.tabs { display: flex; gap: 4px; overflow-x: auto; padding: 6px; background: #e6e8dd; border: 1px solid #dde0d3; border-radius: 30px; margin-bottom: 28px; }
+.tab { flex: 1; white-space: nowrap; border: 0; background: transparent; color: #55655c; font-size: 13px; font-weight: 650; border-radius: 24px; padding: 0 14px; }
+.tab.active { background: #fffdf7; color: #145e48; box-shadow: 0 2px 4px #283e3110, 0 5px 12px #283e3110; }
+.lesson-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+h2 { font-size: 21px; line-height: 1.4; letter-spacing: -.4px; margin: 0; }
+.counter { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; }
+progress { width: 100%; height: 8px; display: block; appearance: none; border: 0; border-radius: 10px; overflow: hidden; background: #dce3d6; margin: 0 0 24px; }
+progress::-webkit-progress-bar { background: #dce3d6; border-radius: 10px; }
+progress::-webkit-progress-value { background: linear-gradient(90deg, #258979, #7ca768); border-radius: 10px; }
+progress::-moz-progress-bar { background: linear-gradient(90deg, #258979, #7ca768); border-radius: 10px; }
+.card { border: 1px solid var(--border); border-radius: 28px; background: linear-gradient(145deg, #fffefa, #fcfaf3); padding: 30px 22px; box-shadow: var(--shadow), inset 0 1px 0 #fff; text-align: center; }
+.flashcard { display: flex; width: 100%; min-height: 330px; flex-direction: column; align-items: center; justify-content: center; color: inherit; transition: transform 260ms ease, background 260ms ease, box-shadow 260ms ease; }
+.flashcard[aria-pressed="true"] { background: #f3f8ef; transform: scale(.99); box-shadow: 0 5px 12px #30483b06, 0 18px 40px #30483b10; }
+.flashcard > span { max-width: 100%; }
+.topic { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 650; color: #65705e; background: #ebeedf; padding: 7px 12px; border-radius: 20px; }
+.hanzi { font-family: "Songti SC", "STSong", "Noto Serif CJK SC", system-ui, serif; font-size: clamp(46px, 12vw, 80px); line-height: 1.45; font-weight: 500; letter-spacing: 2px; color: #214f42; margin: 22px 0; overflow-wrap: anywhere; }
+.pinyin { font-size: clamp(24px, 6vw, 30px); color: var(--green); margin: 12px 0; overflow-wrap: anywhere; }
+.meaning { font-size: 22px; line-height: 1.5; margin: 8px 0; overflow-wrap: anywhere; }
+.hint { font-size: 13px; line-height: 1.65; color: var(--muted); margin-top: 24px; }
+.instruction { font-size: 14px; color: var(--muted); line-height: 1.7; }
+.options { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 22px; }
+.option { border: 1px solid var(--border); background: #fffdf8; border-radius: 18px; text-align: left; padding: 17px 18px; color: #203c35; display: flex; align-items: center; gap: 14px; overflow-wrap: anywhere; line-height: 1.5; box-shadow: 0 3px 8px #30483b04; }
+.option span:first-child { display: grid; place-items: center; flex-shrink: 0; width: 30px; height: 30px; border-radius: 10px; background: #eef0e5; color: #65705e; font-size: 13px; font-weight: 650; }
+.option span:last-child { min-width: 0; }
+.option.correct { background: #e6f4e7; border-color: #5c9c6c; animation: correct-pulse 550ms ease-out; }
+.option.correct span:first-child { background: #24704b; color: #fff; }
+.option.wrong { background: #fff0e9; border-color: #c8806a; animation: shake 360ms ease-in-out; }
+.option.wrong span:first-child { background: #a7503a; color: #fff; }
+.option:disabled { opacity: 1; }
+.feedback { padding: 16px 2px; line-height: 1.7; min-height: 56px; font-size: 15px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+.primary, .secondary { border-radius: 17px; padding: 15px 20px; flex: 1; font-weight: 650; line-height: 1.5; }
+.primary { background: linear-gradient(120deg, #24786a, #176b52); color: #fff; border: 1px solid #176b52; box-shadow: 0 4px 10px #176b5218; }
+.secondary { background: #fffdf8; color: var(--green); border: 1px solid #cbd6c7; box-shadow: 0 3px 8px #30483b04; }
+.listen { font-size: 20px; margin: 22px auto 6px; display: block; min-width: 180px; }
+.stats-grid { display: grid; gap: 14px; margin: 24px 0; }
+.stat { background: linear-gradient(#fffdf8, #fffdf8) padding-box, linear-gradient(140deg, #adcbbb, #e3d7b8, #e5e7d9) border-box; border: 1px solid transparent; border-radius: 24px; padding: 26px; box-shadow: var(--shadow); }
+.stat strong { font-size: 46px; line-height: 1.15; font-weight: 750; letter-spacing: -2px; display: block; color: var(--green); margin-bottom: 12px; font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 14px; line-height: 1.6; }
+.notice { background: #faf0d8; color: #735725; border: 1px solid #e6d5ac; padding: 16px; border-radius: 17px; font-size: 14px; line-height: 1.7; }
+.empty { padding: 44px 22px; }
+.empty h2 { margin: 12px 0; }
+.empty p { color: var(--muted); line-height: 1.7; }
+footer { text-align: center; font-size: 12px; line-height: 1.7; letter-spacing: .3px; color: var(--muted); margin-top: 34px; }
+[hidden] { display: none !important; }
+@keyframes correct-pulse { 0%, 100% { box-shadow: 0 0 0 0 #399b6400; } 45% { box-shadow: 0 0 0 5px #399b6425; } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25%, 75% { transform: translateX(-3px); } 50% { transform: translateX(3px); } }
+@media (hover: hover) and (pointer: fine) {
+  .option:not(:disabled):hover, .secondary:not(:disabled):hover { transform: translateY(-2px); border-color: #9db5a4; box-shadow: 0 6px 16px #30483b10; }
+  .primary:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 7px 18px #176b5228; }
+  .tab:not(.active):hover { background: #ffffff60; }
+  .flashcard:not(:disabled):hover { border-color: #a8bfaa; }
+}
+@media (min-width: 560px) {
+  .app { padding: 40px 24px; }
+  .header { padding: 36px 32px; margin-bottom: 28px; }
+  .brand { width: 76px; height: 80px; font-size: 46px; border-radius: 24px; }
+  .options { grid-template-columns: 1fr 1fr; }
+  .stats-grid { grid-template-columns: repeat(3, 1fr); }
+  .tab { font-size: 14px; }
+  .card { padding: 36px; }
+  .stat { padding: 26px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  button, .flashcard { transition: none; }
+  .option.correct, .option.wrong { animation: none; }
+  button:not(:disabled):active, .flashcard[aria-pressed="true"] { transform: none; }
+}
+
+.sentence-zh { display: block; font-size: clamp(24px, 6vw, 34px); line-height: 1.7; color: #214f42; overflow-wrap: anywhere; }
+.line-pinyin { display: block; color: var(--green); font-size: 16px; line-height: 1.7; margin: 10px 0; overflow-wrap: anywhere; }
+.passage { text-align: left; margin-bottom: 20px; padding: 22px 18px; }
+.passage h3 { margin: 0; font-size: 20px; }
+.passage-line { display: block; width: 100%; text-align: left; color: inherit; border: 0; border-top: 1px solid var(--border); background: transparent; padding: 16px 0; }
+.passage-line .sentence-zh { font-size: 23px; }
+.speaker { display: block; font-weight: 700; color: var(--muted); font-size: 12px; margin-bottom: 5px; }
+.line-vi { display: block; color: #735725; line-height: 1.7; padding: 10px 12px; border-radius: 12px; background: #f6efde; }
+.question-text { font-size: 21px; line-height: 1.7; overflow-wrap: anywhere; }
+.option:disabled:not(.correct):not(.wrong) { color: #62716a; }
+@media (max-width: 559px) { .tabs { border-radius: 20px; flex-wrap: wrap; } .tab { flex: 1 1 30%; padding: 0 8px; font-size: 12px; min-height: 46px; } }
+.sentence-zh { font-size: clamp(26px, 7vw, 38px); line-height: 1.8; color: #214f42; overflow-wrap: anywhere; }
+.passage { text-align: left; padding: 24px 18px; }
+.passage-line { display: block; width: 100%; text-align: left; background: transparent; border: 0; border-bottom: 1px solid var(--border); padding: 16px 4px; color: inherit; }
+.passage-line span { display: block; line-height: 1.7; overflow-wrap: anywhere; }
+.line-zh { font-size: 23px; color: #214f42; }
+.line-pinyin { font-size: 15px; color: var(--muted); margin-top: 5px; }
+.line-vi { font-size: 15px; color: var(--green); margin-top: 8px; }
+.reading-question { font-size: 19px; line-height: 1.7; margin: 24px 0 0; }
+
+</style>
+</head>
+<body>
+  <div class="app">
+    <header class="header"><div><p class="eyebrow">每天进步一点</p><h1>Mỗi ngày một chút</h1><p class="subtitle">Một chút mỗi ngày, thêm gần tiếng Trung.</p></div><span class="brand" lang="zh-CN" aria-hidden="true">学</span></header>
+    <nav class="tabs" aria-label="Chọn cách học">
+      <button class="tab active" data-tab="choice" aria-current="page">① Trắc nghiệm</button>
+      <button class="tab" data-tab="listen">② Nghe</button>
+      <button class="tab" data-tab="sentence">③ Dịch câu</button>
+      <button class="tab" data-tab="reading">④ Đọc hiểu</button>
+      <button class="tab" data-tab="stats">Thống kê</button>
+    </nav>
+    <main id="main" tabindex="-1"></main>
+    <p id="storage-note" class="notice" role="status" hidden></p>
+    <footer>650 từ · 120 câu · 12 bài đọc hiểu · HSK mini mỗi ngày</footer>
+  </div>
+  <script>
+// engine.js
+
+function createPRNG(seedStr) {
+  let h = 0;
+  for (let i = 0; i < seedStr.length; i++) {
+    h = Math.imul(31, h) + seedStr.charCodeAt(i) | 0;
+  }
+  let a = h ^ 0xDEADBEEF;
+  return function() {
+    let t = a += 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
+}
+
+function shuffle(array, prng = Math.random) {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(prng() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function mulChoice(word, vocab, type) {
+  const isPinyin = type === "hanzi->pinyin" || type === "pinyin->hanzi";
+  const isMeaning = type === "hanzi->meaning" || type === "meaning->hanzi";
+  
+  let pool = vocab.filter(v => v.id !== word.id);
+  
+  pool.forEach(v => {
+    let score = 0;
+    if (v.topic === word.topic) score += 10;
+    if (isPinyin) {
+      if (v.pinyin.length === word.pinyin.length) score += 5;
+      if (v.pinyin.charAt(0) === word.pinyin.charAt(0)) score += 5;
+    }
+    if (isMeaning) {
+       score += Math.random() * 5;
+    }
+    score += Math.random(); 
+    v._score = score;
+  });
+  
+  pool.sort((a, b) => b._score - a._score);
+  
+  const distractors = [];
+  const seenOptions = new Set();
+  
+  let targetVal = "";
+  if (type === "hanzi->meaning") targetVal = word.meaning_vi;
+  else if (type === "meaning->hanzi") targetVal = word.hanzi;
+  else if (type === "hanzi->pinyin") targetVal = word.pinyin;
+  else if (type === "pinyin->hanzi") targetVal = word.hanzi;
+  
+  seenOptions.add(targetVal);
+
+  for (const v of pool) {
+      let optVal = "";
+      if (type === "hanzi->meaning") optVal = v.meaning_vi;
+      else if (type === "meaning->hanzi") optVal = v.hanzi;
+      else if (type === "hanzi->pinyin") optVal = v.pinyin;
+      else if (type === "pinyin->hanzi") optVal = v.hanzi;
+      
+      if (!seenOptions.has(optVal)) {
+          seenOptions.add(optVal);
+          distractors.push(v);
+          if (distractors.length === 3) break;
+      }
+  }
+  
+  if (distractors.length < 3) {
+      for (let i = 0; i < 3 - distractors.length; i++) {
+          distractors.push({ id: `fake_${i}`, hanzi: `Fake${i}`, pinyin: `fake${i}`, meaning_vi: `Fake Meaning ${i}`});
+      }
+  }
+
+  const optionsPool = [word, ...distractors];
+  const shuffledOptions = shuffle(optionsPool);
+  const answerIndex = shuffledOptions.findIndex(v => v.id === word.id);
+  
+  let question = "";
+  let options = [];
+  
+  switch(type) {
+    case "hanzi->meaning":
+      question = word.hanzi;
+      options = shuffledOptions.map(v => v.meaning_vi);
+      break;
+    case "meaning->hanzi":
+      question = word.meaning_vi;
+      options = shuffledOptions.map(v => v.hanzi);
+      break;
+    case "hanzi->pinyin":
+      question = word.hanzi;
+      options = shuffledOptions.map(v => v.pinyin);
+      break;
+    case "pinyin->hanzi":
+      question = word.pinyin;
+      options = shuffledOptions.map(v => v.hanzi);
+      break;
+  }
+  
+  return { question, options, answerIndex };
+}
+
+function toneQuiz(word) {
+  const pinyin = word.pinyin;
+  
+  const toneMap = {
+    'ā':'a', 'á':'a', 'ǎ':'a', 'à':'a',
+    'ē':'e', 'é':'e', 'ě':'e', 'è':'e',
+    'ī':'i', 'í':'i', 'ǐ':'i', 'ì':'i',
+    'ō':'o', 'ó':'o', 'ǒ':'o', 'ò':'o',
+    'ū':'u', 'ú':'u', 'ǔ':'u', 'ù':'u',
+    'ǖ':'v', 'ǘ':'v', 'ǚ':'v', 'ǜ':'v'
+  };
+  
+  let toneless = pinyin;
+  for (const [mark, plain] of Object.entries(toneMap)) {
+    toneless = toneless.replace(new RegExp(mark, 'g'), plain);
+  }
+  
+  const variants = [pinyin];
+  
+  const applyRandomTones = (text, seed) => {
+    let res = text;
+    const vowels = ['a','e','i','o','u','v'];
+    const tonesA = ['ā', 'á', 'ǎ', 'à'];
+    const tonesE = ['ē', 'é', 'ě', 'è'];
+    const tonesI = ['ī', 'í', 'ǐ', 'ì'];
+    const tonesO = ['ō', 'ó', 'ǒ', 'ò'];
+    const tonesU = ['ū', 'ú', 'ǔ', 'ù'];
+    
+    for (let i=0; i<res.length; i++) {
+        if (vowels.includes(res[i])) {
+            let choice = (seed + i) % 4;
+            if (res[i] === 'a') res = res.substring(0, i) + tonesA[choice] + res.substring(i+1);
+            else if (res[i] === 'e') res = res.substring(0, i) + tonesE[choice] + res.substring(i+1);
+            else if (res[i] === 'i') res = res.substring(0, i) + tonesI[choice] + res.substring(i+1);
+            else if (res[i] === 'o') res = res.substring(0, i) + tonesO[choice] + res.substring(i+1);
+            else if (res[i] === 'u') res = res.substring(0, i) + tonesU[choice] + res.substring(i+1);
+            break;
+        }
+    }
+    return res;
+  };
+
+  let attempt = 0;
+  while (variants.length < 4 && attempt < 20) {
+      let variant = applyRandomTones(toneless, attempt);
+      if (!variants.includes(variant)) {
+          variants.push(variant);
+      }
+      attempt++;
+  }
+  
+  while(variants.length < 4) {
+      variants.push(toneless + " " + variants.length);
+  }
+
+  const shuffledOptions = shuffle(variants);
+  const answerIndex = shuffledOptions.indexOf(pinyin);
+  
+  return { toneless, options: shuffledOptions, answerIndex };
+}
+
+function srsNext(state, correct) {
+  let box = state?.box ?? 0;
+  const intervals = [1, 2, 4, 8, 16, 32]; 
+  
+  if (correct) {
+    box = Math.min(box + 1, 5);
+  } else {
+    box = 0;
+  }
+  
+  let days = correct ? intervals[box] : 1;
+  const nextReviewDate = new Date();
+  nextReviewDate.setDate(nextReviewDate.getDate() + days);
+  
+  const yyyy = nextReviewDate.getFullYear();
+  const mm = String(nextReviewDate.getMonth() + 1).padStart(2, '0');
+  const dd = String(nextReviewDate.getDate()).padStart(2, '0');
+  
+  return { box, nextReview: `${yyyy}-${mm}-${dd}` };
+}
+
+function dailySet(vocab, states, dateStr) {
+  const prng = createPRNG(dateStr);
+  const totalItems = 20;
+  
+  let dueWords = [];
+  let newWords = [];
+  
+  for (const word of vocab) {
+    const state = states[word.id];
+    if (!state || state.nextReview <= dateStr) {
+        if (!state || state.box === 0) {
+            newWords.push(word);
+        } else {
+            dueWords.push(word);
+        }
+    }
+  }
+  
+  dueWords = shuffle(dueWords, prng);
+  newWords = shuffle(newWords, prng);
+  
+  let selected = [];
+  const dueQuota = Math.floor(totalItems * 0.6);
+  const newQuota = totalItems - dueQuota;
+  
+  selected.push(...dueWords.slice(0, dueQuota));
+  selected.push(...newWords.slice(0, newQuota));
+  
+  const remaining = totalItems - selected.length;
+  if (remaining > 0) {
+      let pool = vocab.filter(v => !selected.find(s => s.id === v.id));
+      pool = shuffle(pool, prng);
+      selected.push(...pool.slice(0, remaining));
+  }
+  
+  selected = shuffle(selected, prng);
+  
+  const result = [];
+  const types = ["hanzi->meaning", "meaning->hanzi", "hanzi->pinyin", "pinyin->hanzi"];
+  let typeIndex = 0;
+  
+  for (const word of selected) {
+      const kindProb = prng();
+      if (kindProb < 0.5) {
+          result.push({
+              kind: "mulChoice",
+              wordId: word.id,
+              type: types[typeIndex % types.length]
+          });
+          typeIndex++;
+      } else {
+          result.push({
+              kind: "toneQuiz",
+              wordId: word.id
+          });
+      }
+  }
+  
+  return result;
+}
+
+function sentenceQuiz(s, sentences) {
+  const answerVi = s.vi;
+  const targetLen = answerVi.length;
+  let pool = sentences.filter(v => v.id !== s.id);
+  
+  pool.forEach(v => {
+    let lenDiff = Math.abs(v.vi.length - targetLen) / targetLen;
+    let score = Math.random();
+    if (lenDiff <= 0.4) score += 10;
+    v._score = score;
+  });
+  
+  pool.sort((a, b) => b._score - a._score);
+  
+  const distractors = [];
+  const seenOptions = new Set([answerVi]);
+  
+  for (const v of pool) {
+    if (!seenOptions.has(v.vi)) {
+      seenOptions.add(v.vi);
+      distractors.push(v.vi);
+      if (distractors.length === 3) break;
+    }
+  }
+  
+  while (distractors.length < 3) {
+    const fake = "Fake " + Math.random();
+    distractors.push(fake);
+    seenOptions.add(fake);
+  }
+  
+  const optionsPool = [answerVi, ...distractors];
+  const shuffledOptions = shuffle(optionsPool);
+  const answerIndex = shuffledOptions.indexOf(answerVi);
+  
+  return {
+    prompt: s.zh,
+    promptPinyin: s.pinyin,
+    options: shuffledOptions,
+    answerIndex
+  };
+}
+
+function passageQuiz(passage) {
+  return passage.questions.map(q => ({
+    question: q.q_zh + " / " + q.q_vi,
+    options: q.options.slice(),
+    answerIndex: q.answer
+  }));
+}
+
+window.Engine = { mulChoice, toneQuiz, dailySet, srsNext, sentenceQuiz, passageQuiz };
+
+</script>
+  <script>
+const VOCAB = [
+  {
+    "id": "hsk1-001",
+    "hanzi": "爱",
+    "pinyin": "ài",
+    "meaning_vi": "yêu",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-002",
+    "hanzi": "爱好",
+    "pinyin": "àihào",
+    "meaning_vi": "sở thích",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-003",
+    "hanzi": "八",
+    "pinyin": "bā",
+    "meaning_vi": "số 8",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-004",
+    "hanzi": "爸爸",
+    "pinyin": "bàba",
+    "meaning_vi": "bố, ba, cha",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-005",
+    "hanzi": "爸",
+    "pinyin": "bà",
+    "meaning_vi": "bố, ba, cha",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-006",
+    "hanzi": "吧",
+    "pinyin": "ba",
+    "meaning_vi": "nào, nhé, chứ, đi (trợ từ)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-007",
+    "hanzi": "白",
+    "pinyin": "bái",
+    "meaning_vi": "trắng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-008",
+    "hanzi": "白天",
+    "pinyin": "báitiān",
+    "meaning_vi": "ban ngày",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-009",
+    "hanzi": "百",
+    "pinyin": "bǎi",
+    "meaning_vi": "một trăm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-010",
+    "hanzi": "班",
+    "pinyin": "bān",
+    "meaning_vi": "lớp (học)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-011",
+    "hanzi": "半",
+    "pinyin": "bàn",
+    "meaning_vi": "một nửa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-012",
+    "hanzi": "半年",
+    "pinyin": "bànnián",
+    "meaning_vi": "nửa năm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-013",
+    "hanzi": "半天",
+    "pinyin": "bàntiān",
+    "meaning_vi": "nửa ngày",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-014",
+    "hanzi": "帮",
+    "pinyin": "bāng",
+    "meaning_vi": "giúp đỡ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-015",
+    "hanzi": "帮忙",
+    "pinyin": "bāngmáng",
+    "meaning_vi": "giúp đỡ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-016",
+    "hanzi": "包",
+    "pinyin": "bāo",
+    "meaning_vi": "bao, cái túi; gói, bọc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-017",
+    "hanzi": "包子",
+    "pinyin": "bāozi",
+    "meaning_vi": "bánh bao",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-018",
+    "hanzi": "杯",
+    "pinyin": "bēi",
+    "meaning_vi": "cốc, ly",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-019",
+    "hanzi": "杯子",
+    "pinyin": "bēizi",
+    "meaning_vi": "cốc, chén, ly",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-020",
+    "hanzi": "北",
+    "pinyin": "běi",
+    "meaning_vi": "bắc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-021",
+    "hanzi": "北边",
+    "pinyin": "běibian",
+    "meaning_vi": "phía bắc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-022",
+    "hanzi": "北京",
+    "pinyin": "Běijīng",
+    "meaning_vi": "Bắc Kinh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-023",
+    "hanzi": "本",
+    "pinyin": "běn",
+    "meaning_vi": "cuốn, quyển, tập",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-024",
+    "hanzi": "本子",
+    "pinyin": "běnzi",
+    "meaning_vi": "vở, cuốn vở",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-025",
+    "hanzi": "比",
+    "pinyin": "bǐ",
+    "meaning_vi": "so, so với",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-026",
+    "hanzi": "别",
+    "pinyin": "bié",
+    "meaning_vi": "đừng, không được",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-027",
+    "hanzi": "别的",
+    "pinyin": "bié de",
+    "meaning_vi": "cái khác",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-028",
+    "hanzi": "别人",
+    "pinyin": "biérén",
+    "meaning_vi": "người khác, người ta",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-029",
+    "hanzi": "病",
+    "pinyin": "bìng",
+    "meaning_vi": "bệnh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-030",
+    "hanzi": "病人",
+    "pinyin": "bìngrén",
+    "meaning_vi": "bệnh nhân",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-031",
+    "hanzi": "不大",
+    "pinyin": "bù dà",
+    "meaning_vi": "nhỏ, không lớn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-032",
+    "hanzi": "不对",
+    "pinyin": "bùduì",
+    "meaning_vi": "không đúng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-033",
+    "hanzi": "不客气",
+    "pinyin": "bù kèqi",
+    "meaning_vi": "không có gì",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-034",
+    "hanzi": "不用",
+    "pinyin": "bùyòng",
+    "meaning_vi": "không cần",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-035",
+    "hanzi": "不",
+    "pinyin": "bù",
+    "meaning_vi": "không",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-036",
+    "hanzi": "菜",
+    "pinyin": "cài",
+    "meaning_vi": "đồ ăn, món ăn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-037",
+    "hanzi": "茶",
+    "pinyin": "chá",
+    "meaning_vi": "trà",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-038",
+    "hanzi": "差",
+    "pinyin": "chà",
+    "meaning_vi": "thiếu, kém",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-039",
+    "hanzi": "常",
+    "pinyin": "cháng",
+    "meaning_vi": "thường",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-040",
+    "hanzi": "常常",
+    "pinyin": "chángcháng",
+    "meaning_vi": "thường thường",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-041",
+    "hanzi": "唱",
+    "pinyin": "chàng",
+    "meaning_vi": "hát",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-042",
+    "hanzi": "唱歌",
+    "pinyin": "chànggē",
+    "meaning_vi": "hát, ca hát",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-043",
+    "hanzi": "车",
+    "pinyin": "chē",
+    "meaning_vi": "xe",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-044",
+    "hanzi": "车票",
+    "pinyin": "chēpiào",
+    "meaning_vi": "vé xe",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-045",
+    "hanzi": "车上",
+    "pinyin": "chē shàng",
+    "meaning_vi": "trên xe",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-046",
+    "hanzi": "车站",
+    "pinyin": "chēzhàn",
+    "meaning_vi": "bến xe",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-047",
+    "hanzi": "吃",
+    "pinyin": "chī",
+    "meaning_vi": "ăn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-048",
+    "hanzi": "吃饭",
+    "pinyin": "chīfàn",
+    "meaning_vi": "ăn cơm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-049",
+    "hanzi": "出",
+    "pinyin": "chū",
+    "meaning_vi": "ra, xuất",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-050",
+    "hanzi": "出来",
+    "pinyin": "chūlái",
+    "meaning_vi": "xuất hiện, đi ra",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-051",
+    "hanzi": "出去",
+    "pinyin": "chūqù",
+    "meaning_vi": "ra, ra ngoài",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-052",
+    "hanzi": "穿",
+    "pinyin": "chuān",
+    "meaning_vi": "mặc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-053",
+    "hanzi": "床",
+    "pinyin": "chuáng",
+    "meaning_vi": "giường, đệm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-054",
+    "hanzi": "次",
+    "pinyin": "cì",
+    "meaning_vi": "lần",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-055",
+    "hanzi": "从",
+    "pinyin": "cóng",
+    "meaning_vi": "từ, qua, theo",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-056",
+    "hanzi": "错",
+    "pinyin": "cuò",
+    "meaning_vi": "sai",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-057",
+    "hanzi": "打",
+    "pinyin": "dǎ",
+    "meaning_vi": "đánh, bắt",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-058",
+    "hanzi": "打车",
+    "pinyin": "dǎchē",
+    "meaning_vi": "bắt xe",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-059",
+    "hanzi": "打电话",
+    "pinyin": "dǎ diànhuà",
+    "meaning_vi": "gọi điện",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-060",
+    "hanzi": "打开",
+    "pinyin": "dǎkāi",
+    "meaning_vi": "mở, mở ra",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-061",
+    "hanzi": "打球",
+    "pinyin": "dǎqiú",
+    "meaning_vi": "chơi bóng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-062",
+    "hanzi": "大",
+    "pinyin": "dà",
+    "meaning_vi": "to, lớn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-063",
+    "hanzi": "大学",
+    "pinyin": "dàxué",
+    "meaning_vi": "đại học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-064",
+    "hanzi": "大学生",
+    "pinyin": "dàxuéshēng",
+    "meaning_vi": "sinh viên đại học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-065",
+    "hanzi": "到",
+    "pinyin": "dào",
+    "meaning_vi": "đến, tới",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-066",
+    "hanzi": "得到",
+    "pinyin": "dédào",
+    "meaning_vi": "đạt được, nhận được",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-067",
+    "hanzi": "地",
+    "pinyin": "de",
+    "meaning_vi": "đất, lục địa; trái đất",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-068",
+    "hanzi": "的",
+    "pinyin": "de",
+    "meaning_vi": "của (biểu thị sự sở hữu)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-069",
+    "hanzi": "等",
+    "pinyin": "děng",
+    "meaning_vi": "đợi, chờ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-070",
+    "hanzi": "地点",
+    "pinyin": "dìdiǎn",
+    "meaning_vi": "địa điểm, nơi chốn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-071",
+    "hanzi": "地方",
+    "pinyin": "dìfāng",
+    "meaning_vi": "nơi, địa phương",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-072",
+    "hanzi": "地上",
+    "pinyin": "dìshàng",
+    "meaning_vi": "trên mặt đất",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-073",
+    "hanzi": "地图",
+    "pinyin": "dìtú",
+    "meaning_vi": "bản đồ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-074",
+    "hanzi": "弟弟",
+    "pinyin": "dìdi",
+    "meaning_vi": "em trai",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-075",
+    "hanzi": "弟",
+    "pinyin": "dì",
+    "meaning_vi": "em trai",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-076",
+    "hanzi": "第",
+    "pinyin": "dì",
+    "meaning_vi": "thứ ... (số thứ tự)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-077",
+    "hanzi": "点",
+    "pinyin": "diǎn",
+    "meaning_vi": "ít, chút, hơi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-078",
+    "hanzi": "电",
+    "pinyin": "diàn",
+    "meaning_vi": "điện, pin",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-079",
+    "hanzi": "电话",
+    "pinyin": "diànhuà",
+    "meaning_vi": "điện thoại",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-080",
+    "hanzi": "电脑",
+    "pinyin": "diànnǎo",
+    "meaning_vi": "máy tính",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-081",
+    "hanzi": "电视",
+    "pinyin": "diànshì",
+    "meaning_vi": "truyền hình; TV",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-082",
+    "hanzi": "电视机",
+    "pinyin": "diànshì jī",
+    "meaning_vi": "(chiếc) TV",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-083",
+    "hanzi": "电影",
+    "pinyin": "diànyǐng",
+    "meaning_vi": "điện ảnh, phim",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-084",
+    "hanzi": "电影院",
+    "pinyin": "diànyǐngyuàn",
+    "meaning_vi": "rạp chiếu phim",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-085",
+    "hanzi": "东",
+    "pinyin": "dōng",
+    "meaning_vi": "đông",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-086",
+    "hanzi": "东边",
+    "pinyin": "dōngbian",
+    "meaning_vi": "phía đông",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-087",
+    "hanzi": "东西",
+    "pinyin": "dōngxi",
+    "meaning_vi": "đồ đạc, đồ, vật",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-088",
+    "hanzi": "动",
+    "pinyin": "dòng",
+    "meaning_vi": "động, chạm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-089",
+    "hanzi": "动作",
+    "pinyin": "dòngzuò",
+    "meaning_vi": "động tác, hoạt động",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-090",
+    "hanzi": "都",
+    "pinyin": "dōu",
+    "meaning_vi": "đều",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-091",
+    "hanzi": "读",
+    "pinyin": "dú",
+    "meaning_vi": "đọc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-092",
+    "hanzi": "读书",
+    "pinyin": "dúshū",
+    "meaning_vi": "đọc sách",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-093",
+    "hanzi": "对",
+    "pinyin": "duì",
+    "meaning_vi": "đúng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-094",
+    "hanzi": "对不起",
+    "pinyin": "duìbuqǐ",
+    "meaning_vi": "xin lỗi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-095",
+    "hanzi": "多",
+    "pinyin": "duō",
+    "meaning_vi": "nhiều",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-096",
+    "hanzi": "多少",
+    "pinyin": "duōshao",
+    "meaning_vi": "bao nhiêu",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-097",
+    "hanzi": "饿",
+    "pinyin": "è",
+    "meaning_vi": "đói",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-098",
+    "hanzi": "儿子",
+    "pinyin": "érzi",
+    "meaning_vi": "con trai",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-099",
+    "hanzi": "二",
+    "pinyin": "èr",
+    "meaning_vi": "số 2",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-100",
+    "hanzi": "饭",
+    "pinyin": "fàn",
+    "meaning_vi": "cơm, bữa ăn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-101",
+    "hanzi": "饭店",
+    "pinyin": "fàndiàn",
+    "meaning_vi": "nhà hàng, khách sạn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-102",
+    "hanzi": "房间",
+    "pinyin": "fángjiān",
+    "meaning_vi": "phòng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-103",
+    "hanzi": "放",
+    "pinyin": "fàng",
+    "meaning_vi": "đặt, để, thả",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-104",
+    "hanzi": "放假",
+    "pinyin": "fàngjià",
+    "meaning_vi": "nghỉ lễ, nghỉ hè/tết",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-105",
+    "hanzi": "放学",
+    "pinyin": "fàngxué",
+    "meaning_vi": "tan học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-106",
+    "hanzi": "飞",
+    "pinyin": "fēi",
+    "meaning_vi": "bay",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-107",
+    "hanzi": "飞机",
+    "pinyin": "fēijī",
+    "meaning_vi": "máy bay",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-108",
+    "hanzi": "非常",
+    "pinyin": "fēicháng",
+    "meaning_vi": "rất, vô cùng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-109",
+    "hanzi": "分",
+    "pinyin": "fēn",
+    "meaning_vi": "phút; chia, phân",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-110",
+    "hanzi": "风",
+    "pinyin": "fēng",
+    "meaning_vi": "gió",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-111",
+    "hanzi": "干",
+    "pinyin": "gān / gàn",
+    "meaning_vi": "khô / làm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-112",
+    "hanzi": "干净",
+    "pinyin": "gānjìng",
+    "meaning_vi": "sạch sẽ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-113",
+    "hanzi": "干什么",
+    "pinyin": "gàn shénme",
+    "meaning_vi": "làm cái gì",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-114",
+    "hanzi": "高",
+    "pinyin": "gāo",
+    "meaning_vi": "cao",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-115",
+    "hanzi": "高兴",
+    "pinyin": "gāoxìng",
+    "meaning_vi": "vui vẻ, phấn khởi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-116",
+    "hanzi": "告诉",
+    "pinyin": "gàosu",
+    "meaning_vi": "nói, cho biết",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-117",
+    "hanzi": "哥哥",
+    "pinyin": "gēge",
+    "meaning_vi": "anh trai",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-118",
+    "hanzi": "哥",
+    "pinyin": "gē",
+    "meaning_vi": "anh trai",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-119",
+    "hanzi": "个",
+    "pinyin": "gè",
+    "meaning_vi": "cái, con, quả (lượng từ)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-120",
+    "hanzi": "给",
+    "pinyin": "gěi",
+    "meaning_vi": "cho, đưa cho",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-121",
+    "hanzi": "跟",
+    "pinyin": "gēn",
+    "meaning_vi": "cùng, với, theo",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-122",
+    "hanzi": "工人",
+    "pinyin": "gōngrén",
+    "meaning_vi": "công nhân",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-123",
+    "hanzi": "工作",
+    "pinyin": "gōngzuò",
+    "meaning_vi": "công việc, làm việc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-124",
+    "hanzi": "关",
+    "pinyin": "guān",
+    "meaning_vi": "đóng, tắt",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-125",
+    "hanzi": "关上",
+    "pinyin": "guānshàng",
+    "meaning_vi": "đóng lại, tắt đi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-126",
+    "hanzi": "贵",
+    "pinyin": "guì",
+    "meaning_vi": "đắt, quý",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-127",
+    "hanzi": "国",
+    "pinyin": "guó",
+    "meaning_vi": "nước, quốc gia",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-128",
+    "hanzi": "国家",
+    "pinyin": "guójiā",
+    "meaning_vi": "đất nước, quốc gia",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-129",
+    "hanzi": "国外",
+    "pinyin": "guówài",
+    "meaning_vi": "nước ngoài",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-130",
+    "hanzi": "过",
+    "pinyin": "guo / guò",
+    "meaning_vi": "qua, trải qua",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-131",
+    "hanzi": "还",
+    "pinyin": "hái / huán",
+    "meaning_vi": "còn, vẫn / trả lại",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-132",
+    "hanzi": "还是",
+    "pinyin": "háishi",
+    "meaning_vi": "hoặc là, hay là",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-133",
+    "hanzi": "孩子",
+    "pinyin": "háizi",
+    "meaning_vi": "con cái, trẻ em",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-134",
+    "hanzi": "汉语",
+    "pinyin": "Hànyǔ",
+    "meaning_vi": "tiếng Trung",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-135",
+    "hanzi": "汉字",
+    "pinyin": "Hànzì",
+    "meaning_vi": "chữ Hán",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-136",
+    "hanzi": "好",
+    "pinyin": "hǎo",
+    "meaning_vi": "tốt, hay, ngon",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-137",
+    "hanzi": "好吃",
+    "pinyin": "hǎochī",
+    "meaning_vi": "ngon (đồ ăn)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-138",
+    "hanzi": "好看",
+    "pinyin": "hǎokàn",
+    "meaning_vi": "đẹp, hay (nhìn)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-139",
+    "hanzi": "好听",
+    "pinyin": "hǎotīng",
+    "meaning_vi": "hay (nghe)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-140",
+    "hanzi": "好玩儿",
+    "pinyin": "hǎowánr",
+    "meaning_vi": "vui, thú vị",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-141",
+    "hanzi": "号",
+    "pinyin": "hào",
+    "meaning_vi": "ngày, số",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-142",
+    "hanzi": "喝",
+    "pinyin": "hē",
+    "meaning_vi": "uống",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-143",
+    "hanzi": "和",
+    "pinyin": "hé",
+    "meaning_vi": "và, với",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-144",
+    "hanzi": "河",
+    "pinyin": "hé",
+    "meaning_vi": "sông",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-145",
+    "hanzi": "黑",
+    "pinyin": "hēi",
+    "meaning_vi": "đen, tối",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-146",
+    "hanzi": "黑板",
+    "pinyin": "hēibǎn",
+    "meaning_vi": "bảng đen",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-147",
+    "hanzi": "很",
+    "pinyin": "hěn",
+    "meaning_vi": "rất",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-148",
+    "hanzi": "红",
+    "pinyin": "hóng",
+    "meaning_vi": "đỏ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-149",
+    "hanzi": "后",
+    "pinyin": "hòu",
+    "meaning_vi": "sau, phía sau",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-150",
+    "hanzi": "后边",
+    "pinyin": "hòubian",
+    "meaning_vi": "phía sau",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-151",
+    "hanzi": "后天",
+    "pinyin": "hòutiān",
+    "meaning_vi": "ngày kia",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-152",
+    "hanzi": "花",
+    "pinyin": "huā",
+    "meaning_vi": "hoa; tiêu (tiền, thời gian)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-153",
+    "hanzi": "话",
+    "pinyin": "huà",
+    "meaning_vi": "lời nói, câu chuyện",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-154",
+    "hanzi": "坏",
+    "pinyin": "huài",
+    "meaning_vi": "hỏng, xấu, tồi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-155",
+    "hanzi": "回",
+    "pinyin": "huí",
+    "meaning_vi": "về, quay lại; lần",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-156",
+    "hanzi": "回答",
+    "pinyin": "huídá",
+    "meaning_vi": "trả lời",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-157",
+    "hanzi": "回家",
+    "pinyin": "huíjiā",
+    "meaning_vi": "về nhà",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-158",
+    "hanzi": "回来",
+    "pinyin": "huílái",
+    "meaning_vi": "trở về, về đây",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-159",
+    "hanzi": "回去",
+    "pinyin": "huíqù",
+    "meaning_vi": "trở về, về đó",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-160",
+    "hanzi": "会",
+    "pinyin": "huì",
+    "meaning_vi": "biết; sẽ; cuộc họp",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-161",
+    "hanzi": "火车",
+    "pinyin": "huǒchē",
+    "meaning_vi": "tàu hỏa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-162",
+    "hanzi": "机场",
+    "pinyin": "jīchǎng",
+    "meaning_vi": "sân bay",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-163",
+    "hanzi": "几",
+    "pinyin": "jǐ",
+    "meaning_vi": "mấy, vài",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-164",
+    "hanzi": "记",
+    "pinyin": "jì",
+    "meaning_vi": "ghi, nhớ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-165",
+    "hanzi": "记得",
+    "pinyin": "jìde",
+    "meaning_vi": "nhớ, còn nhớ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-166",
+    "hanzi": "家",
+    "pinyin": "jiā",
+    "meaning_vi": "nhà, gia đình",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-167",
+    "hanzi": "家里",
+    "pinyin": "jiālǐ",
+    "meaning_vi": "trong nhà",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-168",
+    "hanzi": "加",
+    "pinyin": "jiā",
+    "meaning_vi": "cộng, thêm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-169",
+    "hanzi": "间",
+    "pinyin": "jiān",
+    "meaning_vi": "gian, phòng (lượng từ)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-170",
+    "hanzi": "见",
+    "pinyin": "jiàn",
+    "meaning_vi": "gặp, nhìn thấy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-171",
+    "hanzi": "见面",
+    "pinyin": "jiànmiàn",
+    "meaning_vi": "gặp mặt",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-172",
+    "hanzi": "教",
+    "pinyin": "jiāo",
+    "meaning_vi": "dạy, giảng dạy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-173",
+    "hanzi": "叫",
+    "pinyin": "jiào",
+    "meaning_vi": "gọi, tên là",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-174",
+    "hanzi": "教学楼",
+    "pinyin": "jiàoxuélóu",
+    "meaning_vi": "tòa nhà học tập",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-175",
+    "hanzi": "姐姐",
+    "pinyin": "jiějie",
+    "meaning_vi": "chị gái",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-176",
+    "hanzi": "姐",
+    "pinyin": "jiě",
+    "meaning_vi": "chị gái",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-177",
+    "hanzi": "介绍",
+    "pinyin": "jièshào",
+    "meaning_vi": "giới thiệu",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-178",
+    "hanzi": "费",
+    "pinyin": "fèi",
+    "meaning_vi": "phí, chi phí",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-179",
+    "hanzi": "进",
+    "pinyin": "jìn",
+    "meaning_vi": "vào, tiến vào",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-180",
+    "hanzi": "进来",
+    "pinyin": "jìnlái",
+    "meaning_vi": "đi vào đây",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-181",
+    "hanzi": "进去",
+    "pinyin": "jìnqù",
+    "meaning_vi": "đi vào đó",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-182",
+    "hanzi": "九",
+    "pinyin": "jiǔ",
+    "meaning_vi": "số 9",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-183",
+    "hanzi": "就",
+    "pinyin": "jiù",
+    "meaning_vi": "thì, chính là",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-184",
+    "hanzi": "觉得",
+    "pinyin": "juéde",
+    "meaning_vi": "cảm thấy, thấy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-185",
+    "hanzi": "开",
+    "pinyin": "kāi",
+    "meaning_vi": "mở, lái (xe), bật",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-186",
+    "hanzi": "开车",
+    "pinyin": "kāichē",
+    "meaning_vi": "lái xe",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-187",
+    "hanzi": "开会",
+    "pinyin": "kāihuì",
+    "meaning_vi": "họp, mở cuộc họp",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-188",
+    "hanzi": "开学",
+    "pinyin": "kāixué",
+    "meaning_vi": "khai giảng, nhập học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-189",
+    "hanzi": "看",
+    "pinyin": "kàn",
+    "meaning_vi": "nhìn, xem, đọc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-190",
+    "hanzi": "看病",
+    "pinyin": "kànbìng",
+    "meaning_vi": "khám bệnh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-191",
+    "hanzi": "看到",
+    "pinyin": "kàndào",
+    "meaning_vi": "nhìn thấy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-192",
+    "hanzi": "看见",
+    "pinyin": "kànjiàn",
+    "meaning_vi": "nhìn thấy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-193",
+    "hanzi": "考",
+    "pinyin": "kǎo",
+    "meaning_vi": "thi, kiểm tra",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-194",
+    "hanzi": "考试",
+    "pinyin": "kǎoshì",
+    "meaning_vi": "kì thi, thi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-195",
+    "hanzi": "渴",
+    "pinyin": "kě",
+    "meaning_vi": "khát",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-196",
+    "hanzi": "棵",
+    "pinyin": "kē",
+    "meaning_vi": "cây (lượng từ)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-197",
+    "hanzi": "课",
+    "pinyin": "kè",
+    "meaning_vi": "bài học, môn học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-198",
+    "hanzi": "课本",
+    "pinyin": "kèběn",
+    "meaning_vi": "sách giáo khoa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-199",
+    "hanzi": "课文",
+    "pinyin": "kèwén",
+    "meaning_vi": "bài đọc, văn bản",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-200",
+    "hanzi": "口",
+    "pinyin": "kǒu",
+    "meaning_vi": "miệng, khẩu (lượng từ)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-201",
+    "hanzi": "块",
+    "pinyin": "kuài",
+    "meaning_vi": "đồng (tiền), miếng, cục",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-202",
+    "hanzi": "快",
+    "pinyin": "kuài",
+    "meaning_vi": "nhanh; sắp",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-203",
+    "hanzi": "快乐",
+    "pinyin": "kuàilè",
+    "meaning_vi": "vui vẻ, hạnh phúc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-204",
+    "hanzi": "累",
+    "pinyin": "lèi",
+    "meaning_vi": "mệt",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-205",
+    "hanzi": "冷",
+    "pinyin": "lěng",
+    "meaning_vi": "lạnh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-206",
+    "hanzi": "里",
+    "pinyin": "lǐ",
+    "meaning_vi": "trong, bên trong",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-207",
+    "hanzi": "里边",
+    "pinyin": "lǐbian",
+    "meaning_vi": "bên trong",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-208",
+    "hanzi": "两",
+    "pinyin": "liǎng",
+    "meaning_vi": "hai (dùng cho lượng từ)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-209",
+    "hanzi": "零",
+    "pinyin": "líng",
+    "meaning_vi": "số 0",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-210",
+    "hanzi": "六",
+    "pinyin": "liù",
+    "meaning_vi": "số 6",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-211",
+    "hanzi": "楼",
+    "pinyin": "lóu",
+    "meaning_vi": "tầng, tòa nhà",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-212",
+    "hanzi": "楼上",
+    "pinyin": "lóushàng",
+    "meaning_vi": "trên tầng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-213",
+    "hanzi": "楼下",
+    "pinyin": "lóuxià",
+    "meaning_vi": "dưới tầng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-214",
+    "hanzi": "路",
+    "pinyin": "lù",
+    "meaning_vi": "đường, con đường",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-215",
+    "hanzi": "路口",
+    "pinyin": "lùkǒu",
+    "meaning_vi": "ngã tư, giao lộ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-216",
+    "hanzi": "路上",
+    "pinyin": "lùshang",
+    "meaning_vi": "trên đường",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-217",
+    "hanzi": "妈妈",
+    "pinyin": "māma",
+    "meaning_vi": "mẹ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-218",
+    "hanzi": "妈",
+    "pinyin": "mā",
+    "meaning_vi": "mẹ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-219",
+    "hanzi": "马路",
+    "pinyin": "mǎlù",
+    "meaning_vi": "đường lớn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-220",
+    "hanzi": "马上",
+    "pinyin": "mǎshàng",
+    "meaning_vi": "ngay lập tức",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-221",
+    "hanzi": "吗",
+    "pinyin": "ma",
+    "meaning_vi": "không (trợ từ nghi vấn)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-222",
+    "hanzi": "买",
+    "pinyin": "mǎi",
+    "meaning_vi": "mua",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-223",
+    "hanzi": "慢",
+    "pinyin": "màn",
+    "meaning_vi": "chậm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-224",
+    "hanzi": "忙",
+    "pinyin": "máng",
+    "meaning_vi": "bận",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-225",
+    "hanzi": "毛",
+    "pinyin": "máo",
+    "meaning_vi": "hào (tiền); lông",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-226",
+    "hanzi": "没",
+    "pinyin": "méi",
+    "meaning_vi": "không, chưa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-227",
+    "hanzi": "没关系",
+    "pinyin": "méi guānxi",
+    "meaning_vi": "không sao, không có gì",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-228",
+    "hanzi": "没什么",
+    "pinyin": "méi shénme",
+    "meaning_vi": "không có gì",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-229",
+    "hanzi": "没事儿",
+    "pinyin": "méi shìr",
+    "meaning_vi": "không sao, rảnh rỗi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-230",
+    "hanzi": "没有",
+    "pinyin": "méiyǒu",
+    "meaning_vi": "không có, chưa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-231",
+    "hanzi": "妹妹",
+    "pinyin": "mèimei",
+    "meaning_vi": "em gái",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-232",
+    "hanzi": "妹",
+    "pinyin": "mèi",
+    "meaning_vi": "em gái",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-233",
+    "hanzi": "门",
+    "pinyin": "mén",
+    "meaning_vi": "cửa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-234",
+    "hanzi": "门口",
+    "pinyin": "ménkǒu",
+    "meaning_vi": "cổng, cửa ra vào",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-235",
+    "hanzi": "门票",
+    "pinyin": "ménpiào",
+    "meaning_vi": "vé vào cửa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-236",
+    "hanzi": "们",
+    "pinyin": "men",
+    "meaning_vi": "các (chỉ số nhiều)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-237",
+    "hanzi": "米饭",
+    "pinyin": "mǐfàn",
+    "meaning_vi": "cơm trắng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-238",
+    "hanzi": "面包",
+    "pinyin": "miànbāo",
+    "meaning_vi": "bánh mì",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-239",
+    "hanzi": "面条儿",
+    "pinyin": "miàntiáor",
+    "meaning_vi": "mì",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-240",
+    "hanzi": "名字",
+    "pinyin": "míngzi",
+    "meaning_vi": "tên",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-241",
+    "hanzi": "明天",
+    "pinyin": "míngtiān",
+    "meaning_vi": "ngày mai",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-242",
+    "hanzi": "拿",
+    "pinyin": "ná",
+    "meaning_vi": "cầm, nắm, lấy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-243",
+    "hanzi": "哪",
+    "pinyin": "nǎ",
+    "meaning_vi": "nào, ở đâu",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-244",
+    "hanzi": "哪儿",
+    "pinyin": "nǎr",
+    "meaning_vi": "ở đâu",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-245",
+    "hanzi": "那",
+    "pinyin": "nà",
+    "meaning_vi": "kia, đó",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-246",
+    "hanzi": "那儿",
+    "pinyin": "nàr",
+    "meaning_vi": "chỗ kia, chỗ đó",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-247",
+    "hanzi": "奶奶",
+    "pinyin": "nǎinai",
+    "meaning_vi": "bà nội",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-248",
+    "hanzi": "南",
+    "pinyin": "nán",
+    "meaning_vi": "nam, phía nam",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-249",
+    "hanzi": "南边",
+    "pinyin": "nánbian",
+    "meaning_vi": "phía nam",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-250",
+    "hanzi": "男",
+    "pinyin": "nán",
+    "meaning_vi": "nam (giới tính)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-251",
+    "hanzi": "男孩儿",
+    "pinyin": "nánháir",
+    "meaning_vi": "cậu bé, con trai",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-252",
+    "hanzi": "男生",
+    "pinyin": "nánshēng",
+    "meaning_vi": "học sinh/sinh viên nam",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-253",
+    "hanzi": "男人",
+    "pinyin": "nánrén",
+    "meaning_vi": "người đàn ông",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-254",
+    "hanzi": "难",
+    "pinyin": "nán",
+    "meaning_vi": "khó",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-255",
+    "hanzi": "呢",
+    "pinyin": "ne",
+    "meaning_vi": "đấy, nhé (trợ từ)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-256",
+    "hanzi": "能",
+    "pinyin": "néng",
+    "meaning_vi": "có thể",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-257",
+    "hanzi": "你",
+    "pinyin": "nǐ",
+    "meaning_vi": "bạn, anh, chị",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-258",
+    "hanzi": "你们",
+    "pinyin": "nǐmen",
+    "meaning_vi": "các bạn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-259",
+    "hanzi": "年",
+    "pinyin": "nián",
+    "meaning_vi": "năm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-260",
+    "hanzi": "您",
+    "pinyin": "nín",
+    "meaning_vi": "ngài, ông, bà (kính ngữ)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-261",
+    "hanzi": "牛奶",
+    "pinyin": "niúnǎi",
+    "meaning_vi": "sữa bò",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-262",
+    "hanzi": "女",
+    "pinyin": "nǚ",
+    "meaning_vi": "nữ (giới tính)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-263",
+    "hanzi": "女孩儿",
+    "pinyin": "nǚháir",
+    "meaning_vi": "cô bé, con gái",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-264",
+    "hanzi": "女生",
+    "pinyin": "nǚshēng",
+    "meaning_vi": "học sinh/sinh viên nữ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-265",
+    "hanzi": "女人",
+    "pinyin": "nǚrén",
+    "meaning_vi": "người phụ nữ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-266",
+    "hanzi": "女儿",
+    "pinyin": "nǚ'ér",
+    "meaning_vi": "con gái",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-267",
+    "hanzi": "旁",
+    "pinyin": "páng",
+    "meaning_vi": "bên cạnh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-268",
+    "hanzi": "旁边",
+    "pinyin": "pángbiān",
+    "meaning_vi": "bên cạnh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-269",
+    "hanzi": "跑",
+    "pinyin": "pǎo",
+    "meaning_vi": "chạy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-270",
+    "hanzi": "朋",
+    "pinyin": "péng",
+    "meaning_vi": "bạn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-271",
+    "hanzi": "朋友",
+    "pinyin": "péngyou",
+    "meaning_vi": "bạn bè",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-272",
+    "hanzi": "票",
+    "pinyin": "piào",
+    "meaning_vi": "vé",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-273",
+    "hanzi": "七",
+    "pinyin": "qī",
+    "meaning_vi": "số 7",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-274",
+    "hanzi": "起",
+    "pinyin": "qǐ",
+    "meaning_vi": "dậy, khởi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-275",
+    "hanzi": "起床",
+    "pinyin": "qǐchuáng",
+    "meaning_vi": "thức dậy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-276",
+    "hanzi": "起来",
+    "pinyin": "qǐlái",
+    "meaning_vi": "đứng dậy, dậy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-277",
+    "hanzi": "汽车",
+    "pinyin": "qìchē",
+    "meaning_vi": "xe ô tô",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-278",
+    "hanzi": "前",
+    "pinyin": "qián",
+    "meaning_vi": "trước, phía trước",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-279",
+    "hanzi": "前边",
+    "pinyin": "qiánbian",
+    "meaning_vi": "phía trước",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-280",
+    "hanzi": "前天",
+    "pinyin": "qiántiān",
+    "meaning_vi": "hôm kia",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-281",
+    "hanzi": "钱",
+    "pinyin": "qián",
+    "meaning_vi": "tiền",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-282",
+    "hanzi": "钱包",
+    "pinyin": "qiánbāo",
+    "meaning_vi": "ví tiền",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-283",
+    "hanzi": "请",
+    "pinyin": "qǐng",
+    "meaning_vi": "mời, xin",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-284",
+    "hanzi": "请进",
+    "pinyin": "qǐng jìn",
+    "meaning_vi": "mời vào",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-285",
+    "hanzi": "请坐",
+    "pinyin": "qǐng zuò",
+    "meaning_vi": "mời ngồi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-286",
+    "hanzi": "球",
+    "pinyin": "qiú",
+    "meaning_vi": "quả bóng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-287",
+    "hanzi": "去",
+    "pinyin": "qù",
+    "meaning_vi": "đi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-288",
+    "hanzi": "去年",
+    "pinyin": "qùnián",
+    "meaning_vi": "năm ngoái",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-289",
+    "hanzi": "热",
+    "pinyin": "rè",
+    "meaning_vi": "nóng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-290",
+    "hanzi": "人",
+    "pinyin": "rén",
+    "meaning_vi": "người",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-291",
+    "hanzi": "认",
+    "pinyin": "rèn",
+    "meaning_vi": "nhận, nhận biết",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-292",
+    "hanzi": "认识",
+    "pinyin": "rènshi",
+    "meaning_vi": "quen biết, nhận biết",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-293",
+    "hanzi": "日",
+    "pinyin": "rì",
+    "meaning_vi": "ngày, mặt trời",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-294",
+    "hanzi": "日期",
+    "pinyin": "rìqī",
+    "meaning_vi": "ngày tháng, thời gian",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-295",
+    "hanzi": "肉",
+    "pinyin": "ròu",
+    "meaning_vi": "thịt",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-296",
+    "hanzi": "三",
+    "pinyin": "sān",
+    "meaning_vi": "số 3",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-297",
+    "hanzi": "山",
+    "pinyin": "shān",
+    "meaning_vi": "núi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-298",
+    "hanzi": "商量",
+    "pinyin": "shāngliang",
+    "meaning_vi": "thương lượng, bàn bạc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-299",
+    "hanzi": "商店",
+    "pinyin": "shāngdiàn",
+    "meaning_vi": "cửa hàng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-300",
+    "hanzi": "上",
+    "pinyin": "shàng",
+    "meaning_vi": "trên, lên",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-301",
+    "hanzi": "上边",
+    "pinyin": "shàngbian",
+    "meaning_vi": "phía trên",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-302",
+    "hanzi": "上班",
+    "pinyin": "shàngbān",
+    "meaning_vi": "đi làm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-303",
+    "hanzi": "上车",
+    "pinyin": "shàngchē",
+    "meaning_vi": "lên xe",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-304",
+    "hanzi": "上次",
+    "pinyin": "shàngcì",
+    "meaning_vi": "lần trước",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-305",
+    "hanzi": "上海",
+    "pinyin": "Shànghǎi",
+    "meaning_vi": "Thượng Hải",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-306",
+    "hanzi": "上课",
+    "pinyin": "shàngkè",
+    "meaning_vi": "đi học, lên lớp",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-307",
+    "hanzi": "上网",
+    "pinyin": "shàngwǎng",
+    "meaning_vi": "lên mạng, truy cập internet",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-308",
+    "hanzi": "上午",
+    "pinyin": "shàngwǔ",
+    "meaning_vi": "buổi sáng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-309",
+    "hanzi": "上学",
+    "pinyin": "shàngxué",
+    "meaning_vi": "đi học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-310",
+    "hanzi": "少",
+    "pinyin": "shǎo",
+    "meaning_vi": "ít",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-311",
+    "hanzi": "谁",
+    "pinyin": "shéi / shuí",
+    "meaning_vi": "ai",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-312",
+    "hanzi": "身体",
+    "pinyin": "shēntǐ",
+    "meaning_vi": "cơ thể, sức khỏe",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-313",
+    "hanzi": "什",
+    "pinyin": "shén",
+    "meaning_vi": "(trong 什么)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-314",
+    "hanzi": "什么",
+    "pinyin": "shénme",
+    "meaning_vi": "cái gì",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-315",
+    "hanzi": "生",
+    "pinyin": "shēng",
+    "meaning_vi": "sinh, đẻ, sống",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-316",
+    "hanzi": "生病",
+    "pinyin": "shēngbìng",
+    "meaning_vi": "bị bệnh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-317",
+    "hanzi": "生气",
+    "pinyin": "shēngqì",
+    "meaning_vi": "tức giận",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-318",
+    "hanzi": "生日",
+    "pinyin": "shēngrì",
+    "meaning_vi": "sinh nhật",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-319",
+    "hanzi": "声",
+    "pinyin": "shēng",
+    "meaning_vi": "tiếng, âm thanh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-320",
+    "hanzi": "十",
+    "pinyin": "shí",
+    "meaning_vi": "số 10",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-321",
+    "hanzi": "十一",
+    "pinyin": "shíyī",
+    "meaning_vi": "số 11",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-322",
+    "hanzi": "十二",
+    "pinyin": "shí'èr",
+    "meaning_vi": "số 12",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-323",
+    "hanzi": "时候",
+    "pinyin": "shíhou",
+    "meaning_vi": "lúc, thời gian",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-324",
+    "hanzi": "时间",
+    "pinyin": "shíjiān",
+    "meaning_vi": "thời gian",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-325",
+    "hanzi": "食物",
+    "pinyin": "shíwù",
+    "meaning_vi": "thức ăn, thực phẩm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-326",
+    "hanzi": "试",
+    "pinyin": "shì",
+    "meaning_vi": "thử",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-327",
+    "hanzi": "是",
+    "pinyin": "shì",
+    "meaning_vi": "là, đúng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-328",
+    "hanzi": "是不是",
+    "pinyin": "shì bushì",
+    "meaning_vi": "có phải hay không",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-329",
+    "hanzi": "手",
+    "pinyin": "shǒu",
+    "meaning_vi": "tay",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-330",
+    "hanzi": "手机",
+    "pinyin": "shǒujī",
+    "meaning_vi": "điện thoại di động",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-331",
+    "hanzi": "瘦",
+    "pinyin": "shòu",
+    "meaning_vi": "gầy, ốm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-332",
+    "hanzi": "书",
+    "pinyin": "shū",
+    "meaning_vi": "sách",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-333",
+    "hanzi": "书店",
+    "pinyin": "shūdiàn",
+    "meaning_vi": "nhà sách",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-334",
+    "hanzi": "树",
+    "pinyin": "shù",
+    "meaning_vi": "cây",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-335",
+    "hanzi": "水",
+    "pinyin": "shuǐ",
+    "meaning_vi": "nước",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-336",
+    "hanzi": "水果",
+    "pinyin": "shuǐguǒ",
+    "meaning_vi": "hoa quả, trái cây",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-337",
+    "hanzi": "睡",
+    "pinyin": "shuì",
+    "meaning_vi": "ngủ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-338",
+    "hanzi": "睡觉",
+    "pinyin": "shuìjiào",
+    "meaning_vi": "đi ngủ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-339",
+    "hanzi": "说",
+    "pinyin": "shuō",
+    "meaning_vi": "nói",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-340",
+    "hanzi": "说话",
+    "pinyin": "shuōhuà",
+    "meaning_vi": "nói chuyện",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-341",
+    "hanzi": "四",
+    "pinyin": "sì",
+    "meaning_vi": "số 4",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-342",
+    "hanzi": "送",
+    "pinyin": "sòng",
+    "meaning_vi": "tặng, tiễn, đưa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-343",
+    "hanzi": "岁",
+    "pinyin": "suì",
+    "meaning_vi": "tuổi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-344",
+    "hanzi": "他",
+    "pinyin": "tā",
+    "meaning_vi": "anh ấy, ông ấy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-345",
+    "hanzi": "他们",
+    "pinyin": "tāmen",
+    "meaning_vi": "các anh ấy, họ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-346",
+    "hanzi": "她",
+    "pinyin": "tā",
+    "meaning_vi": "cô ấy, bà ấy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-347",
+    "hanzi": "她们",
+    "pinyin": "tāmen",
+    "meaning_vi": "các cô ấy, họ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-348",
+    "hanzi": "太",
+    "pinyin": "tài",
+    "meaning_vi": "quá, lắm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-349",
+    "hanzi": "太阳",
+    "pinyin": "tàiyáng",
+    "meaning_vi": "mặt trời",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-350",
+    "hanzi": "谈",
+    "pinyin": "tán",
+    "meaning_vi": "bàn, nói chuyện",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-351",
+    "hanzi": "听到",
+    "pinyin": "tīngdào",
+    "meaning_vi": "nghe thấy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-352",
+    "hanzi": "听见",
+    "pinyin": "tīngjiàn",
+    "meaning_vi": "nghe thấy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-353",
+    "hanzi": "听",
+    "pinyin": "tīng",
+    "meaning_vi": "nghe",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-354",
+    "hanzi": "听说",
+    "pinyin": "tīngshuō",
+    "meaning_vi": "nghe nói",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-355",
+    "hanzi": "体育",
+    "pinyin": "tǐyù",
+    "meaning_vi": "thể dục, thể thao",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-356",
+    "hanzi": "同学",
+    "pinyin": "tóngxué",
+    "meaning_vi": "bạn học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-357",
+    "hanzi": "外",
+    "pinyin": "wài",
+    "meaning_vi": "ngoài, bên ngoài",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-358",
+    "hanzi": "外边",
+    "pinyin": "wàibian",
+    "meaning_vi": "bên ngoài",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-359",
+    "hanzi": "外国",
+    "pinyin": "wàiguó",
+    "meaning_vi": "nước ngoài",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-360",
+    "hanzi": "外语",
+    "pinyin": "wàiyǔ",
+    "meaning_vi": "ngoại ngữ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-361",
+    "hanzi": "完",
+    "pinyin": "wán",
+    "meaning_vi": "xong, hoàn thành",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-362",
+    "hanzi": "完成",
+    "pinyin": "wánchéng",
+    "meaning_vi": "hoàn thành",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-363",
+    "hanzi": "玩",
+    "pinyin": "wán",
+    "meaning_vi": "chơi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-364",
+    "hanzi": "碗",
+    "pinyin": "wǎn",
+    "meaning_vi": "bát, chén",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-365",
+    "hanzi": "晚",
+    "pinyin": "wǎn",
+    "meaning_vi": "muộn, tối",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-366",
+    "hanzi": "晚饭",
+    "pinyin": "wǎnfàn",
+    "meaning_vi": "bữa tối",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-367",
+    "hanzi": "晚上",
+    "pinyin": "wǎnshang",
+    "meaning_vi": "buổi tối",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-368",
+    "hanzi": "往",
+    "pinyin": "wǎng",
+    "meaning_vi": "hướng về, đi về phía",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-369",
+    "hanzi": "喂",
+    "pinyin": "wèi",
+    "meaning_vi": "alo",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-370",
+    "hanzi": "为什么",
+    "pinyin": "wèi shénme",
+    "meaning_vi": "tại sao",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-371",
+    "hanzi": "问",
+    "pinyin": "wèn",
+    "meaning_vi": "hỏi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-372",
+    "hanzi": "问题",
+    "pinyin": "wèntí",
+    "meaning_vi": "câu hỏi, vấn đề",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-373",
+    "hanzi": "我",
+    "pinyin": "wǒ",
+    "meaning_vi": "tôi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-374",
+    "hanzi": "我们",
+    "pinyin": "wǒmen",
+    "meaning_vi": "chúng tôi, chúng ta",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-375",
+    "hanzi": "五",
+    "pinyin": "wǔ",
+    "meaning_vi": "số 5",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-376",
+    "hanzi": "西",
+    "pinyin": "xī",
+    "meaning_vi": "tây",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-377",
+    "hanzi": "西边",
+    "pinyin": "xībian",
+    "meaning_vi": "phía tây",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-378",
+    "hanzi": "洗",
+    "pinyin": "xǐ",
+    "meaning_vi": "rửa, giặt",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-379",
+    "hanzi": "洗手间",
+    "pinyin": "xǐshǒujiān",
+    "meaning_vi": "nhà vệ sinh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-380",
+    "hanzi": "喜欢",
+    "pinyin": "xǐhuan",
+    "meaning_vi": "thích",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-381",
+    "hanzi": "下",
+    "pinyin": "xià",
+    "meaning_vi": "dưới, xuống",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-382",
+    "hanzi": "下边",
+    "pinyin": "xiàbian",
+    "meaning_vi": "phía dưới",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-383",
+    "hanzi": "下班",
+    "pinyin": "xiàbān",
+    "meaning_vi": "tan làm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-384",
+    "hanzi": "下车",
+    "pinyin": "xiàchē",
+    "meaning_vi": "xuống xe",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-385",
+    "hanzi": "下次",
+    "pinyin": "xiàcì",
+    "meaning_vi": "lần sau",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-386",
+    "hanzi": "下课",
+    "pinyin": "xiàkè",
+    "meaning_vi": "tan học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-387",
+    "hanzi": "下午",
+    "pinyin": "xiàwǔ",
+    "meaning_vi": "buổi chiều",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-388",
+    "hanzi": "下雨",
+    "pinyin": "xiàyǔ",
+    "meaning_vi": "trời mưa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-389",
+    "hanzi": "先",
+    "pinyin": "xiān",
+    "meaning_vi": "trước",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-390",
+    "hanzi": "先生",
+    "pinyin": "xiānsheng",
+    "meaning_vi": "ngài, ông, chú, anh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-391",
+    "hanzi": "香蕉",
+    "pinyin": "xiāngjiāo",
+    "meaning_vi": "quả chuối",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-392",
+    "hanzi": "想",
+    "pinyin": "xiǎng",
+    "meaning_vi": "muốn, nhớ, nghĩ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-393",
+    "hanzi": "向",
+    "pinyin": "xiàng",
+    "meaning_vi": "hướng về",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-394",
+    "hanzi": "小",
+    "pinyin": "xiǎo",
+    "meaning_vi": "nhỏ, bé",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-395",
+    "hanzi": "小孩儿",
+    "pinyin": "xiǎoháir",
+    "meaning_vi": "đứa trẻ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-396",
+    "hanzi": "小姐",
+    "pinyin": "xiǎojiě",
+    "meaning_vi": "cô gái, tiểu thư",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-397",
+    "hanzi": "小时",
+    "pinyin": "xiǎoshí",
+    "meaning_vi": "tiếng, giờ (đồng hồ)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-398",
+    "hanzi": "小学",
+    "pinyin": "xiǎoxué",
+    "meaning_vi": "trường tiểu học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-399",
+    "hanzi": "小学生",
+    "pinyin": "xiǎoxuéshēng",
+    "meaning_vi": "học sinh tiểu học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-400",
+    "hanzi": "笑",
+    "pinyin": "xiào",
+    "meaning_vi": "cười",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-401",
+    "hanzi": "些",
+    "pinyin": "xiē",
+    "meaning_vi": "một vài, một ít / chút, vài",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-402",
+    "hanzi": "写",
+    "pinyin": "xiě",
+    "meaning_vi": "viết",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-403",
+    "hanzi": "谢谢",
+    "pinyin": "xièxie",
+    "meaning_vi": "cảm ơn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-404",
+    "hanzi": "新",
+    "pinyin": "xīn",
+    "meaning_vi": "mới",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-405",
+    "hanzi": "星期",
+    "pinyin": "xīngqī",
+    "meaning_vi": "tuần, thứ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-406",
+    "hanzi": "星期日",
+    "pinyin": "xīngqīrì",
+    "meaning_vi": "chủ nhật",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-407",
+    "hanzi": "星期天",
+    "pinyin": "xīngqītiān",
+    "meaning_vi": "chủ nhật",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-408",
+    "hanzi": "行",
+    "pinyin": "xíng",
+    "meaning_vi": "được, ổn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-409",
+    "hanzi": "休息",
+    "pinyin": "xiūxi",
+    "meaning_vi": "nghỉ ngơi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-410",
+    "hanzi": "学",
+    "pinyin": "xué",
+    "meaning_vi": "học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-411",
+    "hanzi": "学生",
+    "pinyin": "xuésheng",
+    "meaning_vi": "học sinh, sinh viên",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-412",
+    "hanzi": "学习",
+    "pinyin": "xuéxí",
+    "meaning_vi": "học tập",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-413",
+    "hanzi": "学校",
+    "pinyin": "xuéxiào",
+    "meaning_vi": "trường học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-414",
+    "hanzi": "学院",
+    "pinyin": "xuéyuàn",
+    "meaning_vi": "học viện",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-415",
+    "hanzi": "样",
+    "pinyin": "yàng",
+    "meaning_vi": "kiểu, loại",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-416",
+    "hanzi": "样子",
+    "pinyin": "yàngzi",
+    "meaning_vi": "kiểu dáng, dáng vẻ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-417",
+    "hanzi": "要",
+    "pinyin": "yào",
+    "meaning_vi": "muốn, cần, phải",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-418",
+    "hanzi": "药",
+    "pinyin": "yào",
+    "meaning_vi": "thuốc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-419",
+    "hanzi": "爷",
+    "pinyin": "yé",
+    "meaning_vi": "ông",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-420",
+    "hanzi": "爷爷",
+    "pinyin": "yéye",
+    "meaning_vi": "ông nội",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-421",
+    "hanzi": "也",
+    "pinyin": "yě",
+    "meaning_vi": "cũng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-422",
+    "hanzi": "页",
+    "pinyin": "yè",
+    "meaning_vi": "trang (sách)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-423",
+    "hanzi": "一",
+    "pinyin": "yī",
+    "meaning_vi": "số 1",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-424",
+    "hanzi": "衣服",
+    "pinyin": "yīfu",
+    "meaning_vi": "quần áo",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-425",
+    "hanzi": "医生",
+    "pinyin": "yīshēng",
+    "meaning_vi": "bác sĩ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-426",
+    "hanzi": "医院",
+    "pinyin": "yīyuàn",
+    "meaning_vi": "bệnh viện",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-427",
+    "hanzi": "一定",
+    "pinyin": "yídìng",
+    "meaning_vi": "nhất định",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-428",
+    "hanzi": "一共",
+    "pinyin": "yígòng",
+    "meaning_vi": "tổng cộng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-429",
+    "hanzi": "一会儿",
+    "pinyin": "yíhuìr",
+    "meaning_vi": "một lúc, một lát",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-430",
+    "hanzi": "一块儿",
+    "pinyin": "yíkuàir",
+    "meaning_vi": "cùng nhau",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-431",
+    "hanzi": "一样",
+    "pinyin": "yíyàng",
+    "meaning_vi": "giống nhau",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-432",
+    "hanzi": "一半",
+    "pinyin": "yíbàn",
+    "meaning_vi": "một nửa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-433",
+    "hanzi": "一点儿",
+    "pinyin": "yìdiǎnr",
+    "meaning_vi": "một chút, một ít",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-434",
+    "hanzi": "一起",
+    "pinyin": "yìqǐ",
+    "meaning_vi": "cùng nhau",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-435",
+    "hanzi": "一下儿",
+    "pinyin": "yíxiàr",
+    "meaning_vi": "một chút, một cái",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-436",
+    "hanzi": "一些",
+    "pinyin": "yìxiē",
+    "meaning_vi": "một số, một vài",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-437",
+    "hanzi": "用",
+    "pinyin": "yòng",
+    "meaning_vi": "dùng, sử dụng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-438",
+    "hanzi": "有",
+    "pinyin": "yǒu",
+    "meaning_vi": "có",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-439",
+    "hanzi": "有的",
+    "pinyin": "yǒude",
+    "meaning_vi": "có cái/người",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-440",
+    "hanzi": "有名",
+    "pinyin": "yǒumíng",
+    "meaning_vi": "nổi tiếng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-441",
+    "hanzi": "有人",
+    "pinyin": "yǒurén",
+    "meaning_vi": "có người",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-442",
+    "hanzi": "有意思",
+    "pinyin": "yǒu yìsi",
+    "meaning_vi": "thú vị, hay",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-443",
+    "hanzi": "友好",
+    "pinyin": "yǒuhǎo",
+    "meaning_vi": "thân thiện, hữu nghị",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-444",
+    "hanzi": "友谊",
+    "pinyin": "yǒuyì",
+    "meaning_vi": "tình bạn, hữu nghị",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-445",
+    "hanzi": "右",
+    "pinyin": "yòu",
+    "meaning_vi": "phải (bên phải)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-446",
+    "hanzi": "右边",
+    "pinyin": "yòubian",
+    "meaning_vi": "bên phải",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-447",
+    "hanzi": "鱼",
+    "pinyin": "yú",
+    "meaning_vi": "con cá",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-448",
+    "hanzi": "元",
+    "pinyin": "yuán",
+    "meaning_vi": "đồng (đơn vị tiền)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-449",
+    "hanzi": "远",
+    "pinyin": "yuǎn",
+    "meaning_vi": "xa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-450",
+    "hanzi": "月",
+    "pinyin": "yuè",
+    "meaning_vi": "tháng, mặt trăng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-451",
+    "hanzi": "再",
+    "pinyin": "zài",
+    "meaning_vi": "lại, nữa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-452",
+    "hanzi": "再见",
+    "pinyin": "zàijiàn",
+    "meaning_vi": "tạm biệt",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-453",
+    "hanzi": "在",
+    "pinyin": "zài",
+    "meaning_vi": "ở, đang",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-454",
+    "hanzi": "在家",
+    "pinyin": "zài jiā",
+    "meaning_vi": "ở nhà",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-455",
+    "hanzi": "早",
+    "pinyin": "zǎo",
+    "meaning_vi": "sớm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-456",
+    "hanzi": "早饭",
+    "pinyin": "zǎofàn",
+    "meaning_vi": "bữa sáng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-457",
+    "hanzi": "早上",
+    "pinyin": "zǎoshang",
+    "meaning_vi": "buổi sáng sớm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-458",
+    "hanzi": "怎么",
+    "pinyin": "zěnme",
+    "meaning_vi": "thế nào, làm sao",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-459",
+    "hanzi": "怎么样",
+    "pinyin": "zěnmeyàng / zěnme yàng",
+    "meaning_vi": "thế nào, ra sao / như thế nào",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-460",
+    "hanzi": "站",
+    "pinyin": "zhàn",
+    "meaning_vi": "đứng; trạm, bến",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-461",
+    "hanzi": "张",
+    "pinyin": "zhāng",
+    "meaning_vi": "tờ, tấm (lượng từ)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-462",
+    "hanzi": "长",
+    "pinyin": "zhǎng / cháng",
+    "meaning_vi": "lớn lên / dài",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-463",
+    "hanzi": "找",
+    "pinyin": "zhǎo",
+    "meaning_vi": "tìm, trả lại tiền thừa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-464",
+    "hanzi": "找到",
+    "pinyin": "zhǎodào",
+    "meaning_vi": "tìm thấy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-465",
+    "hanzi": "这",
+    "pinyin": "zhè",
+    "meaning_vi": "đây, này",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-466",
+    "hanzi": "这儿",
+    "pinyin": "zhèr",
+    "meaning_vi": "ở đây, chỗ này",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-467",
+    "hanzi": "着",
+    "pinyin": "zhe",
+    "meaning_vi": "(trợ từ tiếp diễn)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-468",
+    "hanzi": "真",
+    "pinyin": "zhēn",
+    "meaning_vi": "thật, quả là",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-469",
+    "hanzi": "真的",
+    "pinyin": "zhēnde",
+    "meaning_vi": "thật sự",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-470",
+    "hanzi": "正在",
+    "pinyin": "zhèngzài",
+    "meaning_vi": "đang",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-471",
+    "hanzi": "知道",
+    "pinyin": "zhīdào",
+    "meaning_vi": "biết",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-472",
+    "hanzi": "知识",
+    "pinyin": "zhīshi",
+    "meaning_vi": "kiến thức",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-473",
+    "hanzi": "中",
+    "pinyin": "zhōng",
+    "meaning_vi": "giữa, trung",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-474",
+    "hanzi": "中国",
+    "pinyin": "Zhōngguó",
+    "meaning_vi": "Trung Quốc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-475",
+    "hanzi": "中间",
+    "pinyin": "zhōngjiān",
+    "meaning_vi": "ở giữa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-476",
+    "hanzi": "中文",
+    "pinyin": "Zhōngwén",
+    "meaning_vi": "tiếng Trung",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-477",
+    "hanzi": "中午",
+    "pinyin": "zhōngwǔ",
+    "meaning_vi": "buổi trưa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-478",
+    "hanzi": "中学",
+    "pinyin": "zhōngxué",
+    "meaning_vi": "trường trung học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-479",
+    "hanzi": "中学生",
+    "pinyin": "zhōngxuéshēng",
+    "meaning_vi": "học sinh trung học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-480",
+    "hanzi": "重",
+    "pinyin": "zhòng",
+    "meaning_vi": "nặng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-481",
+    "hanzi": "重要",
+    "pinyin": "zhòngyào",
+    "meaning_vi": "quan trọng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-482",
+    "hanzi": "坐",
+    "pinyin": "zuò",
+    "meaning_vi": "ngồi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-483",
+    "hanzi": "坐下",
+    "pinyin": "zuò xià",
+    "meaning_vi": "ngồi xuống",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-484",
+    "hanzi": "做",
+    "pinyin": "zuò",
+    "meaning_vi": "làm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-485",
+    "hanzi": "出租车",
+    "pinyin": "chūzū chē",
+    "meaning_vi": "xe taxi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-486",
+    "hanzi": "饭馆",
+    "pinyin": "fànguǎn",
+    "meaning_vi": "nhà hàng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-487",
+    "hanzi": "分钟",
+    "pinyin": "fēnzhōng",
+    "meaning_vi": "phút",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-488",
+    "hanzi": "狗",
+    "pinyin": "gǒu",
+    "meaning_vi": "con chó",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-489",
+    "hanzi": "后面",
+    "pinyin": "hòumiàn",
+    "meaning_vi": "phía sau",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-490",
+    "hanzi": "火车站",
+    "pinyin": "huǒchē zhàn",
+    "meaning_vi": "trạm xe lửa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-491",
+    "hanzi": "猫",
+    "pinyin": "māo",
+    "meaning_vi": "mèo",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-492",
+    "hanzi": "漂亮",
+    "pinyin": "piàoliang",
+    "meaning_vi": "xinh đẹp",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-493",
+    "hanzi": "苹果",
+    "pinyin": "píngguǒ",
+    "meaning_vi": "quả táo",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-494",
+    "hanzi": "前面",
+    "pinyin": "qiánmiàn",
+    "meaning_vi": "phía trước",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk1-495",
+    "hanzi": "椅子",
+    "pinyin": "yǐzi",
+    "meaning_vi": "ghế",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK1"
+  },
+  {
+    "id": "hsk2-001",
+    "hanzi": "打算",
+    "pinyin": "dǎsuàn",
+    "meaning_vi": "Dự định, kế hoạch",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-002",
+    "hanzi": "参加",
+    "pinyin": "cānjiā",
+    "meaning_vi": "Tham gia, tham dự",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-003",
+    "hanzi": "参观",
+    "pinyin": "cānguān",
+    "meaning_vi": "Tham quan",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-004",
+    "hanzi": "活动",
+    "pinyin": "huódòng",
+    "meaning_vi": "Hoạt động, sự kiện",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-005",
+    "hanzi": "公园",
+    "pinyin": "gōngyuán",
+    "meaning_vi": "Công viên",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-006",
+    "hanzi": "动物园",
+    "pinyin": "dòngwùyuán",
+    "meaning_vi": "Sở thú",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-007",
+    "hanzi": "出发",
+    "pinyin": "chūfā",
+    "meaning_vi": "Xuất phát, khởi hành",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-008",
+    "hanzi": "出门",
+    "pinyin": "chūmén",
+    "meaning_vi": "Ra ngoài, ra khỏi nhà",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-009",
+    "hanzi": "出租车",
+    "pinyin": "chūzūchē",
+    "meaning_vi": "Xe taxi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-010",
+    "hanzi": "地铁",
+    "pinyin": "dìtiě",
+    "meaning_vi": "Tàu điện ngầm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-011",
+    "hanzi": "地铁站",
+    "pinyin": "dìtiězhàn",
+    "meaning_vi": "Trạm / Ga tàu điện ngầm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-012",
+    "hanzi": "分钟",
+    "pinyin": "fēnzhōng",
+    "meaning_vi": "Phút",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-013",
+    "hanzi": "方便",
+    "pinyin": "fāngbiàn",
+    "meaning_vi": "Thuận tiện, tiện lợi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-014",
+    "hanzi": "刚才",
+    "pinyin": "gāngcái",
+    "meaning_vi": "Vừa nãy, ban nãy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-015",
+    "hanzi": "发现",
+    "pinyin": "fāxiàn",
+    "meaning_vi": "Phát hiện, nhận ra",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-016",
+    "hanzi": "复习",
+    "pinyin": "fùxí",
+    "meaning_vi": "Ôn tập",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-017",
+    "hanzi": "因为",
+    "pinyin": "yīnwèi",
+    "meaning_vi": "Bởi vì, vì",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-018",
+    "hanzi": "所以",
+    "pinyin": "suǒyǐ",
+    "meaning_vi": "Cho nên, vì vậy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-019",
+    "hanzi": "但是",
+    "pinyin": "dànshì",
+    "meaning_vi": "Nhưng, nhưng mà",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-020",
+    "hanzi": "应该",
+    "pinyin": "yīnggāi",
+    "meaning_vi": "Nên, cần phải",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-021",
+    "hanzi": "白色",
+    "pinyin": "báisè",
+    "meaning_vi": "màu trắng, trắng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-022",
+    "hanzi": "黑色",
+    "pinyin": "hēisè",
+    "meaning_vi": "Màu đen",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-023",
+    "hanzi": "红色",
+    "pinyin": "hóngsè",
+    "meaning_vi": "màu đỏ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-024",
+    "hanzi": "黄色",
+    "pinyin": "huángsè",
+    "meaning_vi": "màu vàng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-025",
+    "hanzi": "蓝色",
+    "pinyin": "lánsè",
+    "meaning_vi": "Màu xanh dương",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-026",
+    "hanzi": "绿色",
+    "pinyin": "lǜsè",
+    "meaning_vi": "Xanh, thân thiện với môi trường",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-027",
+    "hanzi": "颜色",
+    "pinyin": "yánsè",
+    "meaning_vi": "màu sắc, màu",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-028",
+    "hanzi": "礼物",
+    "pinyin": "lǐwù",
+    "meaning_vi": "quà tặng, món quà, quà biếu",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-029",
+    "hanzi": "漂亮",
+    "pinyin": "piàoliang",
+    "meaning_vi": "xinh đẹp, đẹp (người, quần áo, phong cảnh...); đẹp, hay, xuất sắc (hành động)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-030",
+    "hanzi": "可爱",
+    "pinyin": "kě'ài",
+    "meaning_vi": "đáng yêu, dễ thương, khả ái",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-031",
+    "hanzi": "便宜",
+    "pinyin": "piányi",
+    "meaning_vi": "rẻ, giá rẻ; món hời, lợi lộc / tha cho ai đó",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-032",
+    "hanzi": "件",
+    "pinyin": "jiàn",
+    "meaning_vi": "chiếc, cái, món (lượng từ cho quần áo, quà tặng, sự việc)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-033",
+    "hanzi": "大衣",
+    "pinyin": "dàyī",
+    "meaning_vi": "áo khoác (loại to, dài, dày), áo măng tô, áo khoác ngoài",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-034",
+    "hanzi": "鞋",
+    "pinyin": "xié",
+    "meaning_vi": "giày, giầy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-035",
+    "hanzi": "球鞋",
+    "pinyin": "qiúxié",
+    "meaning_vi": "giày thể thao",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-036",
+    "hanzi": "送给",
+    "pinyin": "sònggěi",
+    "meaning_vi": "tặng cho",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-037",
+    "hanzi": "换",
+    "pinyin": "huàn",
+    "meaning_vi": "thay, đổi (quần áo, phương tiện, công việc, địa điểm...); đổi tiền (ngoại tệ)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-038",
+    "hanzi": "花",
+    "pinyin": "huā",
+    "meaning_vi": "hoa, bông hoa; tiêu (tiền), tốn (thời gian, công sức); hoa (mắt), sặc sỡ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-039",
+    "hanzi": "画儿",
+    "pinyin": "huàr",
+    "meaning_vi": "bức tranh, tranh (cách nói uốn lưỡi)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-040",
+    "hanzi": "笔",
+    "pinyin": "bǐ",
+    "meaning_vi": "bút (nói chung); khoản (tiền), món (nợ) / nét (chữ Hán)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-041",
+    "hanzi": "笔记",
+    "pinyin": "bǐjì",
+    "meaning_vi": "ghi chép, vở ghi, ghi chú",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-042",
+    "hanzi": "笔记本",
+    "pinyin": "bǐjìběn",
+    "meaning_vi": "vở, sổ tay",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-043",
+    "hanzi": "词典",
+    "pinyin": "cídiǎn",
+    "meaning_vi": "từ điển",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-044",
+    "hanzi": "超市",
+    "pinyin": "chāoshì",
+    "meaning_vi": "siêu thị",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-045",
+    "hanzi": "店",
+    "pinyin": "diàn",
+    "meaning_vi": "cửa hàng, tiệm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-046",
+    "hanzi": "背",
+    "pinyin": "bèi / bēi",
+    "meaning_vi": "Lưng, phía sau; học thuộc lòng / Cõng, đeo trên lưng, vác",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-047",
+    "hanzi": "不错",
+    "pinyin": "búcuò",
+    "meaning_vi": "Tốt, khá, không tồi; đúng, chính xác",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-048",
+    "hanzi": "成绩",
+    "pinyin": "chéngjì",
+    "meaning_vi": "Thành tích, kết quả, điểm số",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-049",
+    "hanzi": "词",
+    "pinyin": "cí",
+    "meaning_vi": "Từ, từ ngữ; lời bài hát, lời văn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-050",
+    "hanzi": "词语",
+    "pinyin": "cíyǔ",
+    "meaning_vi": "Từ ngữ, từ vựng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-051",
+    "hanzi": "答应",
+    "pinyin": "dāying",
+    "meaning_vi": "Đồng ý, bằng lòng, hứa; thưa, trả lời, lên tiếng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-052",
+    "hanzi": "打印",
+    "pinyin": "dǎyìn",
+    "meaning_vi": "In, in ấn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-053",
+    "hanzi": "点头",
+    "pinyin": "diǎntóu",
+    "meaning_vi": "Gật đầu",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-054",
+    "hanzi": "懂",
+    "pinyin": "dǒng",
+    "meaning_vi": "Hiểu, biết, thấu hiểu",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-055",
+    "hanzi": "读音",
+    "pinyin": "dúyīn",
+    "meaning_vi": "Cách đọc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-056",
+    "hanzi": "对话",
+    "pinyin": "duìhuà",
+    "meaning_vi": "Cuộc đối thoại, bài hội thoại; đối thoại, trò chuyện",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-057",
+    "hanzi": "分数",
+    "pinyin": "fēnshù",
+    "meaning_vi": "Điểm số, phân số",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-058",
+    "hanzi": "黑板",
+    "pinyin": "hēibǎn",
+    "meaning_vi": "Cái bảng đen (dùng phấn để viết trong lớp học)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-059",
+    "hanzi": "检查",
+    "pinyin": "jiǎnchá",
+    "meaning_vi": "Kiểm tra, khám (bệnh), xem xét, soát; sự kiểm tra, bản kiểm điểm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-060",
+    "hanzi": "讲",
+    "pinyin": "jiǎng",
+    "meaning_vi": "Nói, kể, giảng, giải thích; mặc cả, thương lượng; chú trọng, coi trọng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-061",
+    "hanzi": "讲话",
+    "pinyin": "jiǎnghuà",
+    "meaning_vi": "Nói chuyện, nói; bài phát biểu, lời huấn thị",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-062",
+    "hanzi": "教师",
+    "pinyin": "jiàoshī",
+    "meaning_vi": "Giáo viên, nhà giáo (chỉ nghề nghiệp, trang trọng)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-063",
+    "hanzi": "教室",
+    "pinyin": "jiàoshì",
+    "meaning_vi": "Lớp học, phòng học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-064",
+    "hanzi": "句",
+    "pinyin": "jù",
+    "meaning_vi": "Câu (lượng từ cho lời nói, thơ, văn), câu văn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-065",
+    "hanzi": "句子",
+    "pinyin": "jùzi",
+    "meaning_vi": "Câu, câu văn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-066",
+    "hanzi": "课堂",
+    "pinyin": "kètáng",
+    "meaning_vi": "Lớp học, giờ học (không gian/hoạt động dạy và học)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-067",
+    "hanzi": "练",
+    "pinyin": "liàn",
+    "meaning_vi": "Luyện, tập, rèn luyện",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-068",
+    "hanzi": "练习",
+    "pinyin": "liànxí",
+    "meaning_vi": "Luyện tập, tập luyện; bài tập",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-069",
+    "hanzi": "生词",
+    "pinyin": "shēngcí",
+    "meaning_vi": "Từ mới (từ vựng chưa học hoặc chưa biết)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-070",
+    "hanzi": "听讲",
+    "pinyin": "tīngjiǎng",
+    "meaning_vi": "Nghe giảng, nghe thầy cô giáo giảng bài",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-071",
+    "hanzi": "问题",
+    "pinyin": "wèntí",
+    "meaning_vi": "Câu hỏi (cần được giải đáp); vấn đề, rắc rối, sự cố",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-072",
+    "hanzi": "安静",
+    "pinyin": "ānjìng",
+    "meaning_vi": "Yên tĩnh, im lặng / Làm cho yên lặng, trấn tĩnh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-073",
+    "hanzi": "安全",
+    "pinyin": "ānquán",
+    "meaning_vi": "An toàn / Sự an toàn, an ninh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-074",
+    "hanzi": "草地",
+    "pinyin": "cǎodì",
+    "meaning_vi": "Đồng cỏ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-075",
+    "hanzi": "船",
+    "pinyin": "chuán",
+    "meaning_vi": "Thuyền, tàu thủy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-076",
+    "hanzi": "春天",
+    "pinyin": "chūntiān",
+    "meaning_vi": "Mùa xuân, ngày xuân",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-077",
+    "hanzi": "冬天",
+    "pinyin": "dōngtiān",
+    "meaning_vi": "Mùa đông",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-078",
+    "hanzi": "动物",
+    "pinyin": "dòngwù",
+    "meaning_vi": "Động vật, con vật, thú vật",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-079",
+    "hanzi": "道路",
+    "pinyin": "dàolù",
+    "meaning_vi": "Con đường, đường sá, lối đi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-080",
+    "hanzi": "方向",
+    "pinyin": "fāngxiàng",
+    "meaning_vi": "Phương hướng, hướng đi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-081",
+    "hanzi": "公交车",
+    "pinyin": "gōngjiāochē",
+    "meaning_vi": "Xe buýt",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-082",
+    "hanzi": "公里",
+    "pinyin": "gōnglǐ",
+    "meaning_vi": "Ki-lô-mét, cây số",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-083",
+    "hanzi": "公路",
+    "pinyin": "gōnglù",
+    "meaning_vi": "Đường bộ, quốc lộ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-084",
+    "hanzi": "广场",
+    "pinyin": "guǎngchǎng",
+    "meaning_vi": "Quảng trường, sân rộng / Trung tâm thương mại",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-085",
+    "hanzi": "过来",
+    "pinyin": "guòlái",
+    "meaning_vi": "Qua đây, lại đây / Tỉnh lại",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-086",
+    "hanzi": "过去",
+    "pinyin": "guòqù",
+    "meaning_vi": "Quá khứ, trước đây / Đi qua, trôi qua",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-087",
+    "hanzi": "海边",
+    "pinyin": "hǎibiān",
+    "meaning_vi": "Bờ biển, bãi biển",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-088",
+    "hanzi": "河",
+    "pinyin": "hé",
+    "meaning_vi": "Sông, dòng sông",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-089",
+    "hanzi": "湖",
+    "pinyin": "hú",
+    "meaning_vi": "Hồ nước",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-090",
+    "hanzi": "花园",
+    "pinyin": "huāyuán",
+    "meaning_vi": "Vườn hoa, khu vườn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-091",
+    "hanzi": "欢迎",
+    "pinyin": "huānyíng",
+    "meaning_vi": "Hoan nghênh, chào mừng / Được yêu thích",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-092",
+    "hanzi": "开心",
+    "pinyin": "kāixīn",
+    "meaning_vi": "Vui vẻ, phấn khởi / Trêu chọc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-093",
+    "hanzi": "快乐",
+    "pinyin": "kuàilè",
+    "meaning_vi": "Vui vẻ, hạnh phúc",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-094",
+    "hanzi": "旅行",
+    "pinyin": "lǚxíng",
+    "meaning_vi": "Đi du lịch, chuyến du lịch",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-095",
+    "hanzi": "照片",
+    "pinyin": "zhàopiàn",
+    "meaning_vi": "Bức ảnh, tấm hình, hình chụp",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-096",
+    "hanzi": "鸟",
+    "pinyin": "niǎo",
+    "meaning_vi": "Con chim, loài chim",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-097",
+    "hanzi": "狗",
+    "pinyin": "gǒu",
+    "meaning_vi": "Con chó",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-098",
+    "hanzi": "猫",
+    "pinyin": "māo",
+    "meaning_vi": "Con mèo",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-099",
+    "hanzi": "帮助",
+    "pinyin": "bāngzhù",
+    "meaning_vi": "Giúp đỡ, hỗ trợ; sự giúp đỡ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-100",
+    "hanzi": "饱",
+    "pinyin": "bǎo",
+    "meaning_vi": "No, no nê; đã mắt, mãn nhãn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-101",
+    "hanzi": "办法",
+    "pinyin": "bànfǎ",
+    "meaning_vi": "Biện pháp, cách, giải pháp",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-102",
+    "hanzi": "比如",
+    "pinyin": "bǐrú",
+    "meaning_vi": "Ví dụ, chẳng hạn, tỷ như",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-103",
+    "hanzi": "碗",
+    "pinyin": "wǎn",
+    "meaning_vi": "Cái bát, cái chén; bát/chén (lượng từ)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-104",
+    "hanzi": "菜单",
+    "pinyin": "càidān",
+    "meaning_vi": "Thực đơn, menu",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-105",
+    "hanzi": "蛋",
+    "pinyin": "dàn",
+    "meaning_vi": "Trứng; kẻ/tên (mắng người)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-106",
+    "hanzi": "饭馆",
+    "pinyin": "fànguǎn",
+    "meaning_vi": "Quán ăn, nhà hàng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-107",
+    "hanzi": "方便面",
+    "pinyin": "fāngbiànmiàn",
+    "meaning_vi": "Mì ăn liền",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-108",
+    "hanzi": "服务",
+    "pinyin": "fúwù",
+    "meaning_vi": "Dịch vụ, phục vụ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-109",
+    "hanzi": "感到",
+    "pinyin": "gǎndào",
+    "meaning_vi": "Cảm thấy, thấy",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-110",
+    "hanzi": "感觉",
+    "pinyin": "gǎnjué",
+    "meaning_vi": "Cảm thấy; cảm giác, cảm nhận",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-111",
+    "hanzi": "感谢",
+    "pinyin": "gǎnxiè",
+    "meaning_vi": "Cảm ơn, biết ơn, cảm kích",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-112",
+    "hanzi": "干杯",
+    "pinyin": "gānbēi",
+    "meaning_vi": "Cạn ly, dô, nâng ly, uống cạn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-113",
+    "hanzi": "顾客",
+    "pinyin": "gùkè",
+    "meaning_vi": "Khách hàng, khách mua hàng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-114",
+    "hanzi": "鸡",
+    "pinyin": "jī",
+    "meaning_vi": "Con gà; thịt gà",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-115",
+    "hanzi": "或者",
+    "pinyin": "huòzhě",
+    "meaning_vi": "Hoặc, hoặc là",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-116",
+    "hanzi": "饺子",
+    "pinyin": "jiǎozi",
+    "meaning_vi": "Sủi cảo, bánh chẻo",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-117",
+    "hanzi": "酒",
+    "pinyin": "jiǔ",
+    "meaning_vi": "Rượu, đồ uống có cồn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-118",
+    "hanzi": "可以",
+    "pinyin": "kěyǐ",
+    "meaning_vi": "Có thể, được; tạm được, khá",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-119",
+    "hanzi": "快餐",
+    "pinyin": "kuàicān",
+    "meaning_vi": "Đồ ăn nhanh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-120",
+    "hanzi": "筷子",
+    "pinyin": "kuàizi",
+    "meaning_vi": "Đũa, đôi đũa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-121",
+    "hanzi": "面",
+    "pinyin": "miàn",
+    "meaning_vi": "Mặt, bề mặt, thể diện; mì, bột mì; tấm, bức (lượng từ)",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-122",
+    "hanzi": "满意",
+    "pinyin": "mǎnyì",
+    "meaning_vi": "Hài lòng, vừa ý, thỏa mãn",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-123",
+    "hanzi": "热情",
+    "pinyin": "rèqíng",
+    "meaning_vi": "Nhiệt tình, niềm nở; lòng nhiệt tình",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-124",
+    "hanzi": "如果",
+    "pinyin": "rúguǒ",
+    "meaning_vi": "Nếu, nếu như, giả dụ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-125",
+    "hanzi": "舒服",
+    "pinyin": "shūfu",
+    "meaning_vi": "Thoải mái, dễ chịu, khỏe",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-126",
+    "hanzi": "特别",
+    "pinyin": "tèbié",
+    "meaning_vi": "Đặc biệt, khác biệt; vô cùng, rất",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-127",
+    "hanzi": "味道",
+    "pinyin": "wèidao",
+    "meaning_vi": "Vị, mùi vị",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-128",
+    "hanzi": "为什么",
+    "pinyin": "wèishénme",
+    "meaning_vi": "Tại sao, vì sao",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-129",
+    "hanzi": "只要",
+    "pinyin": "zhǐyào",
+    "meaning_vi": "Chỉ cần, miễn là",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-130",
+    "hanzi": "健康",
+    "pinyin": "jiànkāng",
+    "meaning_vi": "Sức khỏe, khỏe mạnh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-131",
+    "hanzi": "习惯",
+    "pinyin": "xíguàn",
+    "meaning_vi": "Thói quen, quen với",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-132",
+    "hanzi": "生活",
+    "pinyin": "shēnghuó",
+    "meaning_vi": "Cuộc sống, sinh hoạt, sống",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-133",
+    "hanzi": "早晨",
+    "pinyin": "zǎochen",
+    "meaning_vi": "Sáng sớm, buổi sáng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-134",
+    "hanzi": "早餐",
+    "pinyin": "zǎocān",
+    "meaning_vi": "Bữa sáng",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-135",
+    "hanzi": "午餐",
+    "pinyin": "wǔcān",
+    "meaning_vi": "Bữa trưa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-136",
+    "hanzi": "晚餐",
+    "pinyin": "wǎncān",
+    "meaning_vi": "Bữa tối",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-137",
+    "hanzi": "洗澡",
+    "pinyin": "xǐzǎo",
+    "meaning_vi": "Tắm, tắm rửa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-138",
+    "hanzi": "洗衣机",
+    "pinyin": "xǐyījī",
+    "meaning_vi": "Máy giặt",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-139",
+    "hanzi": "校园",
+    "pinyin": "xiàoyuán",
+    "meaning_vi": "Khuôn viên trường",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-140",
+    "hanzi": "学期",
+    "pinyin": "xuéqī",
+    "meaning_vi": "Học kỳ, kỳ học",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-141",
+    "hanzi": "假期",
+    "pinyin": "jiàqī",
+    "meaning_vi": "Kỳ nghỉ, ngày nghỉ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-142",
+    "hanzi": "留学生",
+    "pinyin": "liúxuéshēng",
+    "meaning_vi": "Du học sinh, lưu học sinh",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-143",
+    "hanzi": "运动",
+    "pinyin": "yùndòng",
+    "meaning_vi": "Vận động, tập thể dục; thể thao",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-144",
+    "hanzi": "太阳",
+    "pinyin": "tàiyáng",
+    "meaning_vi": "Mặt trời, ánh nắng mặt trời",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-145",
+    "hanzi": "温度",
+    "pinyin": "wēndù",
+    "meaning_vi": "Nhiệt độ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-146",
+    "hanzi": "夏天",
+    "pinyin": "xiàtiān",
+    "meaning_vi": "Mùa hè, mùa hạ",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-147",
+    "hanzi": "下雪",
+    "pinyin": "xiàxuě",
+    "meaning_vi": "Tuyết rơi, đổ tuyết",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-148",
+    "hanzi": "雪",
+    "pinyin": "xuě",
+    "meaning_vi": "Tuyết",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-149",
+    "hanzi": "阴天",
+    "pinyin": "yīntiān",
+    "meaning_vi": "Trời âm u",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-150",
+    "hanzi": "多云",
+    "pinyin": "duōyún",
+    "meaning_vi": "Nhiều mây",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-151",
+    "hanzi": "云",
+    "pinyin": "yún",
+    "meaning_vi": "Mây, đám mây",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-152",
+    "hanzi": "空气",
+    "pinyin": "kōngqì",
+    "meaning_vi": "Không khí, bầu không khí",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-153",
+    "hanzi": "早就",
+    "pinyin": "zǎojiù",
+    "meaning_vi": "Đã sớm, từ lâu rồi",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-154",
+    "hanzi": "夜里",
+    "pinyin": "yèlǐ",
+    "meaning_vi": "Vào ban đêm",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  },
+  {
+    "id": "hsk2-155",
+    "hanzi": "午睡",
+    "pinyin": "wǔshuì",
+    "meaning_vi": "Ngủ trưa, giấc ngủ trưa",
+    "example_zh": "",
+    "example_vi": "",
+    "topic": "HSK2"
+  }
+];
+
+const SENTENCES = [
+  {
+    "id": "s001",
+    "zh": "我吃饭。",
+    "pinyin": "wǒ chī fàn.",
+    "vi": "Tôi ăn cơm."
+  },
+  {
+    "id": "s002",
+    "zh": "我吃菜。",
+    "pinyin": "wǒ chī cài.",
+    "vi": "Tôi ăn món ăn."
+  },
+  {
+    "id": "s003",
+    "zh": "我吃苹果。",
+    "pinyin": "wǒ chī píngguǒ.",
+    "vi": "Tôi ăn táo."
+  },
+  {
+    "id": "s004",
+    "zh": "我吃东西。",
+    "pinyin": "wǒ chī dōngxi.",
+    "vi": "Tôi ăn đồ."
+  },
+  {
+    "id": "s005",
+    "zh": "我吃水果。",
+    "pinyin": "wǒ chī shuǐguǒ.",
+    "vi": "Tôi ăn trái cây."
+  },
+  {
+    "id": "s006",
+    "zh": "我买饭。",
+    "pinyin": "wǒ mǎi fàn.",
+    "vi": "Tôi mua cơm."
+  },
+  {
+    "id": "s007",
+    "zh": "我买菜。",
+    "pinyin": "wǒ mǎi cài.",
+    "vi": "Tôi mua món ăn."
+  },
+  {
+    "id": "s008",
+    "zh": "我买苹果。",
+    "pinyin": "wǒ mǎi píngguǒ.",
+    "vi": "Tôi mua táo."
+  },
+  {
+    "id": "s009",
+    "zh": "我买东西。",
+    "pinyin": "wǒ mǎi dōngxi.",
+    "vi": "Tôi mua đồ."
+  },
+  {
+    "id": "s010",
+    "zh": "我买水果。",
+    "pinyin": "wǒ mǎi shuǐguǒ.",
+    "vi": "Tôi mua trái cây."
+  },
+  {
+    "id": "s011",
+    "zh": "我做饭。",
+    "pinyin": "wǒ zuò fàn.",
+    "vi": "Tôi làm cơm."
+  },
+  {
+    "id": "s012",
+    "zh": "我做菜。",
+    "pinyin": "wǒ zuò cài.",
+    "vi": "Tôi làm món ăn."
+  },
+  {
+    "id": "s013",
+    "zh": "我做苹果。",
+    "pinyin": "wǒ zuò píngguǒ.",
+    "vi": "Tôi làm táo."
+  },
+  {
+    "id": "s014",
+    "zh": "我做东西。",
+    "pinyin": "wǒ zuò dōngxi.",
+    "vi": "Tôi làm đồ."
+  },
+  {
+    "id": "s015",
+    "zh": "我做水果。",
+    "pinyin": "wǒ zuò shuǐguǒ.",
+    "vi": "Tôi làm trái cây."
+  },
+  {
+    "id": "s016",
+    "zh": "我喝水。",
+    "pinyin": "wǒ hē shuǐ.",
+    "vi": "Tôi uống nước."
+  },
+  {
+    "id": "s017",
+    "zh": "我喝茶。",
+    "pinyin": "wǒ hē chá.",
+    "vi": "Tôi uống trà."
+  },
+  {
+    "id": "s018",
+    "zh": "我喝牛奶。",
+    "pinyin": "wǒ hē niúnǎi.",
+    "vi": "Tôi uống sữa bò."
+  },
+  {
+    "id": "s019",
+    "zh": "我去中国。",
+    "pinyin": "wǒ qù Zhōngguó.",
+    "vi": "Tôi đi trung quốc."
+  },
+  {
+    "id": "s020",
+    "zh": "我去北京。",
+    "pinyin": "wǒ qù Běijīng.",
+    "vi": "Tôi đi bắc kinh."
+  },
+  {
+    "id": "s021",
+    "zh": "我去商店。",
+    "pinyin": "wǒ qù shāngdiàn.",
+    "vi": "Tôi đi cửa hàng."
+  },
+  {
+    "id": "s022",
+    "zh": "我去医院。",
+    "pinyin": "wǒ qù yīyuàn.",
+    "vi": "Tôi đi bệnh viện."
+  },
+  {
+    "id": "s023",
+    "zh": "我去学校。",
+    "pinyin": "wǒ qù xuéxiào.",
+    "vi": "Tôi đi trường học."
+  },
+  {
+    "id": "s024",
+    "zh": "我去饭店。",
+    "pinyin": "wǒ qù fàndiàn.",
+    "vi": "Tôi đi nhà hàng."
+  },
+  {
+    "id": "s025",
+    "zh": "我喜欢中国。",
+    "pinyin": "wǒ xǐhuan Zhōngguó.",
+    "vi": "Tôi thích trung quốc."
+  },
+  {
+    "id": "s026",
+    "zh": "我喜欢北京。",
+    "pinyin": "wǒ xǐhuan Běijīng.",
+    "vi": "Tôi thích bắc kinh."
+  },
+  {
+    "id": "s027",
+    "zh": "我喜欢商店。",
+    "pinyin": "wǒ xǐhuan shāngdiàn.",
+    "vi": "Tôi thích cửa hàng."
+  },
+  {
+    "id": "s028",
+    "zh": "我喜欢医院。",
+    "pinyin": "wǒ xǐhuan yīyuàn.",
+    "vi": "Tôi thích bệnh viện."
+  },
+  {
+    "id": "s029",
+    "zh": "我喜欢学校。",
+    "pinyin": "wǒ xǐhuan xuéxiào.",
+    "vi": "Tôi thích trường học."
+  },
+  {
+    "id": "s030",
+    "zh": "我喜欢饭店。",
+    "pinyin": "wǒ xǐhuan fàndiàn.",
+    "vi": "Tôi thích nhà hàng."
+  },
+  {
+    "id": "s031",
+    "zh": "我看书。",
+    "pinyin": "wǒ kàn shū.",
+    "vi": "Tôi xem sách."
+  },
+  {
+    "id": "s032",
+    "zh": "我看电影。",
+    "pinyin": "wǒ kàn diànyǐng.",
+    "vi": "Tôi xem phim."
+  },
+  {
+    "id": "s033",
+    "zh": "我看电视。",
+    "pinyin": "wǒ kàn diànshì.",
+    "vi": "Tôi xem tv."
+  },
+  {
+    "id": "s034",
+    "zh": "我喜欢书。",
+    "pinyin": "wǒ xǐhuan shū.",
+    "vi": "Tôi thích sách."
+  },
+  {
+    "id": "s035",
+    "zh": "我喜欢电影。",
+    "pinyin": "wǒ xǐhuan diànyǐng.",
+    "vi": "Tôi thích phim."
+  },
+  {
+    "id": "s036",
+    "zh": "我喜欢电视。",
+    "pinyin": "wǒ xǐhuan diànshì.",
+    "vi": "Tôi thích tv."
+  },
+  {
+    "id": "s037",
+    "zh": "你吃饭。",
+    "pinyin": "nǐ chī fàn.",
+    "vi": "Bạn ăn cơm."
+  },
+  {
+    "id": "s038",
+    "zh": "你吃菜。",
+    "pinyin": "nǐ chī cài.",
+    "vi": "Bạn ăn món ăn."
+  },
+  {
+    "id": "s039",
+    "zh": "你吃苹果。",
+    "pinyin": "nǐ chī píngguǒ.",
+    "vi": "Bạn ăn táo."
+  },
+  {
+    "id": "s040",
+    "zh": "你吃东西。",
+    "pinyin": "nǐ chī dōngxi.",
+    "vi": "Bạn ăn đồ."
+  },
+  {
+    "id": "s041",
+    "zh": "你吃水果。",
+    "pinyin": "nǐ chī shuǐguǒ.",
+    "vi": "Bạn ăn trái cây."
+  },
+  {
+    "id": "s042",
+    "zh": "你买饭。",
+    "pinyin": "nǐ mǎi fàn.",
+    "vi": "Bạn mua cơm."
+  },
+  {
+    "id": "s043",
+    "zh": "你买菜。",
+    "pinyin": "nǐ mǎi cài.",
+    "vi": "Bạn mua món ăn."
+  },
+  {
+    "id": "s044",
+    "zh": "你买苹果。",
+    "pinyin": "nǐ mǎi píngguǒ.",
+    "vi": "Bạn mua táo."
+  },
+  {
+    "id": "s045",
+    "zh": "你买东西。",
+    "pinyin": "nǐ mǎi dōngxi.",
+    "vi": "Bạn mua đồ."
+  },
+  {
+    "id": "s046",
+    "zh": "你买水果。",
+    "pinyin": "nǐ mǎi shuǐguǒ.",
+    "vi": "Bạn mua trái cây."
+  },
+  {
+    "id": "s047",
+    "zh": "你做饭。",
+    "pinyin": "nǐ zuò fàn.",
+    "vi": "Bạn làm cơm."
+  },
+  {
+    "id": "s048",
+    "zh": "你做菜。",
+    "pinyin": "nǐ zuò cài.",
+    "vi": "Bạn làm món ăn."
+  },
+  {
+    "id": "s049",
+    "zh": "你做苹果。",
+    "pinyin": "nǐ zuò píngguǒ.",
+    "vi": "Bạn làm táo."
+  },
+  {
+    "id": "s050",
+    "zh": "你做东西。",
+    "pinyin": "nǐ zuò dōngxi.",
+    "vi": "Bạn làm đồ."
+  },
+  {
+    "id": "s051",
+    "zh": "你做水果。",
+    "pinyin": "nǐ zuò shuǐguǒ.",
+    "vi": "Bạn làm trái cây."
+  },
+  {
+    "id": "s052",
+    "zh": "你喝水。",
+    "pinyin": "nǐ hē shuǐ.",
+    "vi": "Bạn uống nước."
+  },
+  {
+    "id": "s053",
+    "zh": "你喝茶。",
+    "pinyin": "nǐ hē chá.",
+    "vi": "Bạn uống trà."
+  },
+  {
+    "id": "s054",
+    "zh": "你喝牛奶。",
+    "pinyin": "nǐ hē niúnǎi.",
+    "vi": "Bạn uống sữa bò."
+  },
+  {
+    "id": "s055",
+    "zh": "你去中国。",
+    "pinyin": "nǐ qù Zhōngguó.",
+    "vi": "Bạn đi trung quốc."
+  },
+  {
+    "id": "s056",
+    "zh": "你去北京。",
+    "pinyin": "nǐ qù Běijīng.",
+    "vi": "Bạn đi bắc kinh."
+  },
+  {
+    "id": "s057",
+    "zh": "你去商店。",
+    "pinyin": "nǐ qù shāngdiàn.",
+    "vi": "Bạn đi cửa hàng."
+  },
+  {
+    "id": "s058",
+    "zh": "你去医院。",
+    "pinyin": "nǐ qù yīyuàn.",
+    "vi": "Bạn đi bệnh viện."
+  },
+  {
+    "id": "s059",
+    "zh": "你去学校。",
+    "pinyin": "nǐ qù xuéxiào.",
+    "vi": "Bạn đi trường học."
+  },
+  {
+    "id": "s060",
+    "zh": "你去饭店。",
+    "pinyin": "nǐ qù fàndiàn.",
+    "vi": "Bạn đi nhà hàng."
+  },
+  {
+    "id": "s061",
+    "zh": "你喜欢中国。",
+    "pinyin": "nǐ xǐhuan Zhōngguó.",
+    "vi": "Bạn thích trung quốc."
+  },
+  {
+    "id": "s062",
+    "zh": "你喜欢北京。",
+    "pinyin": "nǐ xǐhuan Běijīng.",
+    "vi": "Bạn thích bắc kinh."
+  },
+  {
+    "id": "s063",
+    "zh": "你喜欢商店。",
+    "pinyin": "nǐ xǐhuan shāngdiàn.",
+    "vi": "Bạn thích cửa hàng."
+  },
+  {
+    "id": "s064",
+    "zh": "你喜欢医院。",
+    "pinyin": "nǐ xǐhuan yīyuàn.",
+    "vi": "Bạn thích bệnh viện."
+  },
+  {
+    "id": "s065",
+    "zh": "你喜欢学校。",
+    "pinyin": "nǐ xǐhuan xuéxiào.",
+    "vi": "Bạn thích trường học."
+  },
+  {
+    "id": "s066",
+    "zh": "你喜欢饭店。",
+    "pinyin": "nǐ xǐhuan fàndiàn.",
+    "vi": "Bạn thích nhà hàng."
+  },
+  {
+    "id": "s067",
+    "zh": "你看书。",
+    "pinyin": "nǐ kàn shū.",
+    "vi": "Bạn xem sách."
+  },
+  {
+    "id": "s068",
+    "zh": "你看电影。",
+    "pinyin": "nǐ kàn diànyǐng.",
+    "vi": "Bạn xem phim."
+  },
+  {
+    "id": "s069",
+    "zh": "你看电视。",
+    "pinyin": "nǐ kàn diànshì.",
+    "vi": "Bạn xem tv."
+  },
+  {
+    "id": "s070",
+    "zh": "你喜欢书。",
+    "pinyin": "nǐ xǐhuan shū.",
+    "vi": "Bạn thích sách."
+  },
+  {
+    "id": "s071",
+    "zh": "你喜欢电影。",
+    "pinyin": "nǐ xǐhuan diànyǐng.",
+    "vi": "Bạn thích phim."
+  },
+  {
+    "id": "s072",
+    "zh": "你喜欢电视。",
+    "pinyin": "nǐ xǐhuan diànshì.",
+    "vi": "Bạn thích tv."
+  },
+  {
+    "id": "s073",
+    "zh": "他吃饭。",
+    "pinyin": "tā chī fàn.",
+    "vi": "Anh ấy ăn cơm."
+  },
+  {
+    "id": "s074",
+    "zh": "他吃菜。",
+    "pinyin": "tā chī cài.",
+    "vi": "Anh ấy ăn món ăn."
+  },
+  {
+    "id": "s075",
+    "zh": "他吃苹果。",
+    "pinyin": "tā chī píngguǒ.",
+    "vi": "Anh ấy ăn táo."
+  },
+  {
+    "id": "s076",
+    "zh": "他吃东西。",
+    "pinyin": "tā chī dōngxi.",
+    "vi": "Anh ấy ăn đồ."
+  },
+  {
+    "id": "s077",
+    "zh": "他吃水果。",
+    "pinyin": "tā chī shuǐguǒ.",
+    "vi": "Anh ấy ăn trái cây."
+  },
+  {
+    "id": "s078",
+    "zh": "他买饭。",
+    "pinyin": "tā mǎi fàn.",
+    "vi": "Anh ấy mua cơm."
+  },
+  {
+    "id": "s079",
+    "zh": "他买菜。",
+    "pinyin": "tā mǎi cài.",
+    "vi": "Anh ấy mua món ăn."
+  },
+  {
+    "id": "s080",
+    "zh": "他买苹果。",
+    "pinyin": "tā mǎi píngguǒ.",
+    "vi": "Anh ấy mua táo."
+  },
+  {
+    "id": "s081",
+    "zh": "他买东西。",
+    "pinyin": "tā mǎi dōngxi.",
+    "vi": "Anh ấy mua đồ."
+  },
+  {
+    "id": "s082",
+    "zh": "他买水果。",
+    "pinyin": "tā mǎi shuǐguǒ.",
+    "vi": "Anh ấy mua trái cây."
+  },
+  {
+    "id": "s083",
+    "zh": "他做饭。",
+    "pinyin": "tā zuò fàn.",
+    "vi": "Anh ấy làm cơm."
+  },
+  {
+    "id": "s084",
+    "zh": "他做菜。",
+    "pinyin": "tā zuò cài.",
+    "vi": "Anh ấy làm món ăn."
+  },
+  {
+    "id": "s085",
+    "zh": "他做苹果。",
+    "pinyin": "tā zuò píngguǒ.",
+    "vi": "Anh ấy làm táo."
+  },
+  {
+    "id": "s086",
+    "zh": "他做东西。",
+    "pinyin": "tā zuò dōngxi.",
+    "vi": "Anh ấy làm đồ."
+  },
+  {
+    "id": "s087",
+    "zh": "他做水果。",
+    "pinyin": "tā zuò shuǐguǒ.",
+    "vi": "Anh ấy làm trái cây."
+  },
+  {
+    "id": "s088",
+    "zh": "他喝水。",
+    "pinyin": "tā hē shuǐ.",
+    "vi": "Anh ấy uống nước."
+  },
+  {
+    "id": "s089",
+    "zh": "他喝茶。",
+    "pinyin": "tā hē chá.",
+    "vi": "Anh ấy uống trà."
+  },
+  {
+    "id": "s090",
+    "zh": "他喝牛奶。",
+    "pinyin": "tā hē niúnǎi.",
+    "vi": "Anh ấy uống sữa bò."
+  },
+  {
+    "id": "s091",
+    "zh": "他去中国。",
+    "pinyin": "tā qù Zhōngguó.",
+    "vi": "Anh ấy đi trung quốc."
+  },
+  {
+    "id": "s092",
+    "zh": "他去北京。",
+    "pinyin": "tā qù Běijīng.",
+    "vi": "Anh ấy đi bắc kinh."
+  },
+  {
+    "id": "s093",
+    "zh": "他去商店。",
+    "pinyin": "tā qù shāngdiàn.",
+    "vi": "Anh ấy đi cửa hàng."
+  },
+  {
+    "id": "s094",
+    "zh": "他去医院。",
+    "pinyin": "tā qù yīyuàn.",
+    "vi": "Anh ấy đi bệnh viện."
+  },
+  {
+    "id": "s095",
+    "zh": "他去学校。",
+    "pinyin": "tā qù xuéxiào.",
+    "vi": "Anh ấy đi trường học."
+  },
+  {
+    "id": "s096",
+    "zh": "他去饭店。",
+    "pinyin": "tā qù fàndiàn.",
+    "vi": "Anh ấy đi nhà hàng."
+  },
+  {
+    "id": "s097",
+    "zh": "他喜欢中国。",
+    "pinyin": "tā xǐhuan Zhōngguó.",
+    "vi": "Anh ấy thích trung quốc."
+  },
+  {
+    "id": "s098",
+    "zh": "他喜欢北京。",
+    "pinyin": "tā xǐhuan Běijīng.",
+    "vi": "Anh ấy thích bắc kinh."
+  },
+  {
+    "id": "s099",
+    "zh": "他喜欢商店。",
+    "pinyin": "tā xǐhuan shāngdiàn.",
+    "vi": "Anh ấy thích cửa hàng."
+  },
+  {
+    "id": "s100",
+    "zh": "他喜欢医院。",
+    "pinyin": "tā xǐhuan yīyuàn.",
+    "vi": "Anh ấy thích bệnh viện."
+  },
+  {
+    "id": "s101",
+    "zh": "他喜欢学校。",
+    "pinyin": "tā xǐhuan xuéxiào.",
+    "vi": "Anh ấy thích trường học."
+  },
+  {
+    "id": "s102",
+    "zh": "他喜欢饭店。",
+    "pinyin": "tā xǐhuan fàndiàn.",
+    "vi": "Anh ấy thích nhà hàng."
+  },
+  {
+    "id": "s103",
+    "zh": "他看书。",
+    "pinyin": "tā kàn shū.",
+    "vi": "Anh ấy xem sách."
+  },
+  {
+    "id": "s104",
+    "zh": "他看电影。",
+    "pinyin": "tā kàn diànyǐng.",
+    "vi": "Anh ấy xem phim."
+  },
+  {
+    "id": "s105",
+    "zh": "他看电视。",
+    "pinyin": "tā kàn diànshì.",
+    "vi": "Anh ấy xem tv."
+  },
+  {
+    "id": "s106",
+    "zh": "他喜欢书。",
+    "pinyin": "tā xǐhuan shū.",
+    "vi": "Anh ấy thích sách."
+  },
+  {
+    "id": "s107",
+    "zh": "他喜欢电影。",
+    "pinyin": "tā xǐhuan diànyǐng.",
+    "vi": "Anh ấy thích phim."
+  },
+  {
+    "id": "s108",
+    "zh": "他喜欢电视。",
+    "pinyin": "tā xǐhuan diànshì.",
+    "vi": "Anh ấy thích tv."
+  },
+  {
+    "id": "s109",
+    "zh": "她吃饭。",
+    "pinyin": "tā chī fàn.",
+    "vi": "Cô ấy ăn cơm."
+  },
+  {
+    "id": "s110",
+    "zh": "她吃菜。",
+    "pinyin": "tā chī cài.",
+    "vi": "Cô ấy ăn món ăn."
+  },
+  {
+    "id": "s111",
+    "zh": "她吃苹果。",
+    "pinyin": "tā chī píngguǒ.",
+    "vi": "Cô ấy ăn táo."
+  },
+  {
+    "id": "s112",
+    "zh": "她吃东西。",
+    "pinyin": "tā chī dōngxi.",
+    "vi": "Cô ấy ăn đồ."
+  },
+  {
+    "id": "s113",
+    "zh": "她吃水果。",
+    "pinyin": "tā chī shuǐguǒ.",
+    "vi": "Cô ấy ăn trái cây."
+  },
+  {
+    "id": "s114",
+    "zh": "她买饭。",
+    "pinyin": "tā mǎi fàn.",
+    "vi": "Cô ấy mua cơm."
+  },
+  {
+    "id": "s115",
+    "zh": "她买菜。",
+    "pinyin": "tā mǎi cài.",
+    "vi": "Cô ấy mua món ăn."
+  },
+  {
+    "id": "s116",
+    "zh": "她买苹果。",
+    "pinyin": "tā mǎi píngguǒ.",
+    "vi": "Cô ấy mua táo."
+  },
+  {
+    "id": "s117",
+    "zh": "她买东西。",
+    "pinyin": "tā mǎi dōngxi.",
+    "vi": "Cô ấy mua đồ."
+  },
+  {
+    "id": "s118",
+    "zh": "她买水果。",
+    "pinyin": "tā mǎi shuǐguǒ.",
+    "vi": "Cô ấy mua trái cây."
+  },
+  {
+    "id": "s119",
+    "zh": "她做饭。",
+    "pinyin": "tā zuò fàn.",
+    "vi": "Cô ấy làm cơm."
+  },
+  {
+    "id": "s120",
+    "zh": "她做菜。",
+    "pinyin": "tā zuò cài.",
+    "vi": "Cô ấy làm món ăn."
+  }
+];
+
+const DIALOGUES = [
+  {
+    "id": "d1",
+    "title_vi": "Đoạn hội thoại 1",
+    "lines": [
+      {
+        "speaker": "A",
+        "zh": "你好！",
+        "pinyin": "nǐ hǎo!",
+        "vi": "Chào bạn!"
+      },
+      {
+        "speaker": "B",
+        "zh": "你好！你去哪儿？",
+        "pinyin": "nǐ hǎo! nǐ qù nǎr?",
+        "vi": "Chào bạn! Bạn đi đâu thế?"
+      },
+      {
+        "speaker": "A",
+        "zh": "我去商店买东西。",
+        "pinyin": "wǒ qù shāngdiàn mǎi dōngxi.",
+        "vi": "Tôi đi cửa hàng mua đồ."
+      },
+      {
+        "speaker": "B",
+        "zh": "好的，再见！",
+        "pinyin": "hǎo de, zàijiàn!",
+        "vi": "Được, tạm biệt!"
+      }
+    ],
+    "questions": [
+      {
+        "q_zh": "A去哪儿？",
+        "q_vi": "A đi đâu?",
+        "options": [
+          "商店",
+          "医院",
+          "学校",
+          "中国"
+        ],
+        "answer": 0
+      },
+      {
+        "q_zh": "A买什么？",
+        "q_vi": "A mua gì?",
+        "options": [
+          "东西",
+          "苹果",
+          "水",
+          "书"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": "d2",
+    "title_vi": "Đoạn hội thoại 2",
+    "lines": [
+      {
+        "speaker": "A",
+        "zh": "你好！",
+        "pinyin": "nǐ hǎo!",
+        "vi": "Chào bạn!"
+      },
+      {
+        "speaker": "B",
+        "zh": "你好！你去哪儿？",
+        "pinyin": "nǐ hǎo! nǐ qù nǎr?",
+        "vi": "Chào bạn! Bạn đi đâu thế?"
+      },
+      {
+        "speaker": "A",
+        "zh": "我去商店买东西。",
+        "pinyin": "wǒ qù shāngdiàn mǎi dōngxi.",
+        "vi": "Tôi đi cửa hàng mua đồ."
+      },
+      {
+        "speaker": "B",
+        "zh": "好的，再见！",
+        "pinyin": "hǎo de, zàijiàn!",
+        "vi": "Được, tạm biệt!"
+      }
+    ],
+    "questions": [
+      {
+        "q_zh": "A去哪儿？",
+        "q_vi": "A đi đâu?",
+        "options": [
+          "商店",
+          "医院",
+          "学校",
+          "中国"
+        ],
+        "answer": 0
+      },
+      {
+        "q_zh": "A买什么？",
+        "q_vi": "A mua gì?",
+        "options": [
+          "东西",
+          "苹果",
+          "水",
+          "书"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": "d3",
+    "title_vi": "Đoạn hội thoại 3",
+    "lines": [
+      {
+        "speaker": "A",
+        "zh": "你好！",
+        "pinyin": "nǐ hǎo!",
+        "vi": "Chào bạn!"
+      },
+      {
+        "speaker": "B",
+        "zh": "你好！你去哪儿？",
+        "pinyin": "nǐ hǎo! nǐ qù nǎr?",
+        "vi": "Chào bạn! Bạn đi đâu thế?"
+      },
+      {
+        "speaker": "A",
+        "zh": "我去商店买东西。",
+        "pinyin": "wǒ qù shāngdiàn mǎi dōngxi.",
+        "vi": "Tôi đi cửa hàng mua đồ."
+      },
+      {
+        "speaker": "B",
+        "zh": "好的，再见！",
+        "pinyin": "hǎo de, zàijiàn!",
+        "vi": "Được, tạm biệt!"
+      }
+    ],
+    "questions": [
+      {
+        "q_zh": "A去哪儿？",
+        "q_vi": "A đi đâu?",
+        "options": [
+          "商店",
+          "医院",
+          "学校",
+          "中国"
+        ],
+        "answer": 0
+      },
+      {
+        "q_zh": "A买什么？",
+        "q_vi": "A mua gì?",
+        "options": [
+          "东西",
+          "苹果",
+          "水",
+          "书"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": "d4",
+    "title_vi": "Đoạn hội thoại 4",
+    "lines": [
+      {
+        "speaker": "A",
+        "zh": "你好！",
+        "pinyin": "nǐ hǎo!",
+        "vi": "Chào bạn!"
+      },
+      {
+        "speaker": "B",
+        "zh": "你好！你去哪儿？",
+        "pinyin": "nǐ hǎo! nǐ qù nǎr?",
+        "vi": "Chào bạn! Bạn đi đâu thế?"
+      },
+      {
+        "speaker": "A",
+        "zh": "我去商店买东西。",
+        "pinyin": "wǒ qù shāngdiàn mǎi dōngxi.",
+        "vi": "Tôi đi cửa hàng mua đồ."
+      },
+      {
+        "speaker": "B",
+        "zh": "好的，再见！",
+        "pinyin": "hǎo de, zàijiàn!",
+        "vi": "Được, tạm biệt!"
+      }
+    ],
+    "questions": [
+      {
+        "q_zh": "A去哪儿？",
+        "q_vi": "A đi đâu?",
+        "options": [
+          "商店",
+          "医院",
+          "学校",
+          "中国"
+        ],
+        "answer": 0
+      },
+      {
+        "q_zh": "A买什么？",
+        "q_vi": "A mua gì?",
+        "options": [
+          "东西",
+          "苹果",
+          "水",
+          "书"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": "d5",
+    "title_vi": "Đoạn hội thoại 5",
+    "lines": [
+      {
+        "speaker": "A",
+        "zh": "你好！",
+        "pinyin": "nǐ hǎo!",
+        "vi": "Chào bạn!"
+      },
+      {
+        "speaker": "B",
+        "zh": "你好！你去哪儿？",
+        "pinyin": "nǐ hǎo! nǐ qù nǎr?",
+        "vi": "Chào bạn! Bạn đi đâu thế?"
+      },
+      {
+        "speaker": "A",
+        "zh": "我去商店买东西。",
+        "pinyin": "wǒ qù shāngdiàn mǎi dōngxi.",
+        "vi": "Tôi đi cửa hàng mua đồ."
+      },
+      {
+        "speaker": "B",
+        "zh": "好的，再见！",
+        "pinyin": "hǎo de, zàijiàn!",
+        "vi": "Được, tạm biệt!"
+      }
+    ],
+    "questions": [
+      {
+        "q_zh": "A去哪儿？",
+        "q_vi": "A đi đâu?",
+        "options": [
+          "商店",
+          "医院",
+          "学校",
+          "中国"
+        ],
+        "answer": 0
+      },
+      {
+        "q_zh": "A买什么？",
+        "q_vi": "A mua gì?",
+        "options": [
+          "东西",
+          "苹果",
+          "水",
+          "书"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": "d6",
+    "title_vi": "Đoạn hội thoại 6",
+    "lines": [
+      {
+        "speaker": "A",
+        "zh": "你好！",
+        "pinyin": "nǐ hǎo!",
+        "vi": "Chào bạn!"
+      },
+      {
+        "speaker": "B",
+        "zh": "你好！你去哪儿？",
+        "pinyin": "nǐ hǎo! nǐ qù nǎr?",
+        "vi": "Chào bạn! Bạn đi đâu thế?"
+      },
+      {
+        "speaker": "A",
+        "zh": "我去商店买东西。",
+        "pinyin": "wǒ qù shāngdiàn mǎi dōngxi.",
+        "vi": "Tôi đi cửa hàng mua đồ."
+      },
+      {
+        "speaker": "B",
+        "zh": "好的，再见！",
+        "pinyin": "hǎo de, zàijiàn!",
+        "vi": "Được, tạm biệt!"
+      }
+    ],
+    "questions": [
+      {
+        "q_zh": "A去哪儿？",
+        "q_vi": "A đi đâu?",
+        "options": [
+          "商店",
+          "医院",
+          "学校",
+          "中国"
+        ],
+        "answer": 0
+      },
+      {
+        "q_zh": "A买什么？",
+        "q_vi": "A mua gì?",
+        "options": [
+          "东西",
+          "苹果",
+          "水",
+          "书"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": "d7",
+    "title_vi": "Đoạn hội thoại 7",
+    "lines": [
+      {
+        "speaker": "A",
+        "zh": "你好！",
+        "pinyin": "nǐ hǎo!",
+        "vi": "Chào bạn!"
+      },
+      {
+        "speaker": "B",
+        "zh": "你好！你去哪儿？",
+        "pinyin": "nǐ hǎo! nǐ qù nǎr?",
+        "vi": "Chào bạn! Bạn đi đâu thế?"
+      },
+      {
+        "speaker": "A",
+        "zh": "我去商店买东西。",
+        "pinyin": "wǒ qù shāngdiàn mǎi dōngxi.",
+        "vi": "Tôi đi cửa hàng mua đồ."
+      },
+      {
+        "speaker": "B",
+        "zh": "好的，再见！",
+        "pinyin": "hǎo de, zàijiàn!",
+        "vi": "Được, tạm biệt!"
+      }
+    ],
+    "questions": [
+      {
+        "q_zh": "A去哪儿？",
+        "q_vi": "A đi đâu?",
+        "options": [
+          "商店",
+          "医院",
+          "学校",
+          "中国"
+        ],
+        "answer": 0
+      },
+      {
+        "q_zh": "A买什么？",
+        "q_vi": "A mua gì?",
+        "options": [
+          "东西",
+          "苹果",
+          "水",
+          "书"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": "d8",
+    "title_vi": "Đoạn hội thoại 8",
+    "lines": [
+      {
+        "speaker": "A",
+        "zh": "你好！",
+        "pinyin": "nǐ hǎo!",
+        "vi": "Chào bạn!"
+      },
+      {
+        "speaker": "B",
+        "zh": "你好！你去哪儿？",
+        "pinyin": "nǐ hǎo! nǐ qù nǎr?",
+        "vi": "Chào bạn! Bạn đi đâu thế?"
+      },
+      {
+        "speaker": "A",
+        "zh": "我去商店买东西。",
+        "pinyin": "wǒ qù shāngdiàn mǎi dōngxi.",
+        "vi": "Tôi đi cửa hàng mua đồ."
+      },
+      {
+        "speaker": "B",
+        "zh": "好的，再见！",
+        "pinyin": "hǎo de, zàijiàn!",
+        "vi": "Được, tạm biệt!"
+      }
+    ],
+    "questions": [
+      {
+        "q_zh": "A去哪儿？",
+        "q_vi": "A đi đâu?",
+        "options": [
+          "商店",
+          "医院",
+          "学校",
+          "中国"
+        ],
+        "answer": 0
+      },
+      {
+        "q_zh": "A买什么？",
+        "q_vi": "A mua gì?",
+        "options": [
+          "东西",
+          "苹果",
+          "水",
+          "书"
+        ],
+        "answer": 0
+      }
+    ]
+  }
+];
+
+const READINGS = [
+  {
+    "id": "r1",
+    "title_vi": "Đoạn văn 1",
+    "text": [
+      {
+        "zh": "我是学生。",
+        "pinyin": "wǒ shì xuésheng.",
+        "vi": "Tôi là học sinh."
+      },
+      {
+        "zh": "我喜欢学习汉语。",
+        "pinyin": "wǒ xǐhuan xuéxí Hànyǔ.",
+        "vi": "Tôi thích học tiếng Trung."
+      },
+      {
+        "zh": "明天我不去学校。",
+        "pinyin": "míngtiān wǒ bù qù xuéxiào.",
+        "vi": "Ngày mai tôi không đi học."
+      },
+      {
+        "zh": "我在家看书。",
+        "pinyin": "wǒ zài jiā kàn shū.",
+        "vi": "Tôi ở nhà đọc sách."
+      },
+      {
+        "zh": "我妈妈做菜很好吃。",
+        "pinyin": "wǒ māma zuò cài hěn hǎochī.",
+        "vi": "Mẹ tôi nấu ăn rất ngon."
+      }
+    ],
+    "questions": [
+      {
+        "q_zh": "我是谁？",
+        "q_vi": "Tôi là ai?",
+        "options": [
+          "学生",
+          "老师",
+          "医生",
+          "朋友"
+        ],
+        "answer": 0
+      },
+      {
+        "q_zh": "明天我在哪儿？",
+        "q_vi": "Ngày mai tôi ở đâu?",
+        "options": [
+          "在家",
+          "在学校",
+          "在商店",
+          "在医院"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": "r2",
+    "title_vi": "Đoạn văn 2",
+    "text": [
+      {
+        "zh": "我是学生。",
+        "pinyin": "wǒ shì xuésheng.",
+        "vi": "Tôi là học sinh."
+      },
+      {
+        "zh": "我喜欢学习汉语。",
+        "pinyin": "wǒ xǐhuan xuéxí Hànyǔ.",
+        "vi": "Tôi thích học tiếng Trung."
+      },
+      {
+        "zh": "明天我不去学校。",
+        "pinyin": "míngtiān wǒ bù qù xuéxiào.",
+        "vi": "Ngày mai tôi không đi học."
+      },
+      {
+        "zh": "我在家看书。",
+        "pinyin": "wǒ zài jiā kàn shū.",
+        "vi": "Tôi ở nhà đọc sách."
+      },
+      {
+        "zh": "我妈妈做菜很好吃。",
+        "pinyin": "wǒ māma zuò cài hěn hǎochī.",
+        "vi": "Mẹ tôi nấu ăn rất ngon."
+      }
+    ],
+    "questions": [
+      {
+        "q_zh": "我是谁？",
+        "q_vi": "Tôi là ai?",
+        "options": [
+          "学生",
+          "老师",
+          "医生",
+          "朋友"
+        ],
+        "answer": 0
+      },
+      {
+        "q_zh": "明天我在哪儿？",
+        "q_vi": "Ngày mai tôi ở đâu?",
+        "options": [
+          "在家",
+          "在学校",
+          "在商店",
+          "在医院"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": "r3",
+    "title_vi": "Đoạn văn 3",
+    "text": [
+      {
+        "zh": "我是学生。",
+        "pinyin": "wǒ shì xuésheng.",
+        "vi": "Tôi là học sinh."
+      },
+      {
+        "zh": "我喜欢学习汉语。",
+        "pinyin": "wǒ xǐhuan xuéxí Hànyǔ.",
+        "vi": "Tôi thích học tiếng Trung."
+      },
+      {
+        "zh": "明天我不去学校。",
+        "pinyin": "míngtiān wǒ bù qù xuéxiào.",
+        "vi": "Ngày mai tôi không đi học."
+      },
+      {
+        "zh": "我在家看书。",
+        "pinyin": "wǒ zài jiā kàn shū.",
+        "vi": "Tôi ở nhà đọc sách."
+      },
+      {
+        "zh": "我妈妈做菜很好吃。",
+        "pinyin": "wǒ māma zuò cài hěn hǎochī.",
+        "vi": "Mẹ tôi nấu ăn rất ngon."
+      }
+    ],
+    "questions": [
+      {
+        "q_zh": "我是谁？",
+        "q_vi": "Tôi là ai?",
+        "options": [
+          "学生",
+          "老师",
+          "医生",
+          "朋友"
+        ],
+        "answer": 0
+      },
+      {
+        "q_zh": "明天我在哪儿？",
+        "q_vi": "Ngày mai tôi ở đâu?",
+        "options": [
+          "在家",
+          "在学校",
+          "在商店",
+          "在医院"
+        ],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "id": "r4",
+    "title_vi": "Đoạn văn 4",
+    "text": [
+      {
+        "zh": "我是学生。",
+        "pinyin": "wǒ shì xuésheng.",
+        "vi": "Tôi là học sinh."
+      },
+      {
+        "zh": "我喜欢学习汉语。",
+        "pinyin": "wǒ xǐhuan xuéxí Hànyǔ.",
+        "vi": "Tôi thích học tiếng Trung."
+      },
+      {
+        "zh": "明天我不去学校。",
+        "pinyin": "míngtiān wǒ bù qù xuéxiào.",
+        "vi": "Ngày mai tôi không đi học."
+      },
+      {
+        "zh": "我在家看书。",
+        "pinyin": "wǒ zài jiā kàn shū.",
+        "vi": "Tôi ở nhà đọc sách."
+      },
+      {
+        "zh": "我妈妈做菜很好吃。",
+        "pinyin": "wǒ māma zuò cài hěn hǎochī.",
+        "vi": "Mẹ tôi nấu ăn rất ngon."
+      }
+    ],
+    "questions": [
+      {
+        "q_zh": "我是谁？",
+        "q_vi": "Tôi là ai?",
+        "options": [
+          "学生",
+          "老师",
+          "医生",
+          "朋友"
+        ],
+        "answer": 0
+      },
+      {
+        "q_zh": "明天我在哪儿？",
+        "q_vi": "Ngày mai tôi ở đâu?",
+        "options": [
+          "在家",
+          "在学校",
+          "在商店",
+          "在医院"
+        ],
+        "answer": 0
+      }
+    ]
+  }
+];
+(() => {
+  const main = document.getElementById('main'), note = document.getElementById('storage-note');
+  const Engine = window.Engine;
+  const modes = ['hanzi->meaning', 'meaning->hanzi', 'hanzi->pinyin', 'pinyin->hanzi'];
+  const titles = {choice:'Trắc nghiệm', listen:'Luyện nghe', sentence:'Dịch câu', reading:'Đọc hiểu'};
+  function el(tag, cls, text) {
+    const n = document.createElement(tag); if (cls) n.className = cls;
+    if (text !== undefined) n.textContent = text; return n;
+  }
+  function button(text, cls, action) {
+    const n = el('button', cls, text); n.type = 'button'; n.addEventListener('click', action); return n;
+  }
+  function dateKey(d = new Date()) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+  function warning() { note.hidden = false; note.textContent = 'Không thể lưu dữ liệu trên trình duyệt này. Tiến độ chỉ được giữ trong phiên hiện tại.'; }
+  function read(key) {
+    try { const v = JSON.parse(localStorage.getItem(key)); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }
+    catch (_) { warning(); return {}; }
+  }
+  const states = read('zh-srs'), stats = read('zh-stats');
+  const sentenceStates = read('zh-srs-sentences'), passageStates = read('zh-srs-passages');
+  let plan = read('zh-daily-srs');
+  stats.sentCorrect = Number(stats.sentCorrect ?? stats.sentenceCorrect) || 0;
+  stats.passDone = Number(stats.passDone ?? stats.readingsCompleted ?? stats.readingCompleted) || 0;
+  function save() {
+    try {
+      localStorage.setItem('zh-srs', JSON.stringify(states));
+      localStorage.setItem('zh-stats', JSON.stringify(stats));
+      localStorage.setItem('zh-srs-sentences', JSON.stringify(sentenceStates));
+      localStorage.setItem('zh-srs-passages', JSON.stringify(passageStates));
+      plan.sessions = sessions;
+      localStorage.setItem('zh-daily-srs', JSON.stringify(plan, (key, value) => value instanceof Set ? [...value] : value));
+    } catch (_) { warning(); }
+  }
+  let tab = 'choice', day = '', daily, sentences, passage, passageQuestions;
+  let sessions = {}, audio = null, audioToken = 0;
+  const audioError = 'Không phát được âm thanh. Hãy kiểm tra mạng hoặc mở trang bằng trình duyệt Edge để có giọng đọc chuẩn.';
+  function stopAudio() {
+    audioToken++; if (window.speechSynthesis) window.speechSynthesis.cancel();
+    if (audio) { audio.pause(); audio = null; }
+  }
+  function speak(text, status) {
+    stopAudio(); const token = audioToken;
+    const update = message => { if (token === audioToken) status.textContent = message; };
+    const synth = window.speechSynthesis;
+    const voices = synth ? synth.getVoices().filter(v => /^zh/i.test(v.lang)) : [];
+    const voice = voices.find(v => /microsoft|online|natural/i.test(v.name)) || voices.find(v => v.localService) || voices[0];
+    update('Đang phát âm…');
+    if (voice) {
+      try {
+        const u = new SpeechSynthesisUtterance(text); u.voice = voice; u.lang = 'zh-CN'; u.rate = 0.8;
+        u.onend = () => update('Đã phát xong. Bấm Nghe lại để nghe thêm.'); u.onerror = () => update(audioError);
+        synth.speak(u);
+      } catch (_) { update(audioError); }
+    } else {
+      try {
+        audio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&tl=zh-CN&client=tw-ob&q=' + encodeURIComponent(text));
+        audio.onended = () => update('Đã phát xong. Bấm Nghe lại để nghe thêm.'); audio.onerror = () => update(audioError);
+        const result = audio.play(); if (result && result.catch) result.catch(() => update(audioError));
+      } catch (_) { update(audioError); }
+    }
+  }
+  // Hash the local date and shuffle copies; ties are deterministic.
+  function dailyShuffle(items, seedString) {
+    let seed = 0;
+    for (const ch of seedString) seed = (Math.imul(seed, 31) + ch.charCodeAt(0)) >>> 0;
+    const result = items.slice();
+    for (let i = result.length - 1; i > 0; i--) {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      const j = Math.floor(seed / 4294967296 * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+  }
+  function selectSentences(bank, states, today) {
+    const shuffled = dailyShuffle(bank, today + ':sentences');
+    const due = shuffled.filter(s => states[s.id] && states[s.id].nextReview <= today)
+      .sort((a, b) => states[a.id].box - states[b.id].box);
+    const fresh = shuffled.filter(s => !states[s.id]);
+    const review = shuffled.filter(s => states[s.id] && states[s.id].nextReview > today)
+      .sort((a, b) => states[b.id].box - states[a.id].box);
+    const selected = [...due.slice(0, 9), ...fresh.slice(0, 6)];
+    const used = new Set(selected.map(s => s.id));
+    // Fill shortages with due/new items before reviewing future high boxes.
+    for (const item of [...due, ...fresh, ...review]) {
+      if (selected.length >= 15) break;
+      if (!used.has(item.id)) { selected.push(item); used.add(item.id); }
+    }
+    return dailyShuffle(selected, today + ':order');
+  }
+  function selectPassage(bank, states, today) {
+    const shuffled = dailyShuffle(bank, today + ':passages');
+    const due = shuffled.filter(p => states[p.id] && states[p.id].nextReview <= today)
+      .sort((a, b) => states[a.id].nextReview.localeCompare(states[b.id].nextReview) || states[a.id].box - states[b.id].box);
+    if (due.length) return due[0];
+    const fresh = shuffled.filter(p => !states[p.id]);
+    if (fresh.length) return fresh[0];
+    const highest = Math.max(...bank.map(p => states[p.id].box));
+    const review = bank.filter(p => states[p.id].box === highest);
+    const [y, m, d] = today.split('-').map(Number);
+    const ordinal = Math.floor(Date.UTC(y, m - 1, d) / 86400000);
+    return review[ordinal % review.length];
+  }
+  function sentenceNext(state, correct) {
+    const next = Engine.srsNext(state, correct);
+    if (correct) {
+      const date = new Date();
+      date.setDate(date.getDate() + [1, 2, 4, 8, 16][Math.max(0, next.box - 1)]);
+      next.nextReview = dateKey(date);
+    }
+    return next;
+  }
+  function resetDay() {
+    const today = dateKey(); if (day === today) return;
+    day = today;
+    daily = Engine.dailySet(VOCAB, states, day).map(q => VOCAB.find(w => w.id === q.wordId));
+    const bank = [...DIALOGUES, ...READINGS];
+    if (plan.date !== day || !Array.isArray(plan.sentenceIds) ||
+        !plan.sentenceIds.every(id => SENTENCES.some(s => s.id === id)) || !bank.some(p => p.id === plan.passageId)) {
+      sentences = selectSentences(SENTENCES, sentenceStates, day);
+      passage = selectPassage(bank, passageStates, day);
+      plan = {date: day, sentenceIds: sentences.map(s => s.id), passageId: passage.id};
+    } else {
+      sentences = plan.sentenceIds.map(id => SENTENCES.find(s => s.id === id));
+      passage = bank.find(p => p.id === plan.passageId);
+    }
+    passageQuestions = Engine.passageQuiz(passage);
+    sessions = Object.fromEntries(['choice','listen','sentence','reading'].map(k => {
+      const saved = ['sentence', 'reading'].includes(k) ? plan.sessions?.[k] : null;
+      return [k, saved ? {...saved, revealed: new Set(saved.revealed || [])} :
+        {index:0, quiz:null, answered:false, heard:false, revealed:new Set(), pinyin:true, wrong:0}];
+    }));
+    save();
+  }
+  function record(correct, word) {
+    const s = sessions[tab]; if (s.answered) return; s.answered = true;
+    if (word) states[word.id] = Engine.srsNext(states[word.id], correct);
+    const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+    if (stats.lastStudyDate !== day) { stats.streak = stats.lastStudyDate === dateKey(yesterday) ? (Number(stats.streak)||0)+1 : 1; stats.lastStudyDate = day; }
+    stats.totalAnswered = (Number(stats.totalAnswered)||0)+1;
+    stats.totalCorrect = (Number(stats.totalCorrect)||0)+Number(correct);
+    if (tab === 'sentence') {
+      const id = sentences[s.index].id;
+      sentenceStates[id] = sentenceNext(sentenceStates[id], correct);
+      stats.sentCorrect += Number(correct);
+    }
+    if (tab === 'reading') {
+      s.wrong = (Number(s.wrong) || 0) + Number(!correct);
+      if (s.index === passageQuestions.length - 1 && !s.completed) {
+        passageStates[passage.id] = Engine.srsNext(passageStates[passage.id], s.wrong === 0);
+        stats.passDone++;
+        s.completed = true;
+      }
+    }
+  }
+
+  function renderStats() {
+    const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+    const streak = [day,dateKey(yesterday)].includes(stats.lastStudyDate) ? Number(stats.streak)||0 : 0;
+    const grid = el('div','stats-grid');
+    [[VOCAB.filter(w => states[w.id]?.box >= 4).length,'Từ đã thuộc · hộp 4 trở lên'],[`${stats.totalAnswered ? Math.round(stats.totalCorrect/stats.totalAnswered*100) : 0}%`,'Độ chính xác'],[streak,'Ngày học liên tiếp'],[Number(stats.sentCorrect)||0,'Câu dịch đúng'],[Number(stats.passDone)||0,'Bài đọc hiểu đã làm']].forEach(([v,t]) => { const n=el('div','stat'); n.append(el('strong','',v),el('span','',t));grid.append(n); });
+    main.append(el('h2','','Hành trình của bạn'),grid,el('p','instruction',`Đã trả lời ${Number(stats.totalAnswered)||0} câu · Đúng ${Number(stats.totalCorrect)||0} câu. Tiến độ được lưu trên trình duyệt này.`));
+  }
+  function render() {
+    stopAudio(); main.replaceChildren();
+    try {
+      resetDay();
+      const workload = document.getElementById('daily-workload') || el('p','instruction');
+      workload.id = 'daily-workload';
+      workload.textContent = `Hôm nay: ${daily.length} từ vựng · ${sentences.length} câu dịch · 1 bài đọc hiểu`;
+      if (!workload.parentNode) document.querySelector('.header').append(workload);
+      if (tab === 'stats') { renderStats(); return; }
+      const s = sessions[tab], count = tab === 'sentence' ? sentences.length : tab === 'reading' ? passageQuestions.length : daily.length;
+      if (s.index >= count) { main.append(el('section','card empty','Bạn đã hoàn thành lượt học hôm nay!'),button('Xem thống kê','primary',()=>selectTab('stats'))); return; }
+      const head=el('div','lesson-head'); head.append(el('h2','',titles[tab]),el('span','counter',`${s.index+1} / ${count} câu hôm nay`));
+      const progress=el('progress'); progress.max=count;progress.value=s.index;progress.setAttribute('aria-label','Tiến độ lượt học'); main.append(head,progress);
+      const card=el('section','card'); let word=null, detail='';
+      if (tab === 'reading') {
+        card.classList.add('passage'); card.append(el('h2','',passage.title_vi),el('p','instruction','Bấm từng dòng để hiện hoặc ẩn nghĩa tiếng Việt.'));
+        (passage.lines || passage.text).forEach((line,i)=>{
+          const n=button('','passage-line',()=>{ s.revealed.has(i)?s.revealed.delete(i):s.revealed.add(i); translation.hidden=!s.revealed.has(i); n.setAttribute('aria-expanded',String(!translation.hidden)); });
+          const zh=el('span','line-zh',`${line.speaker ? line.speaker+': ' : ''}${line.zh}`);zh.lang='zh-CN';
+          const translation=el('span','line-vi',line.vi);translation.hidden=!s.revealed.has(i);n.setAttribute('aria-expanded',String(!translation.hidden));
+          n.append(zh,el('span','line-pinyin',line.pinyin),translation);card.append(n);
+        });
+        s.quiz = passageQuestions[s.index]; card.append(el('p','reading-question',s.quiz.question));
+      } else if (tab === 'sentence') {
+        const sentence=sentences[s.index]; if (!s.quiz) s.quiz=Engine.sentenceQuiz(sentence,SENTENCES);
+        detail=sentence.vi; const zh=el('div','sentence-zh',s.quiz.prompt);zh.lang='zh-CN';
+        const py=el('p','pinyin',s.quiz.promptPinyin);py.hidden=!s.pinyin;
+        const toggle=button(s.pinyin?'Ẩn pinyin':'Hiện pinyin','secondary',()=>{ s.pinyin=!s.pinyin;py.hidden=!s.pinyin;toggle.textContent=s.pinyin?'Ẩn pinyin':'Hiện pinyin';toggle.setAttribute('aria-expanded',String(s.pinyin)); });toggle.setAttribute('aria-expanded',String(s.pinyin));
+        card.append(el('p','instruction','Chọn nghĩa tiếng Việt phù hợp.'),zh,py,toggle);
+      } else {
+        word=daily[s.index]; const type=tab==='listen'?'pinyin->hanzi':modes[s.index%4];
+        if (!s.quiz) s.quiz=Engine.mulChoice(word,VOCAB,type);
+        detail=`${word.hanzi} · ${word.pinyin} · ${word.meaning_vi}`;
+        if (tab==='listen') {
+          const status=el('p','hint','Bấm Nghe để mở các đáp án.');status.setAttribute('role','status');
+          const listen=button(s.heard?'▶ Nghe lại':'▶ Nghe','primary listen',()=>{ s.heard=true;options.hidden=false;listen.textContent='▶ Nghe lại';speak(word.hanzi,status); });
+          card.append(el('p','instruction','Nghe phát âm rồi chọn chữ Hán đúng.'),listen,status);
+        } else card.append(el('p','instruction',`Chọn ${type.endsWith('meaning')?'nghĩa tiếng Việt':type.endsWith('pinyin')?'pinyin':'chữ Hán'} phù hợp.`),el('div',type.startsWith('hanzi')?'hanzi':type.startsWith('pinyin')?'pinyin':'meaning',s.quiz.question));
+      }
+      const options=el('div','options');options.hidden=tab==='listen'&&!s.heard;
+      const feedback=el('p','feedback');feedback.setAttribute('role','status');
+      const next=button('Câu tiếp theo →','primary',()=>{s.index++;s.quiz=null;s.answered=false;s.heard=false;save();render();}); next.hidden=!s.answered;
+      s.quiz.options.forEach((label,i)=>{const n=button('','option',()=>{
+        if(s.answered)return;const correct=i===s.quiz.answerIndex;record(correct,word);s.feedback=`${correct?'Chính xác!':'Chưa đúng.'} ${detail || 'Đáp án: '+s.quiz.options[s.quiz.answerIndex]}`;s.selected=i;save();paint();
+      });n.append(el('span','',i+1),el('span','',label));options.append(n);});
+      function paint(){ if(!s.answered)return;Array.from(options.children).forEach((n,i)=>{n.disabled=true;n.classList.toggle('correct',i===s.quiz.answerIndex);n.classList.toggle('wrong',i===s.selected&&i!==s.quiz.answerIndex);});feedback.textContent=s.feedback;next.hidden=false; }
+      paint();main.append(card,options,feedback,next);
+    } catch(e) { main.replaceChildren(el('section','card empty',`Chưa thể mở bài học: ${e.message}`)); }
+  }
+  function selectTab(value) {
+    tab=value;document.querySelectorAll('[data-tab]').forEach(n=>{n.classList.toggle('active',n.dataset.tab===tab);if(n.dataset.tab===tab)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});render();
+  }
+  document.querySelectorAll('[data-tab]').forEach(n=>n.addEventListener('click',()=>selectTab(n.dataset.tab)));
+  render();
+})();
+
+</script>
+</body>
+</html>
