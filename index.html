@@ -81,7 +81,7 @@ progress::-moz-progress-bar { background: linear-gradient(90deg, #258979, #7ca76
 .flashcard > span { max-width: 100%; }
 .topic { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 650; color: #65705e; background: #ebeedf; padding: 7px 12px; border-radius: 20px; }
 .hanzi { font-family: "Songti SC", "STSong", "Noto Serif CJK SC", system-ui, serif; font-size: clamp(46px, 12vw, 80px); line-height: 1.45; font-weight: 500; letter-spacing: 2px; color: #214f42; margin: 22px 0; overflow-wrap: anywhere; }
-.pinyin { font-size: clamp(24px, 6vw, 30px); color: var(--green); margin: 12px 0; overflow-wrap: anywhere; }
+.pinyin { font-family: Georgia, Times New Roman, serif; font-style: italic; font-size: clamp(17px, 4.2vw, 24px); color: var(--muted); margin: 12px 0; overflow-wrap: anywhere; }
 .meaning { font-size: 22px; line-height: 1.5; margin: 8px 0; overflow-wrap: anywhere; }
 .hint { font-size: 13px; line-height: 1.65; color: var(--muted); margin-top: 24px; }
 .instruction { font-size: 14px; color: var(--muted); line-height: 1.7; }
@@ -135,7 +135,7 @@ footer { text-align: center; font-size: 12px; line-height: 1.7; letter-spacing: 
 }
 
 .sentence-zh { display: block; font-size: clamp(24px, 6vw, 34px); line-height: 1.7; color: #214f42; overflow-wrap: anywhere; }
-.line-pinyin { display: block; color: var(--green); font-size: 16px; line-height: 1.7; margin: 10px 0; overflow-wrap: anywhere; }
+.line-pinyin { display: block; font-family: Georgia, Times New Roman, serif; font-style: italic; color: var(--muted); font-size: 14px; line-height: 1.7; margin: 10px 0; overflow-wrap: anywhere; }
 .passage { text-align: left; margin-bottom: 20px; padding: 22px 18px; }
 .passage h3 { margin: 0; font-size: 20px; }
 .passage-line { display: block; width: 100%; text-align: left; color: inherit; border: 0; border-top: 1px solid var(--border); background: transparent; padding: 16px 0; }
@@ -150,12 +150,34 @@ footer { text-align: center; font-size: 12px; line-height: 1.7; letter-spacing: 
 .passage-line { display: block; width: 100%; text-align: left; background: transparent; border: 0; border-bottom: 1px solid var(--border); padding: 16px 4px; color: inherit; }
 .passage-line span { display: block; line-height: 1.7; overflow-wrap: anywhere; }
 .line-zh { font-size: 23px; color: #214f42; }
-.line-pinyin { font-size: 15px; color: var(--muted); margin-top: 5px; }
+.line-pinyin { font-family: Georgia, Times New Roman, serif; font-style: italic; font-size: 13px; color: var(--muted); margin-top: 5px; }
 .line-vi { font-size: 15px; color: var(--green); margin-top: 8px; }
 .reading-question { font-size: 19px; line-height: 1.7; margin: 24px 0 0; }
 
 .voice-controls { margin-top: 20px; text-align: left; }
-.voice-controls h3 { margin: 0; font-size: 16px; }
+.voice-controls-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e6d5ac;
+  border-radius: 17px;
+  background: #faf4e6;
+  color: #214f42;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+.voice-controls-summary { min-width: 0; overflow-wrap: anywhere; }
+.voice-controls-arrow { flex-shrink: 0; color: #735725; }
+.voice-controls-toggle[aria-expanded="true"] .voice-controls-arrow { transform: rotate(180deg); }
+.voice-controls-content { padding: 4px 0 12px; }
+@media (min-width: 560px) {
+  .voice-controls-toggle { padding: 14px 18px; font-size: 16px; }
+}
 .voice-controls .actions { margin-top: 12px; }
 .voice-controls .secondary { flex: 0 1 auto; overflow-wrap: anywhere; max-width: 100%; }
 .voice-controls .selected { background: #e6f4e7; border-color: var(--green); box-shadow: inset 0 0 0 1px var(--green); }
@@ -166,7 +188,7 @@ footer { text-align: center; font-size: 12px; line-height: 1.7; letter-spacing: 
 .shadow-list { display: grid; gap: 10px; margin-top: 14px; text-align: left; }
 .shadow-line { display: block; width: 100%; text-align: left; border: 1px solid var(--border); background: #fffdf8; border-radius: 16px; padding: 14px 16px; color: #203c35; line-height: 1.6; }
 .shadow-line .line-zh { font-size: 20px; }
-.shadow-line .line-pinyin { font-size: 14px; color: var(--green); margin-top: 6px; }
+.shadow-line .line-pinyin { font-family: Georgia, Times New Roman, serif; font-style: italic; font-size: 13px; color: var(--muted); margin-top: 6px; }
 .shadow-line .line-vi { font-size: 14px; color: #735725; margin-top: 6px; }
 .shadow-line.playing { border-color: var(--green); background: #eaf4ec; box-shadow: inset 0 0 0 1px var(--green); }
 .stepper { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
@@ -190,7 +212,7 @@ footer { text-align: center; font-size: 12px; line-height: 1.7; letter-spacing: 
 .builder-unit { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 16px; }
 .builder-unit.picked { border-color: var(--green); background: #eaf4ec; }
 .builder-hanzi { font-size: 22px; color: #214f42; font-family: "Songti SC", "STSong", "Noto Serif CJK SC", system-ui, serif; }
-.builder-pinyin { font-size: 12px; color: var(--green); }
+.builder-pinyin { font-family: Georgia, Times New Roman, serif; font-style: italic; font-size: 12px; color: #62716a; }
 .rescue-btn { width: 100%; margin: 0 0 18px; }
 
 /* Quests & badges */
@@ -207,6 +229,19 @@ footer { text-align: center; font-size: 12px; line-height: 1.7; letter-spacing: 
 .badge span { font-size: 12px; color: var(--muted); line-height: 1.5; }
 .badge.locked { opacity: .55; }
 @media (min-width: 560px) { .badge-grid { grid-template-columns: repeat(4, 1fr); } }
+
+/* Reading pinyin visibility belongs to the current reading session. */
+.passage-head { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.passage-head h2 { min-width: 0; overflow-wrap: anywhere; }
+.reading-pinyin-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex: 0 0 auto; min-height: 44px; padding: 10px 14px; border-radius: 14px; font-size: 14px; }
+.reading-pinyin-toggle[aria-pressed="true"] { background: #f4efdf; border-color: #d6c6a5; }
+.reading-pinyin-eye, .reading-pinyin-eye svg { display: block; width: 20px; height: 20px; }
+.reading-eye-slash { display: none; }
+.reading-pinyin-toggle[aria-pressed="false"] .reading-eye-slash { display: block; }
+.passage.reading-pinyin-hidden .line-pinyin { display: none; }
+@media (min-width: 480px) {
+  .passage-head { flex-direction: row; align-items: center; justify-content: space-between; }
+}
 
 </style>
 </head>
@@ -7904,6 +7939,7 @@ const READINGS = [
     }
   }
   let tab = 'choice', day = '', daily, sentences, passage, passageQuestions;
+  const readingPinyin = {session: null, passageId: null, visible: true};
   let sessions = {}, audio = null, audioToken = 0;
   const audioError = 'Không phát được âm thanh. Hãy kiểm tra mạng hoặc mở trang bằng trình duyệt Edge để có giọng đọc chuẩn.';
   function stopAudio() {
@@ -7927,10 +7963,26 @@ const READINGS = [
   let voiceChangeListener = null;
   function voiceControls(status) {
     const section = el('section', 'voice-controls');
-    section.append(el('h3', '', 'Giọng đọc'));
+    const content = el('div', 'voice-controls-content');
+    content.hidden = true;
+    const summary = el('span', 'voice-controls-summary');
+    const arrow = el('span', 'voice-controls-arrow', '▾');
+    arrow.setAttribute('aria-hidden', 'true');
+    const toggle = button('', 'voice-controls-toggle', () => {
+      content.hidden = !content.hidden;
+      toggle.setAttribute('aria-expanded', String(!content.hidden));
+    });
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.append(summary, arrow);
+    section.append(toggle, content);
     const voices = el('div', 'actions'), speeds = el('div', 'actions');
     const choices = [];
     function refreshSelection() {
+      const voiceName = voicePref.kind === 'speech'
+        ? (chineseVoices().find(v => v.name === voicePref.name) || chineseVoices()[0])?.name || 'Giọng hệ thống'
+        : voicePref.speed === 'fast' ? 'Google TTS (nhanh)' : 'Google TTS';
+      const speedLabel = {slow: 'Chậm', normal: 'Vừa', fast: 'Nhanh'}[voicePref.speed];
+      summary.textContent = `Giọng đọc: ${voiceName} · ${speedLabel}`;
       choices.forEach(({node, selected}) => {
         const active = selected();
         node.classList.toggle('selected', active);
@@ -7956,7 +8008,7 @@ const READINGS = [
         choice(label, speeds, {speed}, () => voicePref.speed === speed));
       refreshSelection();
     }
-    section.append(voices, el('p', 'instruction', 'Tốc độ'), speeds);
+    content.append(voices, el('p', 'instruction', 'Tốc độ'), speeds);
     refreshVoices();
     voiceChangeListener = refreshVoices;
     window.speechSynthesis?.addEventListener('voiceschanged', voiceChangeListener);
@@ -8861,7 +8913,30 @@ const READINGS = [
       }
       const card=el('section','card'); let word=null, detail='';
       if (tab === 'reading') {
-        card.classList.add('passage'); card.append(el('h2','',passage.title_vi),el('p','instruction','Bấm từng dòng để hiện hoặc ẩn nghĩa tiếng Việt.'));
+        if (readingPinyin.session !== s || readingPinyin.passageId !== passage.id) {
+          readingPinyin.session = s;
+          readingPinyin.passageId = passage.id;
+          readingPinyin.visible = true;
+        }
+        card.classList.add('passage');
+        const passageHead = el('div', 'passage-head');
+        const pinyinToggle = button('', 'secondary reading-pinyin-toggle', () => {
+          readingPinyin.visible = !readingPinyin.visible;
+          paintPinyin();
+        });
+        const eyeIcon = el('span', 'reading-pinyin-eye');
+        eyeIcon.setAttribute('aria-hidden', 'true');
+        eyeIcon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="reading-eye-slash" d="m3 3 18 18"/></svg>';
+        pinyinToggle.append(eyeIcon, el('span', '', 'Pinyin'));
+        function paintPinyin() {
+          card.classList.toggle('reading-pinyin-hidden', !readingPinyin.visible);
+          pinyinToggle.setAttribute('aria-pressed', String(readingPinyin.visible));
+          pinyinToggle.setAttribute('aria-label', readingPinyin.visible ? 'Ẩn pinyin' : 'Hiện pinyin');
+          pinyinToggle.title = readingPinyin.visible ? 'Ẩn pinyin' : 'Hiện pinyin';
+        }
+        paintPinyin();
+        passageHead.append(el('h2', '', passage.title_vi), pinyinToggle);
+        card.append(passageHead,el('p','instruction','Bấm từng dòng để hiện hoặc ẩn nghĩa tiếng Việt.'));
         (passage.lines || passage.text).forEach((line,i)=>{
           const n=button('','passage-line',()=>{ s.revealed.has(i)?s.revealed.delete(i):s.revealed.add(i); translation.hidden=!s.revealed.has(i); n.setAttribute('aria-expanded',String(!translation.hidden)); });
           const zh=el('span','line-zh',`${line.speaker ? line.speaker+': ' : ''}${line.zh}`);zh.lang='zh-CN';
