@@ -180,6 +180,34 @@ footer { text-align: center; font-size: 12px; line-height: 1.7; letter-spacing: 
 .key-row input { flex: 1; min-width: 0; border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; font: inherit; min-height: 52px; background: #fffdf8; color: #203c35; }
 .key-row .secondary { flex: 0 0 auto; }
 
+/* XP pill in header */
+.xp-pill { display: inline-block; margin: 12px 0 0; padding: 7px 16px; border-radius: 20px; background: #ffffff1e; border: 1px solid #ffffff45; color: #fffdf4; font-size: 13px; font-weight: 700; letter-spacing: .3px; }
+
+/* Sentence builder */
+.builder-answer, .builder-pool { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 16px 0; }
+.builder-answer { min-height: 76px; padding: 12px; border: 2px dashed var(--border); border-radius: 16px; background: #fbf8ef; align-items: center; }
+.builder-pool { min-height: 64px; }
+.builder-unit { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 16px; }
+.builder-unit.picked { border-color: var(--green); background: #eaf4ec; }
+.builder-hanzi { font-size: 22px; color: #214f42; font-family: "Songti SC", "STSong", "Noto Serif CJK SC", system-ui, serif; }
+.builder-pinyin { font-size: 12px; color: var(--green); }
+.rescue-btn { width: 100%; margin: 0 0 18px; }
+
+/* Quests & badges */
+.quest-sec, .badge-sec { margin-top: 22px; text-align: left; }
+.quest-sec h3, .badge-sec h3 { text-align: center; }
+.quest-row { margin: 14px 0; }
+.quest-label { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+.quest-bar { height: 10px; border-radius: 8px; background: #e4e7d8; overflow: hidden; }
+.quest-fill { height: 100%; background: linear-gradient(90deg, #258979, #7ca768); border-radius: 8px; }
+.quest-done .quest-label strong { color: var(--green); }
+.badge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.badge { border: 1px solid var(--border); border-radius: 16px; padding: 12px; background: #fffdf8; }
+.badge strong { display: block; font-size: 14px; margin-bottom: 4px; }
+.badge span { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.badge.locked { opacity: .55; }
+@media (min-width: 560px) { .badge-grid { grid-template-columns: repeat(4, 1fr); } }
+
 </style>
 </head>
 <body>
@@ -7079,6 +7107,9 @@ const SENTENCES = [
   }
 ];
 
+// 28 grammar patterns x 2 sentences, pre-segmented (inlined from content/grammar-patterns.json)
+const GRAMMAR_PATTERNS = {"_note":"Khung pattern tham khảo Chinese Grammar Wiki (resources.allsetlearning.com, A1/A2 grammar points with HSK). Toàn bộ câu ví dụ do trợ lý tự soạn theo từ vựng HSK1-2 của app (không copy câu của wiki). zh viết cách theo từ để dùng trực tiếp cho bài Xếp câu; pinyin app tự sinh bằng pinyin-pro đã nhúng.","patterns":[{"hsk":1,"id":"svo","name_vi":"Câu trần thuật cơ bản","pattern_zh":"Chủ ngữ + Động từ + Tân ngữ","sentences":[{"vi":"Tôi yêu món ăn Trung Quốc.","zh":"我 爱 中国菜"},{"vi":"Anh ấy uống trà.","zh":"他 喝 茶"}]},{"hsk":1,"id":"noun-hen-adj","name_vi":"Câu tính từ","pattern_zh":"Danh từ + 很 + Tính từ","sentences":[{"vi":"Mẹ tôi rất đẹp.","zh":"我 妈妈 很 漂亮"},{"vi":"Quả táo này rất ngon.","zh":"这 个 苹果 很 好吃"}]},{"hsk":1,"id":"shi-b","name_vi":"Câu định nghĩa với 是","pattern_zh":"A + 是 + B","sentences":[{"vi":"Anh ấy là giáo viên.","zh":"他 是 老师"},{"vi":"Tôi là học sinh.","zh":"我 是 学生"}]},{"hsk":1,"id":"bu-neg","name_vi":"Phủ định với 不","pattern_zh":"不 + Động từ / Tính từ","sentences":[{"vi":"Tôi không đi.","zh":"我 不 去"},{"vi":"Anh ấy không vui.","zh":"他 不 高兴"}]},{"hsk":1,"id":"ma-question","name_vi":"Câu hỏi có-không với 吗","pattern_zh":"⋯⋯ + 吗?","sentences":[{"vi":"Bạn khỏe không?","zh":"你 好 吗"},{"vi":"Bạn yêu tôi không?","zh":"你 爱 我 吗"}]},{"hsk":1,"id":"time-wordorder","name_vi":"Trạng ngữ thời gian đứng trước động từ","pattern_zh":"Chủ ngữ + Thời gian + Động từ","sentences":[{"vi":"Ngày mai tôi đi Bắc Kinh.","zh":"我 明天 去 北京"},{"vi":"Hôm qua anh ấy đã không đến.","zh":"他 昨天 没 来"}]},{"hsk":1,"id":"tai-le","name_vi":"Quá... với 太...了","pattern_zh":"太 + Tính từ + 了","sentences":[{"vi":"Tốt quá!","zh":"太 好 了"},{"vi":"Cái này đắt quá.","zh":"这 个 太 贵 了"}]},{"hsk":1,"id":"he-and","name_vi":"Nối danh từ với 和","pattern_zh":"Danh từ 1 + 和 + Danh từ 2","sentences":[{"vi":"Tôi và anh ấy là bạn bè.","zh":"我 和 他 是 朋友"},{"vi":"Bố và mẹ đều rất khỏe.","zh":"爸爸 和 妈妈 都 很 好"}]},{"hsk":1,"id":"ge-mw","name_vi":"Lượng từ 个","pattern_zh":"Số + 个 + Danh từ","sentences":[{"vi":"Tôi có ba đứa con.","zh":"我 有 三 个 孩子"},{"vi":"Một quả táo năm tệ.","zh":"一 个 苹果 五 块钱"}]},{"hsk":1,"id":"you-possess","name_vi":"Sở hữu với 有","pattern_zh":"Chủ ngữ + 有 + Tân ngữ","sentences":[{"vi":"Tôi có một con mèo.","zh":"我 有 一 只 猫"},{"vi":"Anh ấy có rất nhiều tiền.","zh":"他 有 很多 钱"}]},{"hsk":1,"id":"place-you-exist","name_vi":"Tồn tại ở đâu với 有","pattern_zh":"Nơi chốn + 有 + Tân ngữ","sentences":[{"vi":"Trong trường có rất nhiều học sinh.","zh":"学校 里 有 很多 学生"},{"vi":"Trên bàn có một tách trà.","zh":"桌子 上 有 一 杯 茶"}]},{"hsk":1,"id":"zenme-how","name_vi":"Hỏi cách thức với 怎么","pattern_zh":"怎么 + Động từ?","sentences":[{"vi":"Bạn đi bằng cách nào?","zh":"你 怎么 去"},{"vi":"Chữ này đọc thế nào?","zh":"这 个 字 怎么 读"}]},{"hsk":1,"id":"ne-particle","name_vi":"Trợ từ 呢 (còn... thì sao / đâu)","pattern_zh":"⋯⋯ + 呢?","sentences":[{"vi":"Còn bạn thì sao?","zh":"你 呢"},{"vi":"Sách của tôi đâu?","zh":"我 的 书 呢"}]},{"hsk":1,"id":"ba-suggest","name_vi":"Rủ rê với 吧","pattern_zh":"Mệnh lệnh + 吧","sentences":[{"vi":"Chúng ta đi thôi.","zh":"我们 走 吧"},{"vi":"Bạn ngồi đi.","zh":"你 坐 吧"}]},{"hsk":1,"id":"zai-place-verb","name_vi":"Ở đâu làm gì (在 trước động từ)","pattern_zh":"Chủ ngữ + 在 + Nơi chốn + Động từ","sentences":[{"vi":"Tôi ăn cơm ở nhà.","zh":"我 在 家 吃饭"},{"vi":"Anh ấy học ở trường.","zh":"他 在 学校 学习"}]},{"hsk":1,"id":"le-complete","name_vi":"Hoàn thành với 了","pattern_zh":"Chủ ngữ + Động từ + 了 + Tân ngữ","sentences":[{"vi":"Tôi ăn cơm rồi.","zh":"我 吃 了 饭"},{"vi":"Anh ấy đã mua một cái áo.","zh":"他 买 了 一 件 衣服"}]},{"hsk":2,"id":"yinwei-suoyi","name_vi":"Vì... nên... (nguyên nhân-kết quả)","pattern_zh":"因为 ⋯⋯, 所以 ⋯⋯","sentences":[{"vi":"Vì trời mưa nên tôi đã không đi.","zh":"因为 下雨 所以 我 没 去"},{"vi":"Vì anh ấy ốm nên đã không đến lớp.","zh":"因为 他 生病了 所以 没 来 上课"}]},{"hsk":2,"id":"de-shihou","name_vi":"Lúc... với 的时候","pattern_zh":"⋯⋯ + 的时候","sentences":[{"vi":"Lúc tôi ăn cơm thì đừng nói chuyện.","zh":"我 吃饭 的 时候 别 说话"},{"vi":"Lúc nhỏ tôi sống ở Bắc Kinh.","zh":"小 的 时候 我 住 在 北京"}]},{"hsk":2,"id":"bi-compare","name_vi":"So sánh hơn với 比","pattern_zh":"N1 + 比 + N2 + Tính từ","sentences":[{"vi":"Anh ấy cao hơn tôi.","zh":"他 比 我 高"},{"vi":"Bắc Kinh lớn hơn Thượng Hải.","zh":"北京 比 上海 大"}]},{"hsk":2,"id":"guo-experience","name_vi":"Từng trải với 过","pattern_zh":"Động từ + 过","sentences":[{"vi":"Tôi đã từng đi Trung Quốc.","zh":"我 去 过 中国"},{"vi":"Bạn đã từng ăn vịt quay Bắc Kinh chưa?","zh":"你 吃 过 北京烤鸭 吗"}]},{"hsk":2,"id":"zui-superlative","name_vi":"Nhất với 最","pattern_zh":"最 + Tính từ","sentences":[{"vi":"Anh ấy là học sinh giỏi nhất.","zh":"他 是 最 好 的 学生"},{"vi":"Tôi thích ăn cơm nhất.","zh":"我 最 爱 吃 米饭"}]},{"hsk":2,"id":"yijing-le","name_vi":"Đã... rồi với 已经...了","pattern_zh":"已经 ⋯⋯ 了","sentences":[{"vi":"Tôi ăn rồi.","zh":"我 已经 吃 了"},{"vi":"Phim đã bắt đầu rồi.","zh":"电影 已经 开始 了"}]},{"hsk":2,"id":"yiqi-together","name_vi":"Cùng nhau với 一起","pattern_zh":"一起 + Động từ","sentences":[{"vi":"Chúng ta cùng đi nhé.","zh":"我们 一起 去 吧"},{"vi":"Tôi cùng bạn bè học bài.","zh":"我 和 朋友 一起 学习"}]},{"hsk":2,"id":"cong-dao","name_vi":"Từ... đến... với 从...到...","pattern_zh":"从 ⋯⋯ 到 ⋯⋯","sentences":[{"vi":"Từ Bắc Kinh đến Thượng Hải rất xa.","zh":"从 北京 到 上海 很 远"},{"vi":"Tôi làm việc từ sáng đến tối.","zh":"我 从 早上 到 晚上 都 在 工作"}]},{"hsk":2,"id":"yixia-brief","name_vi":"Làm thử một chút với 一下","pattern_zh":"Động từ + 一下","sentences":[{"vi":"Bạn đợi một chút.","zh":"你 等 一下"},{"vi":"Để tôi nghĩ một chút.","zh":"让 我 想 一下"}]},{"hsk":2,"id":"bie-dont","name_vi":"Đừng... với 别","pattern_zh":"别 + Động từ","sentences":[{"vi":"Đừng nói chuyện!","zh":"别 说话"},{"vi":"Đừng lo.","zh":"别 担心"}]},{"hsk":2,"id":"kuai-le","name_vi":"Sắp... rồi với 快...了","pattern_zh":"快 + Động từ/Tính từ + 了","sentences":[{"vi":"Sắp mưa rồi.","zh":"快 下雨 了"},{"vi":"Tôi sắp muộn rồi.","zh":"我 快 迟到 了"}]},{"hsk":2,"id":"youdian-a-little","name_vi":"Hơi... với 有点","pattern_zh":"有点 + Tính từ","sentences":[{"vi":"Tôi hơi mệt.","zh":"我 有点 累"},{"vi":"Món này hơi mặn.","zh":"这 个 菜 有点 咸"}]}]};
+
 const DIALOGUES = [
   {
     "id": "d1",
@@ -7739,7 +7770,7 @@ const READINGS = [
 (() => {
   const main = document.getElementById('main'), note = document.getElementById('storage-note');
   const Engine = window.Engine;
-  const modes = ['hanzi->meaning', 'meaning->hanzi', 'hanzi->pinyin', 'pinyin->hanzi'];
+  const modes = ['hanzi->meaning', 'meaning->hanzi', 'hanzi->pinyin', 'pinyin->hanzi', 'builder', 'cloze'];
   const titles = {choice:'Trắc nghiệm', listen:'Luyện nghe', sentence:'Dịch câu', reading:'Đọc hiểu', shadow:'Shadowing'};
   function el(tag, cls, text) {
     const n = document.createElement(tag); if (cls) n.className = cls;
@@ -7758,6 +7789,17 @@ const READINGS = [
   }
   const states = read('zh-srs'), stats = read('zh-stats');
   const sentenceStates = read('zh-srs-sentences'), passageStates = read('zh-srs-passages');
+  const wordStats = read('zh-word-stats');
+  let badges = read('zh-badges');
+  let quests = null;
+  const vocabByHanzi = {};
+  VOCAB.forEach(w => { if (!vocabByHanzi[w.hanzi]) vocabByHanzi[w.hanzi] = w; });
+  // Flattened grammar-pattern bank for the sentence-builder quiz (56 pre-segmented sentences).
+  const PATTERN_BANK = [];
+  (GRAMMAR_PATTERNS.patterns || []).forEach(p => (p.sentences || []).forEach(s => {
+    const units = String(s.zh).split(' ').filter(Boolean);
+    if (units.length) PATTERN_BANK.push({patternId: p.id, name_vi: p.name_vi, pattern_zh: p.pattern_zh, zh: s.zh, vi: s.vi, units});
+  }));
   let plan = read('zh-daily-srs');
   stats.sentCorrect = Number(stats.sentCorrect ?? stats.sentenceCorrect) || 0;
   stats.passDone = Number(stats.passDone ?? stats.readingsCompleted ?? stats.readingCompleted) || 0;
@@ -7767,9 +7809,93 @@ const READINGS = [
       localStorage.setItem('zh-stats', JSON.stringify(stats));
       localStorage.setItem('zh-srs-sentences', JSON.stringify(sentenceStates));
       localStorage.setItem('zh-srs-passages', JSON.stringify(passageStates));
+      localStorage.setItem('zh-word-stats', JSON.stringify(wordStats));
+      localStorage.setItem('zh-badges', JSON.stringify(badges));
+      if (quests) localStorage.setItem('zh-quests', JSON.stringify(quests));
       plan.sessions = sessions;
       localStorage.setItem('zh-daily-srs', JSON.stringify(plan, (key, value) => value instanceof Set ? [...value] : value));
     } catch (_) { warning(); }
+  }
+  // ================= XP / QUESTS / BADGES =================
+  const QUEST_DEFS = [
+    {id: 'q_choice', desc: 'Làm đúng 10 câu trắc nghiệm', target: 10},
+    {id: 'q_shadow', desc: 'Hoàn thành 1 bài shadowing', target: 1},
+    {id: 'q_tabs', desc: 'Học ở 4 tab khác nhau', target: 4},
+  ];
+  function loadQuests() {
+    const today = dateKey();
+    const q = read('zh-quests');
+    if (!q || q.date !== today || typeof q.progress !== 'object') {
+      return {date: today, progress: {}, done: {}, tabs: {}};
+    }
+    if (typeof q.tabs !== 'object') q.tabs = {};
+    return q;
+  }
+  function persistQuests() {
+    try { localStorage.setItem('zh-quests', JSON.stringify(quests)); } catch (_) { warning(); }
+  }
+  const BADGE_DEFS = [
+    {id: 'streak7', name: 'Bền bỉ', desc: 'Học 7 ngày liên tiếp', test: () => (Number(stats.streak) || 0) >= 7},
+    {id: 'xp1000', name: 'Thợ săn XP', desc: 'Đạt 1000 XP', test: () => (Number(stats.xp) || 0) >= 1000},
+    {id: 'correct50', name: 'Bách phát', desc: 'Trả lời đúng 50 câu', test: () => (Number(stats.totalCorrect) || 0) >= 50},
+    {id: 'leechHunter', name: 'Kẻ săn từ yếu', desc: 'Hoàn thành 1 buổi ôn từ yếu', test: () => (Number(stats.rescueDone) || 0) >= 1},
+    {id: 'builder10', name: 'Thợ xây câu', desc: 'Xếp đúng 10 câu', test: () => (Number(stats.builderCorrect) || 0) >= 10},
+    {id: 'cloze10', name: 'Bậc thầy điền từ', desc: 'Điền đúng 10 từ', test: () => (Number(stats.clozeCorrect) || 0) >= 10},
+    {id: 'shadow10', name: 'Bậc thầy shadowing', desc: 'Hoàn thành 10 bài shadowing', test: () => (Number(stats.shadowRuns) || 0) >= 10},
+    {id: 'scholar', name: 'Học giả', desc: '100 từ đạt hộp SRS 4+', test: () => VOCAB.filter(w => states[w.id] && states[w.id].box >= 4).length >= 100},
+  ];
+  function checkBadges() {
+    let changed = false;
+    for (const b of BADGE_DEFS) {
+      if (!badges[b.id]) {
+        let ok = false;
+        try { ok = !!b.test(); } catch (_) {}
+        if (ok) { badges[b.id] = dateKey(); changed = true; }
+      }
+    }
+    if (changed) { try { localStorage.setItem('zh-badges', JSON.stringify(badges)); } catch (_) {} }
+  }
+  function updateXPBar() {
+    try {
+      let xpEl = document.getElementById('xp-display');
+      if (!xpEl) {
+        const head = document.querySelector('.header > div');
+        if (!head) return;
+        xpEl = el('p', 'xp-pill'); xpEl.id = 'xp-display'; head.append(xpEl);
+      }
+      xpEl.textContent = `⭐ ${Number(stats.xp) || 0} XP`;
+    } catch (_) {}
+  }
+  function awardXP(n, reason) {
+    stats.xp = (Number(stats.xp) || 0) + n;
+    checkBadges();
+    updateXPBar();
+    save();
+  }
+  function bumpQuest(id, n = 1) {
+    if (!quests) return;
+    const def = QUEST_DEFS.find(d => d.id === id);
+    if (!def || quests.done[id]) return;
+    quests.progress[id] = Math.min(def.target, (Number(quests.progress[id]) || 0) + n);
+    if (quests.progress[id] >= def.target) {
+      quests.done[id] = true;
+      awardXP(50, 'quest:' + id);
+    }
+    persistQuests();
+  }
+  function trackTabQuest(t) {
+    if (!quests || !['choice', 'listen', 'sentence', 'reading'].includes(t)) return;
+    quests.tabs = quests.tabs || {};
+    if (!quests.tabs[t]) {
+      quests.tabs[t] = 1;
+      const n = Object.keys(quests.tabs).length;
+      quests.progress['q_tabs'] = Math.min(4, n);
+      if (n >= 4 && !quests.done['q_tabs']) {
+        quests.done['q_tabs'] = true;
+        awardXP(50, 'quest:q_tabs');
+      }
+      persistQuests();
+    }
   }
   let tab = 'choice', day = '', daily, sentences, passage, passageQuestions;
   let sessions = {}, audio = null, audioToken = 0;
@@ -7940,6 +8066,7 @@ const READINGS = [
   function resetDay() {
     const today = dateKey(); if (day === today) return;
     day = today;
+    quests = loadQuests();
     daily = Engine.dailySet(VOCAB, states, day).map(q => VOCAB.find(w => w.id === q.wordId));
     const bank = [...DIALOGUES, ...READINGS];
     if (plan.date !== day || !Array.isArray(plan.sentenceIds) ||
@@ -7959,13 +8086,24 @@ const READINGS = [
     }));
     save();
   }
-  function record(correct, word) {
-    const s = sessions[tab]; if (s.answered) return; s.answered = true;
-    if (word) states[word.id] = Engine.srsNext(states[word.id], correct);
+  function effSession() {
+    return (tab === 'choice' && rescue.active) ? rescue.session : sessions[tab];
+  }
+  function record(correct, word, xp) {
+    const s = effSession(); if (s.answered) return; s.answered = true;
+    if (word) {
+      states[word.id] = Engine.srsNext(states[word.id], correct);
+      const ws = wordStats[word.id] || (wordStats[word.id] = {r: 0, w: 0});
+      if (correct) ws.r++; else ws.w++;
+    }
     const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
     if (stats.lastStudyDate !== day) { stats.streak = stats.lastStudyDate === dateKey(yesterday) ? (Number(stats.streak)||0)+1 : 1; stats.lastStudyDate = day; }
     stats.totalAnswered = (Number(stats.totalAnswered)||0)+1;
     stats.totalCorrect = (Number(stats.totalCorrect)||0)+Number(correct);
+    trackTabQuest(tab);
+    if (tab === 'choice' && correct) bumpQuest('q_choice');
+    if (correct && xp) awardXP(xp, tab);
+    checkBadges();
     if (tab === 'sentence') {
       const id = sentences[s.index].id;
       sentenceStates[id] = sentenceNext(sentenceStates[id], correct);
@@ -7979,6 +8117,218 @@ const READINGS = [
         s.completed = true;
       }
     }
+  }
+  // SRS + word-stats for extra words touched by a builder question (anchor word already handled by record()).
+  function recordWords(correct, words) {
+    (words || []).forEach(w => {
+      if (!w || !w.id) return;
+      states[w.id] = Engine.srsNext(states[w.id], correct);
+      const ws = wordStats[w.id] || (wordStats[w.id] = {r: 0, w: 0});
+      if (correct) ws.r++; else ws.w++;
+    });
+  }
+  // ================= SENTENCE BUILDER (xếp câu) =================
+  // Fallback splitter for the 120-sentence bank: align pinyin tokens to hanzi right-to-left.
+  function builderUnitsFrom120(s) {
+    const PUNCT = new Set([...'，。！？；：、.,?!;: ']);
+    const chars = [...s.zh].filter(c => !PUNCT.has(c));
+    const toks = String(s.pinyin || '').trim().split(/\s+/).filter(Boolean)
+      .map(t => t.replace(/[.,?!;:]+$/, ''));
+    if (!chars.length || !toks.length) return chars;
+    const units = [];
+    let ci = chars.length;
+    for (let ti = toks.length - 1; ti >= 0; ti--) {
+      if (ci <= 0) break;
+      let take = 1 + Math.max(0, ci - (ti + 1));
+      take = Math.min(take, 2, ci - ti);
+      if (take < 1) take = 1;
+      units.unshift(chars.slice(ci - take, ci).join(''));
+      ci -= take;
+    }
+    if (ci > 0) units.unshift(chars.slice(0, ci).join(''));
+    return units.filter(Boolean);
+  }
+  function wordsInUnits(unitTexts) {
+    const found = [], seen = new Set();
+    (unitTexts || []).forEach(t => {
+      const w = vocabByHanzi[t];
+      if (w && !seen.has(w.id)) { seen.add(w.id); found.push(w); }
+    });
+    return found;
+  }
+  function makeBuilderQuiz(word, dayStr, index) {
+    let pick = null, fromPattern = true;
+    if (PATTERN_BANK.length) {
+      const withWord = PATTERN_BANK.filter(p => p.units.includes(word.hanzi));
+      const pool = withWord.length ? withWord : PATTERN_BANK;
+      pick = dailyShuffle(pool, dayStr + ':builder')[index % pool.length];
+    }
+    if (!pick) {
+      // Fallback: 120-sentence bank with pinyin alignment.
+      const s = dailyShuffle(SENTENCES, dayStr + ':builder120')[index % SENTENCES.length];
+      const units = builderUnitsFrom120(s);
+      pick = {patternId: 'bank', name_vi: 'Luyện xếp câu', pattern_zh: '', zh: s.zh, vi: s.vi, units};
+      fromPattern = false;
+    }
+    const units = pick.units.map(text => ({text, pinyin: pinyinFor(text)}));
+    const order = dailyShuffle(units.map((_, i) => i), dayStr + ':builderorder:' + index);
+    return {kind: 'builder', pattern: pick, units, shuffled: order.map(i => units[i]), vi: pick.vi, fromPattern};
+  }
+  // ================= CLOZE (điền từ) =================
+  function pickDistractors(word, n) {
+    const pool = VOCAB.filter(v => v.id !== word.id);
+    pool.forEach(v => {
+      let score = 0;
+      if (v.topic === word.topic) score += 10;
+      score += Math.random() * 5;
+      v._score = score;
+    });
+    pool.sort((a, b) => b._score - a._score);
+    const out = [], seen = new Set([word.hanzi]);
+    for (const v of pool) {
+      if (!seen.has(v.hanzi)) { seen.add(v.hanzi); out.push(v); if (out.length === n) break; }
+    }
+    return out;
+  }
+  function findClozeSentence(word, dayStr) {
+    const bank = dailyShuffle(PATTERN_BANK, dayStr + ':cloze');
+    for (const p of bank) {
+      if (p.units.includes(word.hanzi)) return {units: p.units, vi: p.vi};
+    }
+    const bank2 = dailyShuffle(SENTENCES, dayStr + ':cloze120');
+    for (const s of bank2) {
+      const units = builderUnitsFrom120(s);
+      if (units.includes(word.hanzi)) return {units, vi: s.vi};
+    }
+    return null;
+  }
+  function makeClozeQuiz(word, dayStr) {
+    const found = findClozeSentence(word, dayStr);
+    if (!found) return null;
+    const blanked = found.units.map(u => (u === word.hanzi ? '＿＿＿' : u)).join('');
+    const full = found.units.join('');
+    const distractors = pickDistractors(word, 3).map(w => w.hanzi);
+    const options = dailyShuffle([word.hanzi, ...distractors], dayStr + ':clozeopt:' + word.id);
+    return {
+      kind: 'cloze',
+      question: blanked,
+      options,
+      answerIndex: options.indexOf(word.hanzi),
+      detail: `${full} · ${found.vi} (${word.pinyin})`,
+      word
+    };
+  }
+  function makeQuiz(word, type, dayStr, index) {
+    if (type === 'builder') return makeBuilderQuiz(word, dayStr, index);
+    if (type === 'cloze') {
+      const q = makeClozeQuiz(word, dayStr);
+      if (q) return q;
+      return {...Engine.mulChoice(word, VOCAB, 'hanzi->meaning'), kind: 'mul'};
+    }
+    return {...Engine.mulChoice(word, VOCAB, type), kind: 'mul'};
+  }
+  function xpForQuiz(q) {
+    if (!q) return 10;
+    if (q.kind === 'builder' || q.kind === 'cloze') return 15;
+    return 10;
+  }
+  function xpForTab() {
+    if (tab === 'sentence') return 20;
+    if (tab === 'reading') return 50;
+    return xpForQuiz(effSession().quiz);
+  }
+  // Render the sentence-builder card (tap units in order, then check).
+  function renderBuilderCard(card, SE, word, quiz) {
+    const P = quiz.pattern || {};
+    card.append(el('p','instruction','Xếp các đơn vị thành câu đúng thứ tự.'));
+    card.append(el('p','meaning','“' + quiz.vi + '”'));
+    const hearStatus = el('p','hint',''); hearStatus.setAttribute('role','status');
+    const hearBtn = button('🔊 Nghe câu','secondary',()=>{ speak(quiz.units.map(u=>u.text).join(''), hearStatus); });
+    const answerArea = el('div','builder-answer');
+    const pool = el('div','builder-pool');
+    const picked = [];
+    const feedback = el('p','feedback'); feedback.setAttribute('role','status');
+    const next = button('Câu tiếp theo →','primary',()=>{ SE.index++; SE.quiz=null; SE.answered=false; save(); render(); });
+    next.hidden = true;
+    const checkBtn = button('Kiểm tra','primary',()=>{
+      if (SE.answered || picked.length !== quiz.units.length) return;
+      const target = quiz.units.map(u=>u.text).join('');
+      const correct = picked.map(i=>quiz.shuffled[i].text).join('') === target;
+      const words = wordsInUnits(quiz.units.map(u=>u.text));
+      record(correct, word, 15);
+      recordWords(correct, words.filter(w => w.id !== word.id));
+      if (correct) {
+        stats.builderCorrect = (Number(stats.builderCorrect)||0)+1;
+        speak(target, hearStatus);
+      }
+      SE.feedback = `${correct ? 'Chính xác!' : 'Chưa đúng.'} Đáp án: ${target}` +
+        (P.name_vi ? ` — 📝 ${P.name_vi}${P.pattern_zh ? ' · ' + P.pattern_zh : ''}` : '');
+      save(); paintBuilder();
+    });
+    function unitButton(u, cls, onTap) {
+      const b = button('', cls, onTap);
+      const hz = el('span','builder-hanzi',u.text); hz.lang = 'zh-CN';
+      b.append(hz);
+      if (u.pinyin) b.append(el('span','builder-pinyin',u.pinyin));
+      return b;
+    }
+    function refresh() {
+      answerArea.replaceChildren();
+      picked.forEach(pi => {
+        answerArea.append(unitButton(quiz.shuffled[pi], 'builder-unit picked', () => {
+          picked.splice(picked.indexOf(pi), 1); refresh();
+        }));
+      });
+      pool.replaceChildren();
+      quiz.shuffled.forEach((u, i) => {
+        if (picked.includes(i)) return;
+        pool.append(unitButton(u, 'builder-unit', () => { picked.push(i); refresh(); }));
+      });
+      checkBtn.disabled = picked.length !== quiz.units.length;
+    }
+    function paintBuilder() {
+      if (!SE.answered) return;
+      Array.from(pool.children).forEach(n => { n.disabled = true; });
+      Array.from(answerArea.children).forEach(n => { n.disabled = true; });
+      feedback.textContent = SE.feedback;
+      checkBtn.hidden = true;
+      next.hidden = false;
+    }
+    card.append(answerArea, pool, checkBtn, hearBtn, hearStatus, feedback, next);
+    refresh();
+  }
+  // ================= LEECH RESCUE (ôn từ yếu) =================
+  const rescue = {
+    active: false, words: [],
+    types: ['hanzi->meaning', 'meaning->hanzi', 'pinyin->hanzi', 'builder', 'cloze'],
+    session: null
+  };
+  let rescueDoneMsg = false;
+  function freshRescueSession() {
+    return {index: 0, quiz: null, answered: false, heard: false, revealed: new Set(), pinyin: true, wrong: 0};
+  }
+  function leeches() {
+    return Object.entries(wordStats)
+      .filter(([id, s]) => s && s.w >= 3 && (s.r / (s.r + s.w)) < 0.5)
+      .map(([id]) => VOCAB.find(w => w.id === id))
+      .filter(Boolean);
+  }
+  function startRescue() {
+    const ws = dailyShuffle(leeches(), day + ':rescue');
+    rescue.active = true;
+    rescue.words = ws;
+    rescue.session = freshRescueSession();
+    render();
+  }
+  function finishRescue() {
+    rescue.active = false;
+    rescue.words = [];
+    rescue.session = null;
+    stats.rescueDone = (Number(stats.rescueDone) || 0) + 1;
+    checkBadges();
+    save();
+    tab = 'choice';
+    render();
   }
 
   // ================= SHADOWING TAB (luyện nghe & đọc đuổi) =================
@@ -8105,13 +8455,19 @@ const READINGS = [
       shadow.current = idx;
       highlightShadow(idx);
       shadowStatus(`Câu ${idx + 1}/${shadow.sentences.length} · ${plan.length} lượt phát`);
-      speak(shadow.sentences[idx].zh, shadow.statusEl, () => resolve());
+      speak(shadow.sentences[idx].zh, shadow.statusEl, () => { awardXP(5, 'shadow'); resolve(); });
     });
     playShadowPlan(plan, playOne, pauseMs, () => myRun !== shadow.run).then(done => {
       if (myRun !== shadow.run) return;
       shadow.playing = false;
       shadowStatus(done ? 'Đã phát xong toàn bộ.' : 'Đã dừng.');
       updateShadowTransport();
+      if (done) {
+        stats.shadowRuns = (Number(stats.shadowRuns) || 0) + 1;
+        bumpQuest('q_shadow');
+        checkBadges();
+        save();
+      }
     });
   }
   function shadowStatus(msg) {
@@ -8409,9 +8765,39 @@ const READINGS = [
   function renderStats() {
     const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
     const streak = [day,dateKey(yesterday)].includes(stats.lastStudyDate) ? Number(stats.streak)||0 : 0;
+    if (!quests) quests = loadQuests();
+    updateXPBar();
     const grid = el('div','stats-grid');
-    [[VOCAB.filter(w => states[w.id]?.box >= 4).length,'Từ đã thuộc · hộp 4 trở lên'],[`${stats.totalAnswered ? Math.round(stats.totalCorrect/stats.totalAnswered*100) : 0}%`,'Độ chính xác'],[streak,'Ngày học liên tiếp'],[Number(stats.sentCorrect)||0,'Câu dịch đúng'],[Number(stats.passDone)||0,'Bài đọc hiểu đã làm']].forEach(([v,t]) => { const n=el('div','stat'); n.append(el('strong','',v),el('span','',t));grid.append(n); });
+    [[VOCAB.filter(w => states[w.id]?.box >= 4).length,'Từ đã thuộc · hộp 4 trở lên'],[`${stats.totalAnswered ? Math.round(stats.totalCorrect/stats.totalAnswered*100) : 0}%`,'Độ chính xác'],[streak,'Ngày học liên tiếp'],[Number(stats.sentCorrect)||0,'Câu dịch đúng'],[Number(stats.passDone)||0,'Bài đọc hiểu đã làm'],[`${Number(stats.xp)||0} XP`,'Điểm kinh nghiệm']].forEach(([v,t]) => { const n=el('div','stat'); n.append(el('strong','',v),el('span','',t));grid.append(n); });
     main.append(el('h2','','Hành trình của bạn'),grid,el('p','instruction',`Đã trả lời ${Number(stats.totalAnswered)||0} câu · Đúng ${Number(stats.totalCorrect)||0} câu. Tiến độ được lưu trên trình duyệt này.`));
+    const qSec = el('section','card quest-sec');
+    qSec.append(el('h3','','🎯 Nhiệm vụ hôm nay'));
+    QUEST_DEFS.forEach(d => {
+      const p = Math.min(Number(quests.progress[d.id]) || 0, d.target);
+      const done = !!quests.done[d.id];
+      const row = el('div','quest-row' + (done ? ' quest-done' : ''));
+      const label = el('div','quest-label');
+      label.append(el('strong','',(done ? '✅ ' : '') + d.desc), el('span','counter',`${p} / ${d.target}`));
+      const bar = el('div','quest-bar');
+      const fill = el('div','quest-fill');
+      fill.style.width = Math.round(p / d.target * 100) + '%';
+      bar.append(fill);
+      row.append(label, bar);
+      qSec.append(row);
+    });
+    qSec.append(el('p','instruction','Hoàn thành mỗi nhiệm vụ được +50 XP. Nhiệm vụ mới mỗi ngày.'));
+    const bSec = el('section','card badge-sec');
+    bSec.append(el('h3','','🏅 Huy hiệu'));
+    const bGrid = el('div','badge-grid');
+    BADGE_DEFS.forEach(b => {
+      const earned = !!badges[b.id];
+      const chip = el('div','badge' + (earned ? '' : ' locked'));
+      chip.append(el('strong','',(earned ? '🏅 ' : '🔒 ') + b.name),
+        el('span','', b.desc + (earned && badges[b.id] ? ` · ${badges[b.id]}` : '')));
+      bGrid.append(chip);
+    });
+    bSec.append(bGrid);
+    main.append(qSec, bSec);
   }
   function render() {
     stopAudio();
@@ -8429,10 +8815,23 @@ const READINGS = [
       if (!workload.parentNode) document.querySelector('.header').append(workload);
       if (tab === 'stats') { renderStats(); return; }
       if (tab === 'shadow') { renderShadow(); return; }
-      const s = sessions[tab], count = tab === 'sentence' ? sentences.length : tab === 'reading' ? passageQuestions.length : daily.length;
-      if (s.index >= count) { main.append(el('section','card empty','Bạn đã hoàn thành lượt học hôm nay!'),button('Xem thống kê','primary',()=>selectTab('stats'))); return; }
-      const head=el('div','lesson-head'); head.append(el('h2','',titles[tab]),el('span','counter',`${s.index+1} / ${count} câu hôm nay`));
-      const progress=el('progress'); progress.max=count;progress.value=s.index;progress.setAttribute('aria-label','Tiến độ lượt học'); main.append(head,progress);
+      const inRescue = tab === 'choice' && rescue.active;
+      const s = sessions[tab];
+      const SE = inRescue ? rescue.session : s;
+      const count = tab === 'sentence' ? sentences.length : tab === 'reading' ? passageQuestions.length : inRescue ? 10 : daily.length;
+      if (inRescue && SE.index >= 10) { finishRescue(); return; }
+      if (SE.index >= count) { main.append(el('section','card empty','Bạn đã hoàn thành lượt học hôm nay!'),button('Xem thống kê','primary',()=>selectTab('stats'))); return; }
+      const head=el('div','lesson-head'); head.append(el('h2','',inRescue?'🆘 Ôn từ yếu':titles[tab]),el('span','counter',`${SE.index+1} / ${count} câu hôm nay`));
+      const progress=el('progress'); progress.max=count;progress.value=SE.index;progress.setAttribute('aria-label','Tiến độ lượt học'); main.append(head,progress);
+      updateXPBar();
+      if (rescueDoneMsg) { rescueDoneMsg = false; main.append(el('p','notice','🎉 Xong buổi ôn từ yếu! Từ nào vẫn sai sẽ ở lại danh sách để ôn tiếp.')); }
+      if (tab === 'choice' && !inRescue) {
+        const ls = leeches();
+        if (ls.length >= 3) main.append(button(`🆘 Ôn từ yếu (${ls.length} từ)`,'secondary rescue-btn',()=>startRescue()));
+      }
+      if (inRescue) {
+        main.append(button('✕ Thoát ôn từ yếu','secondary',()=>{ rescue.active=false; rescue.words=[]; rescue.session=null; render(); }));
+      }
       const card=el('section','card'); let word=null, detail='';
       if (tab === 'reading') {
         card.classList.add('passage'); card.append(el('h2','',passage.title_vi),el('p','instruction','Bấm từng dòng để hiện hoặc ẩn nghĩa tiếng Việt.'));
@@ -8449,23 +8848,41 @@ const READINGS = [
         const py=el('p','pinyin',s.quiz.promptPinyin);py.hidden=!s.pinyin;
         const toggle=button(s.pinyin?'Ẩn pinyin':'Hiện pinyin','secondary',()=>{ s.pinyin=!s.pinyin;py.hidden=!s.pinyin;toggle.textContent=s.pinyin?'Ẩn pinyin':'Hiện pinyin';toggle.setAttribute('aria-expanded',String(s.pinyin)); });toggle.setAttribute('aria-expanded',String(s.pinyin));
         card.append(el('p','instruction','Chọn nghĩa tiếng Việt phù hợp.'),zh,py,toggle);
-      } else {
-        word=daily[s.index]; const type=tab==='listen'?'pinyin->hanzi':modes[s.index%4];
-        if (!s.quiz) s.quiz=Engine.mulChoice(word,VOCAB,type);
+      } else if (tab === 'listen') {
+        word=daily[s.index]; const type='pinyin->hanzi';
+        if (!s.quiz) s.quiz={...Engine.mulChoice(word,VOCAB,type),kind:'mul'};
         detail=`${word.hanzi} · ${word.pinyin} · ${word.meaning_vi}`;
-        if (tab==='listen') {
-          const status=el('p','hint','Bấm Nghe để mở các đáp án.');status.setAttribute('role','status');
-          const listen=button(s.heard?'▶ Nghe lại':'▶ Nghe','primary listen',()=>{ s.heard=true;options.hidden=false;listen.textContent='▶ Nghe lại';speak(word.hanzi,status); });
-          card.append(el('p','instruction','Nghe phát âm rồi chọn chữ Hán đúng.'),voiceControls(status),listen,status);
-        } else card.append(el('p','instruction',`Chọn ${type.endsWith('meaning')?'nghĩa tiếng Việt':type.endsWith('pinyin')?'pinyin':'chữ Hán'} phù hợp.`),el('div',type.startsWith('hanzi')?'hanzi':type.startsWith('pinyin')?'pinyin':'meaning',s.quiz.question));
+        const status=el('p','hint','Bấm Nghe để mở các đáp án.');status.setAttribute('role','status');
+        const listen=button(s.heard?'▶ Nghe lại':'▶ Nghe','primary listen',()=>{ s.heard=true;options.hidden=false;listen.textContent='▶ Nghe lại';speak(word.hanzi,status); });
+        card.append(el('p','instruction','Nghe phát âm rồi chọn chữ Hán đúng.'),voiceControls(status),listen,status);
+      } else {
+        let type;
+        if (inRescue) {
+          word = rescue.words[SE.index % rescue.words.length];
+          type = rescue.types[SE.index % rescue.types.length];
+        } else {
+          word = daily[s.index];
+          type = modes[s.index % modes.length];
+        }
+        if (!SE.quiz) SE.quiz = makeQuiz(word, type, day, SE.index);
+        if (SE.quiz.kind === 'builder') {
+          renderBuilderCard(card, SE, word, SE.quiz);
+          main.append(card);
+          return;
+        }
+        const isCloze = SE.quiz.kind === 'cloze';
+        detail = SE.quiz.detail || `${word.hanzi} · ${word.pinyin} · ${word.meaning_vi}`;
+        card.append(el('p','instruction', isCloze ? 'Đọc câu và chọn từ còn thiếu:' : `Chọn ${type.endsWith('meaning')?'nghĩa tiếng Việt':type.endsWith('pinyin')?'pinyin':'chữ Hán'} phù hợp.`),el('div', isCloze ? 'sentence-zh' : (type.startsWith('hanzi')?'hanzi':type.startsWith('pinyin')?'pinyin':'meaning'),SE.quiz.question));
       }
       const options=el('div','options');options.hidden=tab==='listen'&&!s.heard;
       const feedback=el('p','feedback');feedback.setAttribute('role','status');
-      const next=button('Câu tiếp theo →','primary',()=>{s.index++;s.quiz=null;s.answered=false;s.heard=false;save();render();}); next.hidden=!s.answered;
-      s.quiz.options.forEach((label,i)=>{const n=button('','option',()=>{
-        if(s.answered)return;const correct=i===s.quiz.answerIndex;record(correct,word);s.feedback=`${correct?'Chính xác!':'Chưa đúng.'} ${detail || 'Đáp án: '+s.quiz.options[s.quiz.answerIndex]}`;s.selected=i;save();paint();
+      const next=button('Câu tiếp theo →','primary',()=>{SE.index++;SE.quiz=null;SE.answered=false;SE.heard=false;save();render();}); next.hidden=!SE.answered;
+      SE.quiz.options.forEach((label,i)=>{const n=button('','option',()=>{
+        if(SE.answered)return;const correct=i===SE.quiz.answerIndex;
+        if (correct && SE.quiz.kind==='cloze') stats.clozeCorrect=(Number(stats.clozeCorrect)||0)+1;
+        record(correct,word,xpForTab());SE.feedback=`${correct?'Chính xác!':'Chưa đúng.'} ${detail || 'Đáp án: '+SE.quiz.options[SE.quiz.answerIndex]}`;SE.selected=i;save();paint();
       });n.append(el('span','',i+1),el('span','',label));options.append(n);});
-      function paint(){ if(!s.answered)return;Array.from(options.children).forEach((n,i)=>{n.disabled=true;n.classList.toggle('correct',i===s.quiz.answerIndex);n.classList.toggle('wrong',i===s.selected&&i!==s.quiz.answerIndex);});feedback.textContent=s.feedback;next.hidden=false; }
+      function paint(){ if(!SE.answered)return;Array.from(options.children).forEach((n,i)=>{n.disabled=true;n.classList.toggle('correct',i===SE.quiz.answerIndex);n.classList.toggle('wrong',i===SE.selected&&i!==SE.quiz.answerIndex);});feedback.textContent=SE.feedback;next.hidden=false; }
       paint();main.append(card,options,feedback,next);
     } catch(e) { main.replaceChildren(el('section','card empty',`Chưa thể mở bài học: ${e.message}`)); }
   }
@@ -8474,6 +8891,13 @@ const READINGS = [
   }
   document.querySelectorAll('[data-tab]').forEach(n=>n.addEventListener('click',()=>selectTab(n.dataset.tab)));
   if (typeof window !== 'undefined') window.__shadowTest = {splitSentences, buildShadowPlan, playShadowPlan, pinyinFor, callGemini, GEMINI_MODELS, loadShadowSentences, renderShadow, selectTab, _shadow: shadow};
+  if (typeof window !== 'undefined') window.__featuresTest = {
+    builderUnitsFrom120, makeBuilderQuiz, makeClozeQuiz, findClozeSentence, pickDistractors,
+    wordsInUnits, awardXP, bumpQuest, trackTabQuest, checkBadges, leeches, startRescue,
+    PATTERN_BANK, GRAMMAR_PATTERNS, QUEST_DEFS, BADGE_DEFS,
+    getQuests: () => quests, getBadges: () => badges, getStats: () => stats, getWordStats: () => wordStats,
+    renderBuilderCard, xpForQuiz, selectTab, getRescue: () => rescue,
+  };
   render();
 })();
 
