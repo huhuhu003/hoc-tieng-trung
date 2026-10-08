@@ -1,3 +1,4 @@
+SYNTAX_OK
 <!doctype html>
 <html lang="vi">
 <head>
@@ -153,6 +154,12 @@ footer { text-align: center; font-size: 12px; line-height: 1.7; letter-spacing: 
 .line-pinyin { font-size: 15px; color: var(--muted); margin-top: 5px; }
 .line-vi { font-size: 15px; color: var(--green); margin-top: 8px; }
 .reading-question { font-size: 19px; line-height: 1.7; margin: 24px 0 0; }
+
+.voice-controls { margin-top: 20px; text-align: left; }
+.voice-controls h3 { margin: 0; font-size: 16px; }
+.voice-controls .actions { margin-top: 12px; }
+.voice-controls .secondary { flex: 0 1 auto; overflow-wrap: anywhere; max-width: 100%; }
+.voice-controls .selected { background: #e6f4e7; border-color: var(--green); box-shadow: inset 0 0 0 1px var(--green); }
 
 </style>
 </head>
@@ -7751,31 +7758,94 @@ const READINGS = [
     audioToken++; if (window.speechSynthesis) window.speechSynthesis.cancel();
     if (audio) { audio.pause(); audio = null; }
   }
-  // gg-tts-primary: Google TTS la giong chinh (dai ca thay Edge doc nhanh).
-  function speak(text, status) {
-    stopAudio(); const token = audioToken;
-    const update = message => { if (token === audioToken) status.textContent = message; };
-    const synth = window.speechSynthesis;
-    function fallbackVoice() {
-      const voices = synth ? synth.getVoices().filter(v => /^zh/i.test(v.lang)) : [];
-      const voice = voices.find(v => v.localService) || voices[0];
-      if (voice && synth) {
-        try {
-          const u = new SpeechSynthesisUtterance(text); u.voice = voice; u.lang = 'zh-CN'; u.rate = 0.7;
-          u.onend = () => update('Đã phát xong. Bấm Nghe lại để nghe thêm.'); u.onerror = () => update(audioError);
-          synth.speak(u); return;
-        } catch (_) {}
-      }
-      update(audioError);
+  const storedVoicePref = read('zh-voice-pref');
+  let voicePref = {
+    kind: storedVoicePref.kind === 'speech' ? 'speech' : 'gtts',
+    name: typeof storedVoicePref.name === 'string' ? storedVoicePref.name : '',
+    speed: ['slow', 'normal', 'fast'].includes(storedVoicePref.speed) ? storedVoicePref.speed : 'fast'
+  };
+  function chineseVoices() {
+    return window.speechSynthesis ? window.speechSynthesis.getVoices().filter(v => /^zh/i.test(v.lang)) : [];
+  }
+  function saveVoicePref(pref) {
+    voicePref = {...voicePref, ...pref};
+    try { localStorage.setItem('zh-voice-pref', JSON.stringify(voicePref)); }
+    catch (_) { warning(); }
+  }
+  let voiceChangeListener = null;
+  function voiceControls(status) {
+    const section = el('section', 'voice-controls');
+    section.append(el('h3', '', 'Giọng đọc'));
+    const voices = el('div', 'actions'), speeds = el('div', 'actions');
+    const choices = [];
+    function refreshSelection() {
+      choices.forEach(({node, selected}) => {
+        const active = selected();
+        node.classList.toggle('selected', active);
+        node.setAttribute('aria-pressed', String(active));
+      });
     }
-    update('Đang phát âm…');
-    try {
-      audio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&tl=zh-CN&client=tw-ob&q=' + encodeURIComponent(text));
-      audio.onended = () => update('Đã phát xong. Bấm Nghe lại để nghe thêm.');
-      audio.onerror = () => fallbackVoice();
-      const result = audio.play();
-      if (result && result.catch) result.catch(() => fallbackVoice());
-    } catch (_) { fallbackVoice(); }
+    function choice(label, target, pref, selected, preview = false) {
+      const node = button(label, 'secondary', () => {
+        saveVoicePref(pref); refreshSelection();
+        if (preview) speak('你好，很高兴认识你。', status);
+      });
+      choices.push({node, selected}); target.append(node);
+    }
+    function refreshVoices() {
+      voices.replaceChildren(); choices.length = 0; speeds.replaceChildren();
+      chineseVoices().forEach(v => choice(v.name, voices, {kind:'speech', name:v.name},
+        () => voicePref.kind === 'speech' && voicePref.name === v.name, true));
+      choice('Google TTS', voices, {kind:'gtts', name:'Google TTS', speed:'normal'},
+        () => voicePref.kind === 'gtts' && voicePref.speed !== 'fast', true);
+      choice('Google TTS (nhanh)', voices, {kind:'gtts', name:'Google TTS (nhanh)', speed:'fast'},
+        () => voicePref.kind === 'gtts' && voicePref.speed === 'fast', true);
+      [['slow','Chậm'], ['normal','Vừa'], ['fast','Nhanh']].forEach(([speed,label]) =>
+        choice(label, speeds, {speed}, () => voicePref.speed === speed));
+      refreshSelection();
+    }
+    section.append(voices, el('p', 'instruction', 'Tốc độ'), speeds);
+    refreshVoices();
+    voiceChangeListener = refreshVoices;
+    window.speechSynthesis?.addEventListener('voiceschanged', voiceChangeListener);
+    return section;
+  }
+  function speak(text, status) {
+    stopAudio(); const token = audioToken, pref = {...voicePref};
+    const update = message => { if (token === audioToken) status.textContent = message; };
+    const attempted = new Set();
+    function play(kind) {
+      if (token !== audioToken) return;
+      if (attempted.has(kind)) { update(audioError); return; }
+      attempted.add(kind);
+      let failed = false;
+      const fail = () => {
+        if (failed || token !== audioToken) return;
+        failed = true;
+        if (audio) { audio.pause(); audio = null; }
+        play(kind === 'gtts' ? 'speech' : 'gtts');
+      };
+      const ended = () => { if (!failed) update('Đã phát xong. Bấm Nghe lại để nghe thêm.'); };
+      try {
+        if (kind === 'speech') {
+          const synth = window.speechSynthesis, voices = chineseVoices();
+          const voice = voices.find(v => v.name === pref.name) || voices[0];
+          if (!voice) { fail(); return; }
+          const u = new SpeechSynthesisUtterance(text);
+          u.voice = voice; u.lang = 'zh-CN';
+          u.rate = pref.speed === 'slow' ? 0.7 : pref.speed === 'fast' ? 1.0 : 0.85;
+          u.onend = ended; u.onerror = fail;
+          synth.speak(u);
+        } else {
+          audio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&tl=zh-CN&client=tw-ob&q=' + encodeURIComponent(text));
+          audio.playbackRate = pref.speed === 'slow' ? 0.9 : pref.speed === 'fast' ? 1.2 : 1.0;
+          audio.onended = ended; audio.onerror = fail;
+          const result = audio.play();
+          if (result && result.catch) result.catch(fail);
+        }
+      } catch (_) { fail(); }
+    }
+    update('Đang phát âm…'); play(pref.kind);
   }
   // Hash the local date and shuffle copies; ties are deterministic.
   function dailyShuffle(items, seedString) {
@@ -7879,7 +7949,12 @@ const READINGS = [
     main.append(el('h2','','Hành trình của bạn'),grid,el('p','instruction',`Đã trả lời ${Number(stats.totalAnswered)||0} câu · Đúng ${Number(stats.totalCorrect)||0} câu. Tiến độ được lưu trên trình duyệt này.`));
   }
   function render() {
-    stopAudio(); main.replaceChildren();
+    stopAudio();
+    if (voiceChangeListener) {
+      window.speechSynthesis?.removeEventListener('voiceschanged', voiceChangeListener);
+      voiceChangeListener = null;
+    }
+    main.replaceChildren();
     try {
       resetDay();
       const workload = document.getElementById('daily-workload') || el('p','instruction');
@@ -7914,7 +7989,7 @@ const READINGS = [
         if (tab==='listen') {
           const status=el('p','hint','Bấm Nghe để mở các đáp án.');status.setAttribute('role','status');
           const listen=button(s.heard?'▶ Nghe lại':'▶ Nghe','primary listen',()=>{ s.heard=true;options.hidden=false;listen.textContent='▶ Nghe lại';speak(word.hanzi,status); });
-          card.append(el('p','instruction','Nghe phát âm rồi chọn chữ Hán đúng.'),listen,status);
+          card.append(el('p','instruction','Nghe phát âm rồi chọn chữ Hán đúng.'),voiceControls(status),listen,status);
         } else card.append(el('p','instruction',`Chọn ${type.endsWith('meaning')?'nghĩa tiếng Việt':type.endsWith('pinyin')?'pinyin':'chữ Hán'} phù hợp.`),el('div',type.startsWith('hanzi')?'hanzi':type.startsWith('pinyin')?'pinyin':'meaning',s.quiz.question));
       }
       const options=el('div','options');options.hidden=tab==='listen'&&!s.heard;
